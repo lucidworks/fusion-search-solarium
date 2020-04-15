@@ -265,11 +265,11 @@ class Endpoint extends Configurable
      */
     public function getOAuthUsername(): ?string
     {
-        return $this->getOption('oauth_username');
+        return $this->getOption('oauth2_client_id');
     }
 
     /**
-     * Set oauth_password option.
+     * Set oauth2_client_id option.
      *
      * @param string $password This oauth client password
      *
@@ -282,13 +282,13 @@ class Endpoint extends Configurable
     }
 
     /**
-     * Get oauth_password option.
+     * Get oauth2_client_secret option.
      *
      * @return string|null
      */
     public function getOAuthPassword(): ?string
     {
-        return $this->getOption('oauth_password');
+        return $this->getOption('oauth2_client_secret');
     }
 
     /**
