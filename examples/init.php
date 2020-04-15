@@ -3,8 +3,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', true);
 
-if (file_exists($_SERVER['DOCUMENT_ROOT'] .'/config.php')) {
-    require($_SERVER['DOCUMENT_ROOT'] .'/config.php');
+if (file_exists(__DIR__.'/config.php')) {
+    require(__DIR__.'/config.php');
 }
 
 require $config['autoload'] ?? __DIR__.'/../vendor/autoload.php';

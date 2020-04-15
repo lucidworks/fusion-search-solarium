@@ -46,7 +46,7 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
             $data = $httpResponse;
             $info = curl_getinfo($handle);
             $headers = [];
-            $headers[] = 'HTTP/1.1 '.$info['http_code'].' OK';
+            $headers = $info;
         } else {
             $headers = [];
             $data = '';

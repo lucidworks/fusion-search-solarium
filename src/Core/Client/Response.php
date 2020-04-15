@@ -106,24 +106,15 @@ class Response
         $this->headers = $headers;
 
         // get the status header
-        $statusHeader = null;
-        foreach ($headers as $header) {
-            if ('HTTP' == substr($header, 0, 4)) {
-                $statusHeader = $header;
-                break;
-            }
-        }
+        $statusHeader = $headers["http_code"];
 
         if (null === $statusHeader) {
             throw new HttpException('No HTTP status found');
         }
 
-        // parse header like "$statusInfo[1]" into code and message
-        // $statusInfo[1] = the HTTP response code
-        // $statusInfo[2] = the response message
-        $statusInfo = explode(' ', $statusHeader, 3);
-        $this->statusCode = (int) $statusInfo[1];
-        $this->statusMessage = $statusInfo[2];
+
+        $this->statusCode = $statusHeader;
+        $this->statusMessage = 'HTTP/1.1'.' '.$statusHeader;
 
         return $this;
     }

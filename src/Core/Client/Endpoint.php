@@ -27,6 +27,8 @@ class Endpoint extends Configurable
         'core' => null,
         'timeout' => 5,
         'leader' => false,
+        'oauth_username' => '',
+        'oauth_password' => '',
     ];
 
     /**
@@ -240,6 +242,53 @@ class Endpoint extends Configurable
     public function getScheme(): ?string
     {
         return $this->getOption('scheme');
+    }
+
+
+    /**
+     * Set oauth_username option.
+     *
+     * @param string $username This is oauth client username
+     *
+     * @return self Provides fluent interface
+     */
+    public function setOAuthUsername(string $username): self
+    {
+        $this->setOption('oauth_username', $username);
+        return $this;
+    }
+
+    /**
+     * Get oauth_username option.
+     *
+     * @return string|null
+     */
+    public function getOAuthUsername(): ?string
+    {
+        return $this->getOption('oauth_username');
+    }
+
+    /**
+     * Set oauth_password option.
+     *
+     * @param string $password This oauth client password
+     *
+     * @return self Provides fluent interface
+     */
+    public function setOAuthPassword(string $password): self
+    {
+        $this->setOption('oauth_password', $password);
+        return $this;
+    }
+
+    /**
+     * Get oauth_password option.
+     *
+     * @return string|null
+     */
+    public function getOAuthPassword(): ?string
+    {
+        return $this->getOption('oauth_password');
     }
 
     /**
