@@ -8,8 +8,8 @@ $config = array(
             'port' => 443,
             'path' => '/php-test/php-test/',
             'core' => 'test',
-            'oauth_username' => '0oa3j6emghW1EvQ9P357',
-            'oauth_password' => 'WTjGhFCh1z5gntC38WM5d36xe1kAtOw8hh-Kdv0y',
+            'oauth2_client_id' => '0oa3j6emghW1EvQ9P357',
+            'oauth2_client_secret' => 'WTjGhFCh1z5gntC38WM5d36xe1kAtOw8hh-Kdv0y',
         )
     )
 );
