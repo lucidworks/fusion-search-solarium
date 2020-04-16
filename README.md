@@ -9,6 +9,8 @@ well documented API.
 
 Please see the [docs](http://solarium.readthedocs.io/en/stable/) for a more detailed description.
 
+**Note:** This project is a fork of Solarium that adds support for authenticating all API requests to Solr using the OAuth2 protocol, used by Lucidworks Managed Service. See config.php file for an example of how this works.
+
 ## Requirements
 
 Solarium 5.x only supports PHP 7.1 and up.
