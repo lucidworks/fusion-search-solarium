@@ -116,7 +116,7 @@ class Response
         }
 
         $this->statusCode = $statusHeader;
-        $this->statusMessage = 'HTTP/1.1'.' '.$statusHeader;
+        $this->statusMessage = 'HTTP/1.1 '.$statusHeader.' OK';
         return $this;
     }
 }
