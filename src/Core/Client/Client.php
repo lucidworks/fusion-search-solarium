@@ -863,42 +863,6 @@ class Client extends Configurable implements ClientInterface
     }
 
     /**
-     * Get OAuth2 token.
-     *
-     * @param string $oauth2_client_id
-     * @param string $oauth2_client_secret
-     *
-     * @return string
-     */
-    public function getOAuth2Token($oauth2_client_id, $oauth2_client_secret): string
-    {
-
-      if (isset($_SESSION['oauth2_token'])) {
-        return $_SESSION['oauth2_token'];
-      }
-
-      $lucid_url = 'https://cloud.lucidworks.com/oauth2/default/php-test/v1/token';
-      $curl_req = curl_init($lucid_url);
-      $customHeaders = array(
-        'Accept-Encoding: gzip, deflate',
-        'accept: application/json',
-        'Authorization: Basic '.base64_encode($oauth2_client_id.':'.$oauth2_client_secret),
-        'Content-Type: application/x-www-form-urlencoded'
-      );
-      curl_setopt($curl_req, CURLOPT_POST, true);
-      curl_setopt($curl_req, CURLOPT_POSTFIELDS, "grant_type=client_credentials&scope=com.lucidworks.cloud.search.solr.customer");
-      curl_setopt($curl_req, CURLOPT_HTTPHEADER, $customHeaders);
-
-      curl_setopt($curl_req, CURLOPT_RETURNTRANSFER, true);
-      $lucid_response = curl_exec($curl_req);
-      $res = json_decode($lucid_response, true);
-      $token = $res['token_type'].' '.$res['access_token'];
-      $_SESSION['oauth2_token'] = $token;
-      return $token;
-    }
-
-
-    /**
      * Execute a request and return the response.
      *
      * @param Request              $request
@@ -918,9 +882,17 @@ class Client extends Configurable implements ClientInterface
         // get oauth options
         $oauth2_client_id = $endpoint->getOAuth2ClientId();
         $oauth2_client_secret = $endpoint->getOAuth2ClientSecret();
+        $path = $endpoint->getPath();
+        $path_params = explode("/", $path);
+        if (count($path_params) >= 2) {
+            $customer_id = $path_params[1];
+        }
         $has_oauth2 = isset($oauth2_client_id) && isset($oauth2_client_secret);
+        if ($has_oauth2 && !isset($customer_id)) {
+            throw new UnexpectedValueException('$oauth2_client_id and $oauth2_client_secret were detected but $customer_id couldn\'t be determined from the "$path" value. Check your config settings.');
+        }
         if ($has_oauth2) {
-            $oauth2_token = $this->getOAuth2Token($oauth2_client_id, $oauth2_client_secret);
+            $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id);
             $request_headers = array('Authorization: '.$oauth2_token);
         }
         
@@ -939,7 +911,7 @@ class Client extends Configurable implements ClientInterface
         $res_headers = $response->getHeaders();
         if ($has_oauth2 && ($response->getStatusCode() === 401 || strpos($res_headers['content_type'], 'text/html') !== false)) {
             unset($_SESSION['oauth_token']);
-            $oauth2_token = $this->getOAuth2Token($oauth2_client_id, $oauth2_client_secret);
+            $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id);
             $request_headers = array('Authorization: '.$oauth2_token);
             $request->setHeaders($request_headers);
 

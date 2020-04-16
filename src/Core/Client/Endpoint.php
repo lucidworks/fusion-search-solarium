@@ -424,6 +424,40 @@ class Endpoint extends Configurable
     }
 
     /**
+     * Get OAuth2 token.
+     *
+     * @param string $oauth2_client_id
+     * @param string $oauth2_client_secret
+     * @param string $customer_id
+     *
+     * @return string
+     */
+    public function getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id): string
+    {
+        if (isset($_SESSION['oauth2_token'])) {
+            return $_SESSION['oauth2_token'];
+        }
+        $lms_oauth2_endpoint = 'https://cloud.lucidworks.com/oauth2/default/'.$customer_id.'/v1/token';
+        $curl_req = curl_init($lms_oauth2_endpoint);
+        $customHeaders = array(
+            'Accept-Encoding: gzip, deflate',
+            'accept: application/json',
+            'Authorization: Basic '.base64_encode($oauth2_client_id.':'.$oauth2_client_secret),
+            'Content-Type: application/x-www-form-urlencoded'
+        );
+        curl_setopt($curl_req, CURLOPT_POST, true);
+        curl_setopt($curl_req, CURLOPT_POSTFIELDS, "grant_type=client_credentials&scope=com.lucidworks.cloud.search.solr.customer");
+        curl_setopt($curl_req, CURLOPT_HTTPHEADER, $customHeaders);
+
+        curl_setopt($curl_req, CURLOPT_RETURNTRANSFER, true);
+        $lms_oauth2_response = curl_exec($curl_req);
+        $res = json_decode($lms_oauth2_response, true);
+        $token = $res['token_type'].' '.$res['access_token'];
+        $_SESSION['oauth2_token'] = $token;
+        return $token;
+    }
+
+    /**
      * If the shard is a leader or not. Only in SolrCloud.
      *
      * @param bool $leader
