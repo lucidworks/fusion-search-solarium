@@ -27,8 +27,8 @@ class Endpoint extends Configurable
         'core' => null,
         'timeout' => 5,
         'leader' => false,
-        'oauth_username' => '',
-        'oauth_password' => '',
+        'oauth2_client_id' => '',
+        'oauth2_client_secret' => '',
     ];
 
     /**
@@ -246,38 +246,38 @@ class Endpoint extends Configurable
 
 
     /**
-     * Set oauth_username option.
+     * Set oauth2_client_id option.
      *
-     * @param string $username This is oauth client username
+     * @param string $oauth2_client_id This is oauth2 client id.
      *
      * @return self Provides fluent interface
      */
-    public function setOAuthUsername(string $username): self
+    public function setOAuth2ClientId(string $oauth2_client_id): self
     {
-        $this->setOption('oauth_username', $username);
+        $this->setOption('oauth2_client_id', $oauth2_client_id);
         return $this;
     }
 
     /**
-     * Get oauth_username option.
+     * Get oauth2_client_id option.
      *
      * @return string|null
      */
-    public function getOAuthUsername(): ?string
+    public function getOAuth2ClientId(): ?string
     {
         return $this->getOption('oauth2_client_id');
     }
 
     /**
-     * Set oauth2_client_id option.
+     * Set oauth2_client_secret option.
      *
-     * @param string $password This oauth client password
+     * @param string $oauth2_client_secret This oauth client secret
      *
      * @return self Provides fluent interface
      */
-    public function setOAuthPassword(string $password): self
+    public function setOAuth2ClientSecret(string $oauth2_client_secret): self
     {
-        $this->setOption('oauth_password', $password);
+        $this->setOption('oauth2_client_secret', $oauth2_client_secret);
         return $this;
     }
 
@@ -286,7 +286,7 @@ class Endpoint extends Configurable
      *
      * @return string|null
      */
-    public function getOAuthPassword(): ?string
+    public function getOAuth2ClientSecret(): ?string
     {
         return $this->getOption('oauth2_client_secret');
     }

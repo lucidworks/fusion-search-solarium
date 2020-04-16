@@ -863,38 +863,38 @@ class Client extends Configurable implements ClientInterface
     }
 
     /**
-     * Get OAuth token.
+     * Get OAuth2 token.
      *
-     * @param string $oauth_username
-     * @param string $oauth_password
+     * @param string $oauth2_client_id
+     * @param string $oauth2_client_secret
      *
      * @return string
      */
-    public function getOAuthToken($oauth_username, $oauth_password): string
+    public function getOAuth2Token($oauth2_client_id, $oauth2_client_secret): string
     {
 
-        if (isset($_SESSION['oauth_token'])) {
-            echo '<br/> Using existing Session token....<br/>';
-            return $_SESSION['oauth_token'];
-        }
+      if (isset($_SESSION['oauth2_token'])) {
+        return $_SESSION['oauth2_token'];
+      }
 
-        $lucid_url = 'https://cloud.lucidworks.com/oauth2/default/php-test/v1/token';
-        $curl_req = curl_init($lucid_url);
-        $customHeaders = array(
-          'Authorization: Basic '.base64_encode($oauth_username.':'.$oauth_password),
-          'Content-Type: application/x-www-form-urlencoded'
-        );
-        curl_setopt($curl_req, CURLOPT_POST, true);
-        curl_setopt($curl_req, CURLOPT_POSTFIELDS, "grant_type=client_credentials&scope=com.lucidworks.cloud.search.solr.customer");
-        curl_setopt($curl_req, CURLOPT_HTTPHEADER, $customHeaders);
-    
-        curl_setopt($curl_req, CURLOPT_RETURNTRANSFER, true);
-        $lucid_response = curl_exec($curl_req);
-        $res = json_decode($lucid_response, true);
-        $token = $res['token_type'].' '.$res['access_token'];
-        echo '<br/> New token....'.$token.'<br/>';
-        $_SESSION['oauth_token'] = $token;
-        return $token;
+      $lucid_url = 'https://cloud.lucidworks.com/oauth2/default/php-test/v1/token';
+      $curl_req = curl_init($lucid_url);
+      $customHeaders = array(
+        'Accept-Encoding: gzip, deflate',
+        'accept: application/json',
+        'Authorization: Basic '.base64_encode($oauth2_client_id.':'.$oauth2_client_secret),
+        'Content-Type: application/x-www-form-urlencoded'
+      );
+      curl_setopt($curl_req, CURLOPT_POST, true);
+      curl_setopt($curl_req, CURLOPT_POSTFIELDS, "grant_type=client_credentials&scope=com.lucidworks.cloud.search.solr.customer");
+      curl_setopt($curl_req, CURLOPT_HTTPHEADER, $customHeaders);
+
+      curl_setopt($curl_req, CURLOPT_RETURNTRANSFER, true);
+      $lucid_response = curl_exec($curl_req);
+      $res = json_decode($lucid_response, true);
+      $token = $res['token_type'].' '.$res['access_token'];
+      $_SESSION['oauth2_token'] = $token;
+      return $token;
     }
 
 
@@ -916,16 +916,15 @@ class Client extends Configurable implements ClientInterface
         $request_headers = array();
 
         // get oauth options
-        $oauth_username = $endpoint->getOAuthUsername();
-        $oauth_password = $endpoint->getOAuthPassword();
-        $has_oauth = isset($oauth_username) && isset($oauth_password);
-        if ($has_oauth) {
-            $oauth_token = $this->getOAuthToken($oauth_username, $oauth_password);
-            $request_headers = array('Authorization: '.$oauth_token);
+        $oauth2_client_id = $endpoint->getOAuth2ClientId();
+        $oauth2_client_secret = $endpoint->getOAuth2ClientSecret();
+        $has_oauth2 = isset($oauth2_client_id) && isset($oauth2_client_secret);
+        if ($has_oauth2) {
+            $oauth2_token = $this->getOAuth2Token($oauth2_client_id, $oauth2_client_secret);
+            $request_headers = array('Authorization: '.$oauth2_token);
         }
         
         $request->setHeaders($request_headers);
-        
         $event = new PreExecuteRequestEvent($request, $endpoint);
         $this->eventDispatcher->dispatch($event, Events::PRE_EXECUTE_REQUEST);
         if (null !== $event->getResponse()) {
@@ -938,12 +937,12 @@ class Client extends Configurable implements ClientInterface
         // try getting refreshed token and re-execute request
         // strpos($res_headers['content_type'], 'text/html') helps in making assertion if 200 is returned but lucid works login page is opened
         $res_headers = $response->getHeaders();
-        if ($has_oauth && ($response->getStatusCode() === 401 || strpos($res_headers['content_type'], 'text/html') !== false)) {
+        if ($has_oauth2 && ($response->getStatusCode() === 401 || strpos($res_headers['content_type'], 'text/html') !== false)) {
             unset($_SESSION['oauth_token']);
-            echo '<br/> Fetching New token because current token has expired....';
-            $oauth_token = $this->getOAuthToken($oauth_username, $oauth_password);
-            $request_headers = array('Authorization: '.$oauth_token);
+            $oauth2_token = $this->getOAuth2Token($oauth2_client_id, $oauth2_client_secret);
+            $request_headers = array('Authorization: '.$oauth2_token);
             $request->setHeaders($request_headers);
+
             // Re-execute request
             $event = new PreExecuteRequestEvent($request, $endpoint);
             $this->eventDispatcher->dispatch($event, Events::PRE_EXECUTE_REQUEST);
