@@ -892,7 +892,7 @@ class Client extends Configurable implements ClientInterface
             throw new UnexpectedValueException('$oauth2_client_id and $oauth2_client_secret were detected but $customer_id couldn\'t be determined from the "$path" value. Check your config settings.');
         }
         if ($has_oauth2) {
-            $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id);
+            $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, false);
             $request_headers = array('Authorization: '.$oauth2_token);
         }
         
@@ -911,8 +911,7 @@ class Client extends Configurable implements ClientInterface
         $res_headers = $response->getHeaders();
         if ($has_oauth2 && ($response->getStatusCode() === 401 || strpos($res_headers['content_type'], 'text/html') !== false)) {
             print ("Current token has expired or is invalid. Fetching new access token...<br/>");
-            unset($_SESSION['oauth2_token']);
-            $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id);
+            $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, true);
             $request_headers = array('Authorization: '.$oauth2_token);
             $request->setHeaders($request_headers);
 

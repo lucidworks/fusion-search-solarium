@@ -429,31 +429,43 @@ class Endpoint extends Configurable
      * @param string $oauth2_client_id
      * @param string $oauth2_client_secret
      * @param string $customer_id
+     * @param bool $new_token
      *
      * @return string
      */
-    public function getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id): string
+    public function getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, $failed_token = false): string
     {
-        if (isset($_SESSION['oauth2_token'])) {
-            return $_SESSION['oauth2_token'];
-        }
-        $lms_oauth2_endpoint = 'https://cloud.lucidworks.com/oauth2/default/'.$customer_id.'/v1/token';
-        $curl_req = curl_init($lms_oauth2_endpoint);
-        $customHeaders = array(
-            'Accept-Encoding: gzip, deflate',
-            'accept: application/json',
-            'Authorization: Basic '.base64_encode($oauth2_client_id.':'.$oauth2_client_secret),
-            'Content-Type: application/x-www-form-urlencoded'
-        );
-        curl_setopt($curl_req, CURLOPT_POST, true);
-        curl_setopt($curl_req, CURLOPT_POSTFIELDS, "grant_type=client_credentials&scope=com.lucidworks.cloud.search.solr.customer");
-        curl_setopt($curl_req, CURLOPT_HTTPHEADER, $customHeaders);
+        $file_pointer = __DIR__.'/.access_token';
+        $token = '';
 
-        curl_setopt($curl_req, CURLOPT_RETURNTRANSFER, true);
-        $lms_oauth2_response = curl_exec($curl_req);
-        $res = json_decode($lms_oauth2_response, true);
-        $token = $res['token_type'].' '.$res['access_token'];
-        $_SESSION['oauth2_token'] = $token;
+        if($failed_token || !is_file($file_pointer) || trim(file_get_contents($file_pointer)) === '') {
+            print_r('getting new token');
+            $lms_oauth2_endpoint = 'https://cloud.lucidworks.com/oauth2/default/'.$customer_id.'/v1/token';
+            $curl_req = curl_init($lms_oauth2_endpoint);
+            $customHeaders = array(
+              'Accept-Encoding: gzip, deflate',
+              'accept: application/json',
+              'Authorization: Basic '.base64_encode($oauth2_client_id.':'.$oauth2_client_secret),
+              'Content-Type: application/x-www-form-urlencoded',
+              'cache-control: no-cache,no-cache',
+            );
+            curl_setopt($curl_req, CURLOPT_POST, true);
+            curl_setopt($curl_req, CURLOPT_POSTFIELDS, "grant_type=client_credentials&scope=com.lucidworks.cloud.search.solr.customer");
+            curl_setopt($curl_req, CURLOPT_HTTPHEADER, $customHeaders);
+
+            curl_setopt($curl_req, CURLOPT_RETURNTRANSFER, true);
+            $lms_oauth2_response = curl_exec($curl_req);
+            $res = json_decode($lms_oauth2_response, true);
+            $token = $res['token_type'].' '.$res['access_token'];
+            file_put_contents($file_pointer, $token);
+            if (!$failed_token) {
+                print_r('Starting background process');
+                exec("php ".__DIR__."/worker.php ".$oauth2_client_id." ".$oauth2_client_secret." ".$customer_id." ".$res['expires_in']." > /dev/null &");
+            }
+        } else {
+            print_r('using file token');
+            $token = file_get_contents($file_pointer);
+        }
         return $token;
     }
 

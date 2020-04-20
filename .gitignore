@@ -4,3 +4,4 @@
 .idea
 /.phpunit.result.cache
 .php_cs.cache
+.access_token
