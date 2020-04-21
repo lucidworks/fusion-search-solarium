@@ -1,7 +1,7 @@
 <?php
     $file_pointer = __DIR__.'/.access_token';
     // sleep for the initial expiry response time
-    $initial_delta = (int)$argv[4] - 60;
+    $initial_delta = max(60, (int)$argv[4] - 60);
     if ($initial_delta > 0) {
         sleep($initial_delta);
     }
@@ -25,9 +25,7 @@
         $res = json_decode($lms_oauth2_response, true);
         $token = $res['token_type'].' '.$res['access_token'];
         file_put_contents($file_pointer, $token);
-        $delta = $res["expires_in"] - 60;
-        if ($delta > 0) {
-            sleep($delta);
-        }
+        $delta = max(60, $res["expires_in"] - 60);
+        sleep($delta);
     }
 ?>

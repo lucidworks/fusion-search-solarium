@@ -9,7 +9,23 @@ well documented API.
 
 Please see the [docs](http://solarium.readthedocs.io/en/stable/) for a more detailed description.
 
-**Note:** This project is a fork of Solarium that adds support for authenticating all API requests to Solr using the OAuth2 protocol, used by Lucidworks Managed Service. See config.php file for an example of how this works.
+**Note:** This project is a fork of Solarium that adds support for authenticating all API requests to Solr using the OAuth2 protocol, used by Lucidworks Managed Service.
+
+Expected Configs:
+
+| Config | Type   | Description  | Required |
+|--------|--------|--------------|----------|
+| scheme | string | The HTTP protocol to use for sending queries. | yes      |
+| host   | string | The host name or IP of a Solr node, e.g. localhost or pg01.us-west1.cloud.lucidworks.com. | yes   |
+| port   | string | The Jetty example server is at port 8983, while Tomcat uses 8080 by default.              | yes   |
+| path   | string | The path that identifies the Solr instance to use on the node. | yes |
+| core   | string | This is the collection if you're using it in the Solrcloud mode. | yes |
+| oauth2_client_id | string | This is the Client ID for a SolrCloud cluster that supports OAuth2 | no |
+| oauth2_client_secret | string | This is the Client Secrete for a SolrCloud cluster that supports OAuth2 | no |
+
+See [config.php](config.php) file for an example config.
+
+![](https://i.imgur.com/nO1ez3t.png)
 
 ## Requirements
 
