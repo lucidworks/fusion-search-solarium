@@ -89,7 +89,7 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
         }
 
         if (!isset($options['headers']['Content-Type'])) {
-            if (Request::METHOD_GET == $method || strpos($uri, '/select') !== false) {
+            if (Request::METHOD_GET == $method || (strpos($uri, '/select') !== false && Request::METHOD_POST == $method)) {
                 $options['headers']['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
             } else {
                 $options['headers']['Content-Type'] = 'application/xml; charset=utf-8';
