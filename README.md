@@ -21,7 +21,7 @@ Expected Configs:
 | path   | string | The path that identifies the Solr instance to use on the node. | yes |
 | core   | string | This is the collection if you're using it in the Solrcloud mode. | yes |
 | oauth2_client_id | string | This is the Client ID for a SolrCloud cluster that supports OAuth2 | no |
-| oauth2_client_secret | string | This is the Client Secrete for a SolrCloud cluster that supports OAuth2 | no |
+| oauth2_client_secret | string | This is the Client Secret for a SolrCloud cluster that supports OAuth2 | no |
 
 See [config.php](config.php) file for an example config.
 
