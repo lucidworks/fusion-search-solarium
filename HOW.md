@@ -9,7 +9,13 @@ The OAuth2 access token implementation in the Solarium client library simplifies
 
 ### Use the Solarium Library
 
-```compose install lucidworks/solarium```
+```composer install lucidworks/solarium```
+
+If you're cloning the repo itself to try out the examples, make sure to run:
+
+```composer install```
+
+and ensure that `.access_token` and `.background_process_id` files are writable.
 
 ### Configure OAuth2 config parameters
 
@@ -20,6 +26,8 @@ This config file is used by all the examples. For instance, you can try the:
 - [examples/1.1-check-solarium-and-ping.php](examples/1.1-check-solarium-and-ping.php) which makes a ping request.
 
 You can try any of the other examples as well.
+
+**Note**: You will need to have a HTTP Server (like Apache2) configured to your project's root directory to run the PHP examples.
 
 
 ### Client Workflow
