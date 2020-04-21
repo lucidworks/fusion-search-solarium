@@ -910,7 +910,6 @@ class Client extends Configurable implements ClientInterface
         // strpos($res_headers['content_type'], 'text/html') helps in making assertion if 200 is returned but lucidworks login page is opened
         $res_headers = $response->getHeaders();
         if ($has_oauth2 && ($response->getStatusCode() === 401 || strpos($res_headers['content_type'], 'text/html') !== false)) {
-            print ("Current token has expired or is invalid. Fetching new access token...<br/>");
             $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, true);
             $request_headers = array('Authorization: '.$oauth2_token);
             $request->setHeaders($request_headers);

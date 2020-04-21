@@ -1,7 +1,10 @@
 <?php
     $file_pointer = __DIR__.'/.access_token';
     // sleep for the initial expiry response time
-    sleep((int)$argv[4]);
+    $initial_delta = (int)$argv[4] - 60;
+    if ($initial_delta > 0) {
+        sleep($initial_delta);
+    }
     while(true) {
         $file_content = file_get_contents($file_pointer);
         $lms_oauth2_endpoint = 'https://cloud.lucidworks.com/oauth2/default/'.$argv[3].'/v1/token';
@@ -22,6 +25,9 @@
         $res = json_decode($lms_oauth2_response, true);
         $token = $res['token_type'].' '.$res['access_token'];
         file_put_contents($file_pointer, $token);
-        sleep($res["expires_in"]);
+        $delta = $res["expires_in"] - 60;
+        if ($delta > 0) {
+            sleep($delta);
+        }
     }
 ?>

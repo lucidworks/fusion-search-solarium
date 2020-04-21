@@ -436,10 +436,10 @@ class Endpoint extends Configurable
     public function getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, $failed_token = false): string
     {
         $file_pointer = __DIR__.'/.access_token';
+        $process_file = __DIR__.'/.process_id';
         $token = '';
 
         if($failed_token || !is_file($file_pointer) || trim(file_get_contents($file_pointer)) === '') {
-            print_r('getting new token');
             $lms_oauth2_endpoint = 'https://cloud.lucidworks.com/oauth2/default/'.$customer_id.'/v1/token';
             $curl_req = curl_init($lms_oauth2_endpoint);
             $customHeaders = array(
@@ -458,12 +458,11 @@ class Endpoint extends Configurable
             $res = json_decode($lms_oauth2_response, true);
             $token = $res['token_type'].' '.$res['access_token'];
             file_put_contents($file_pointer, $token);
-            if (!$failed_token) {
-                print_r('Starting background process');
-                exec("php ".__DIR__."/worker.php ".$oauth2_client_id." ".$oauth2_client_secret." ".$customer_id." ".$res['expires_in']." > /dev/null &");
+            if (!is_file($process_file) || trim(file_get_contents($process_file)) === '') {
+                $pid = exec("php ".__DIR__."/worker.php ".$oauth2_client_id." ".$oauth2_client_secret." ".$customer_id." ".$res['expires_in']." > /dev/null 2>&1 & echo $!;");
+                file_put_contents($process_file, $pid);
             }
         } else {
-            print_r('using file token');
             $token = file_get_contents($file_pointer);
         }
         return $token;
