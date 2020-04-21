@@ -11,6 +11,8 @@ The OAuth2 access token implementation in the Solarium client library simplifies
 
 ```composer install lucidworks/solarium```
 
+**TODO:** publish the package
+
 If you're cloning the repo itself to try out the examples, make sure to run:
 
 ```composer install```
