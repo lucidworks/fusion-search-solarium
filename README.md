@@ -25,15 +25,13 @@ Expected Configs:
 
 See [config.php](config.php) file for an example config.
 
-![](https://i.imgur.com/nO1ez3t.png)
+Read more on how to authenticate with Solarium over [here](HOW.md).
 
 ## Requirements
 
 Solarium 5.x only supports PHP 7.1 and up.
 
-It's highly recommended to have Curl enabled in your PHP environment. However if you don't have Curl available you can
-switch from using Curl (the default) to another client adapter. The other adapters don't support all the features of the
-Curl adapter.
+It's highly recommended to have Curl enabled in your PHP environment. However if you don't have Curl available you can switch from using Curl (the default) to another client adapter. The other adapters don't support all the features of the Curl adapter.
 
 ## Getting started
 
