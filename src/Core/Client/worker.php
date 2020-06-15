@@ -1,5 +1,5 @@
 <?php
-    $file_pointer = __DIR__.'/.access_token';
+    $file_pointer = $_SERVER['DOCUMENT_ROOT'] .'/.access_token';
     // sleep for the initial expiry response time
     $initial_delta = max(60, (int)$argv[4] - 60);
     if ($initial_delta > 0) {

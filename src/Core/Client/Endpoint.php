@@ -435,12 +435,12 @@ class Endpoint extends Configurable
      */
     public function getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, $failed_token = false): string
     {
-        $file_pointer = $_SERVER['DOCUMENT_ROOT'] .'.access_token';
-        $process_file = $_SERVER['DOCUMENT_ROOT'] .'.background_process_id';
+        $file_pointer = $_SERVER['DOCUMENT_ROOT'] .'/.access_token';
+        $process_file = $_SERVER['DOCUMENT_ROOT'] .'/.background_process_id';
         $token = '';
 
         if($failed_token || !is_file($file_pointer) || trim(file_get_contents($file_pointer)) === '') {
-            $lms_oauth2_endpoint = 'https://cloud.lucidworks.com/oauth2/default/'.$customer_id.'/v1/token';
+            $lms_oauth2_endpoint = 'https://'.$this->getHost().'/oauth2/default/'.$customer_id.'/v1/token';
             $curl_req = curl_init($lms_oauth2_endpoint);
             $customHeaders = array(
               'Accept-Encoding: gzip, deflate',
