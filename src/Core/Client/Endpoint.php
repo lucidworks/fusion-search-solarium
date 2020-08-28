@@ -25,7 +25,7 @@ class Endpoint extends Configurable
         'path' => '/',
         'collection' => null,
         'core' => null,
-        'timeout' => 5,
+        'timeout' => 1000,
         'leader' => false,
         'oauth2_client_id' => '',
         'oauth2_client_secret' => '',
@@ -303,14 +303,14 @@ class Endpoint extends Configurable
     public function getCollectionBaseUri(): string
     {
         $uri = $this->getServerUri();
+        
         $collection = $this->getCollection();
 
         if ($collection) {
-            $uri .= 'solr/'.$collection.'/';
+            $uri .= ''.$collection.'/';
         } else {
             throw new UnexpectedValueException('No collection set.');
         }
-
         return $uri;
     }
 
@@ -330,7 +330,7 @@ class Endpoint extends Configurable
 
         if ($core) {
             // V1 API
-            $uri .= 'solr/'.$core.'/';
+            $uri .= ''.$core.'/';
         } else {
             throw new UnexpectedValueException('No core set.');
         }

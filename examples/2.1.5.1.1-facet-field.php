@@ -13,7 +13,7 @@ $query = $client->createSelect();
 $facetSet = $query->getFacetSet();
 
 // create a facet field instance and set options
-$facetSet->createFacetField('stock')->setField('inStock');
+$facetSet->createFacetField('stock')->setField('categories_t');
 
 // this executes the query and returns the result
 $resultset = $client->select($query);
@@ -22,7 +22,7 @@ $resultset = $client->select($query);
 echo 'NumFound: '.$resultset->getNumFound();
 
 // display facet counts
-echo '<hr/>Facet counts for field "inStock":<br/>';
+echo '<hr/>Facet counts for field "categories":<br/>';
 $facet = $resultset->getFacetSet()->getFacet('stock');
 foreach ($facet as $value => $count) {
     echo $value . ' [' . $count . ']<br/>';

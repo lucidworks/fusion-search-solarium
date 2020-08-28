@@ -76,6 +76,8 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
         $options = $this->createOptions($request, $endpoint);
 
         $handler = curl_init();
+        $uri = str_replace("/select", "", $uri);
+        print_r($uri);
         curl_setopt($handler, CURLOPT_URL, $uri);
         curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
         if (!(function_exists('ini_get') && ini_get('open_basedir'))) {
@@ -90,6 +92,7 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
 
         if (!isset($options['headers']['Content-Type'])) {
             if (Request::METHOD_GET == $method || (Request::METHOD_POST == $method && strpos($uri, '/select') == true)) {
+                
                 $options['headers']['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
             } else {
                 $options['headers']['Content-Type'] = 'application/xml; charset=utf-8';

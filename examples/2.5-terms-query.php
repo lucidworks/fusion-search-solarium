@@ -8,7 +8,7 @@ $client = new Solarium\Client($config);
 
 // get a terms query instance
 $query = $client->createTerms();
-$query->setFields('features,name');
+$query->setFields('title_t');
 $query->setLowerbound('i');
 
 // this executes the query and returns the result

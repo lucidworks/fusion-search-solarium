@@ -326,6 +326,7 @@ class Client extends Configurable implements ClientInterface
      */
     public function createEndpoint($options = null, bool $setAsDefault = false): Endpoint
     {
+        print_r($options);
         if (\is_string($options)) {
             $endpoint = new Endpoint();
             $endpoint->setKey($options);
@@ -798,10 +799,10 @@ class Client extends Configurable implements ClientInterface
         }
 
         $request = $requestBuilder->build($query);
-
+        
         $event = new PostCreateRequestEvent($query, $request);
         $this->eventDispatcher->dispatch($event, Events::POST_CREATE_REQUEST);
-
+        
         return $request;
     }
 
@@ -852,7 +853,9 @@ class Client extends Configurable implements ClientInterface
             return $event->getResult();
         }
 
+        
         $request = $this->createRequest($query);
+        print_r($request);
         $response = $this->executeRequest($request, $endpoint);
         $result = $this->createResult($query, $response);
 
@@ -883,18 +886,21 @@ class Client extends Configurable implements ClientInterface
         $oauth2_client_id = $endpoint->getOAuth2ClientId();
         $oauth2_client_secret = $endpoint->getOAuth2ClientSecret();
         $path = $endpoint->getPath();
+
         $path_params = explode("/", $path);
         if (count($path_params) >= 2) {
             $customer_id = $path_params[1];
         }
-        $has_oauth2 = isset($oauth2_client_id) && isset($oauth2_client_secret);
-        if ($has_oauth2 && !isset($customer_id)) {
-            throw new UnexpectedValueException('$oauth2_client_id and $oauth2_client_secret were detected but $customer_id couldn\'t be determined from the "$path" value. Check your config settings.');
-        }
-        if ($has_oauth2) {
-            $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, false);
-            $request_headers = array('Authorization: '.$oauth2_token);
-        }
+        // $has_oauth2 = isset($oauth2_client_id) && isset($oauth2_client_secret);
+        // if ($has_oauth2 && !isset($customer_id)) {
+        //     throw new UnexpectedValueException('$oauth2_client_id and $oauth2_client_secret were detected but $customer_id couldn\'t be determined from the "$path" value. Check your config settings.');
+        // }
+        // if ($has_oauth2) {
+        //     $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, false);
+        //     $request_headers = array('Authorization: '.$oauth2_token);
+        // }
+        $bearer_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcnVwYWwtand0IiwiaWF0IjoxNTk2MDIxNzE0LCJzdWIiOiJ0ZXN0IiwiZ3JvdXBzIjpbImFkbWluIl19.2LC2lEvnP4aggqcB4vqyFk6L26u7fVVVpVXiudmass0";
+        $request_headers = array('Authorization: Bearer '.$bearer_token);
         
         $request->setHeaders($request_headers);
         $event = new PreExecuteRequestEvent($request, $endpoint);
@@ -908,21 +914,21 @@ class Client extends Configurable implements ClientInterface
 
         // try getting refreshed token and re-execute request
         // strpos($res_headers['content_type'], 'text/html') helps in making assertion if 200 is returned but lucidworks login page is opened
-        $res_headers = $response->getHeaders();
-        if ($has_oauth2 && ($response->getStatusCode() === 401 || strpos($res_headers['content_type'], 'text/html') !== false)) {
-            $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, true);
-            $request_headers = array('Authorization: '.$oauth2_token);
-            $request->setHeaders($request_headers);
+        // $res_headers = $response->getHeaders();
+        // if ($has_oauth2 && ($response->getStatusCode() === 401 || strpos($res_headers['content_type'], 'text/html') !== false)) {
+        //     $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, true);
+        //     $request_headers = array('Authorization: '.$oauth2_token);
+        //     $request->setHeaders($request_headers);
 
-            // Re-execute request
-            $event = new PreExecuteRequestEvent($request, $endpoint);
-            $this->eventDispatcher->dispatch($event, Events::PRE_EXECUTE_REQUEST);
-            if (null !== $event->getResponse()) {
-                $response = $event->getResponse(); //a plugin result overrules the standard execution result
-            } else {
-                $response = $this->getAdapter()->execute($request, $endpoint);
-            }
-        }
+        //     // Re-execute request
+        //     $event = new PreExecuteRequestEvent($request, $endpoint);
+        //     $this->eventDispatcher->dispatch($event, Events::PRE_EXECUTE_REQUEST);
+        //     if (null !== $event->getResponse()) {
+        //         $response = $event->getResponse(); //a plugin result overrules the standard execution result
+        //     } else {
+        //         $response = $this->getAdapter()->execute($request, $endpoint);
+        //     }
+        // }
 
         $event = new PostExecuteRequestEvent($request, $endpoint, $response);
         $this->eventDispatcher->dispatch($event, Events::POST_EXECUTE_REQUEST);
