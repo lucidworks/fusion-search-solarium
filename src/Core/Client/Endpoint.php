@@ -29,6 +29,7 @@ class Endpoint extends Configurable
         'leader' => false,
         'oauth2_client_id' => '',
         'oauth2_client_secret' => '',
+        'jwt_token' => ''
     ];
 
     /**
@@ -246,6 +247,31 @@ class Endpoint extends Configurable
 
 
     /**
+     * Set jwt_token option.
+     *
+     * @param string $jwt_token This is jwt token
+     *
+     * @return self Provides fluent interface
+     */
+    public function setJWTToken($jwt_token): ?string
+    {
+        $this->setOption('jwt_token', $jwt_token);
+        return $this;
+    }
+
+
+    /**
+     * Get jwt_token option.
+     *
+     * @return string|null
+     */
+    public function getJWTToken(): ?string
+    {
+        return $this->getOption('jwt_token');
+    }
+
+
+    /**
      * Set oauth2_client_id option.
      *
      * @param string $oauth2_client_id This is oauth2 client id.
@@ -303,14 +329,19 @@ class Endpoint extends Configurable
     public function getCollectionBaseUri(): string
     {
         $uri = $this->getServerUri();
-        
         $collection = $this->getCollection();
 
         if ($collection) {
-            $uri .= ''.$collection.'/';
+            $jwt_token = $this->getOption('jwt_token');
+            if (isset($jwt_token)) {
+              $uri .= ''.$core.'/';
+            } else {
+              $uri .= 'solr/'.$collection.'/';
+            }
         } else {
             throw new UnexpectedValueException('No collection set.');
         }
+
         return $uri;
     }
 
@@ -330,7 +361,7 @@ class Endpoint extends Configurable
 
         if ($core) {
             // V1 API
-            $uri .= ''.$core.'/';
+            $uri .= 'solr/'.$core.'/';
         } else {
             throw new UnexpectedValueException('No core set.');
         }
