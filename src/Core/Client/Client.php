@@ -899,11 +899,9 @@ class Client extends Configurable implements ClientInterface
             $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, false);
             $request_headers = array('Authorization: '.$oauth2_token);
         }
-
         if ($has_jwt_token) {
-          $request_headers = array('Authorization: Bearer'.$jwt_token);
+          $request_headers = array('Authorization: Bearer '.$jwt_token);
         }
-
         $request->setHeaders($request_headers);
         $event = new PreExecuteRequestEvent($request, $endpoint);
         $this->eventDispatcher->dispatch($event, Events::PRE_EXECUTE_REQUEST);

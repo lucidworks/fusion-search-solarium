@@ -72,7 +72,6 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
     {
         $uri = AdapterHelper::buildUri($request, $endpoint);
         $uri = str_replace("/select", "", $uri);
-
         $method = $request->getMethod();
         $options = $this->createOptions($request, $endpoint);
 

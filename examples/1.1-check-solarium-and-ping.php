@@ -2,7 +2,6 @@
 
 require(__DIR__.'/init.php');
 htmlHeader();
-
 // check solarium version available
 echo 'Solarium library version: ' . Solarium\Client::VERSION . ' - ';
 
