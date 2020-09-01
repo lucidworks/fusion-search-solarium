@@ -902,6 +902,7 @@ class Client extends Configurable implements ClientInterface
         if ($has_jwt_token) {
           $request_headers = array('Authorization: Bearer '.$jwt_token);
         }
+  
         $request->setHeaders($request_headers);
         $event = new PreExecuteRequestEvent($request, $endpoint);
         $this->eventDispatcher->dispatch($event, Events::PRE_EXECUTE_REQUEST);

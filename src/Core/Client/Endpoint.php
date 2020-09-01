@@ -30,6 +30,7 @@ class Endpoint extends Configurable
         'oauth2_client_id' => '',
         'oauth2_client_secret' => '',
         'jwt_token' => '',
+        'query_profile' => '',
     ];
 
     /**
@@ -247,6 +248,31 @@ class Endpoint extends Configurable
 
 
     /**
+     * Set query_profile option.
+     *
+     * @param string $query_profile This is fusion query profile token
+     *
+     * @return self Provides fluent interface
+     */
+    public function setQueryProfile($query_profile): ?string
+    {
+        $this->setOption('query_profile', $query_profile);
+        return $this;
+    }
+
+
+    /**
+     * Get query_profile option.
+     *
+     * @return string|null
+     */
+    public function getQueryProfile(): ?string
+    {
+        return $this->getOption('query_profile');
+    }
+
+
+    /**
      * Set jwt_token option.
      *
      * @param string $jwt_token This is jwt token
@@ -404,7 +430,7 @@ class Endpoint extends Configurable
      */
     public function getV1BaseUri(): string
     {
-        return $this->getServerUri().'solr/';
+        return $this->getServerUri().'';
     }
 
     /**
