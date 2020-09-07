@@ -49,14 +49,51 @@ class RequestBuilder extends BaseRequestBuilder
 
         // add filterqueries to request
         // APPBASE CHANGED
-        // $filterQueries = $query->getFilterQueries();
-        // if (0 !== \count($filterQueries)) {
-        //     foreach ($filterQueries as $filterQuery) {
-        //         $fq = sprintf('%s%s', $filterQuery->getLocalParameters()->render(), $filterQuery->getQuery());
+        $field_map = array(
+            "tm_X3b_" => "_t",
+            "bs_" => "_b",
+            "ds_" => "_dt",
+            "ss_" => "_s",
+            // TODO not known
+            "is_" => "_l",
+            "fs_" => "_f",
+            "ps_" => "_d",
+        );
+        $filterQueries = $query->getFilterQueries();
+        if (0 !== \count($filterQueries)) {
+            foreach ($filterQueries as $filterQuery) {
+                $query_tmp = $filterQuery->getOption('query');
+               
+                if (!empty($query_tmp)) {
+                    $query_tmp = ltrim($query_tmp, "(");
+                    $query_tmp = rtrim($query_tmp, ")");
+                    $queries_list = explode(" ", $query_tmp);
+                    $new_query = "";
+                    foreach($queries_list as $q) {
+                        $q_tmp = explode(':', $q, 2);
+                        $field = $q_tmp[0];
+                        $current_field_map = explode('_', $field)[0].'_';
+                        $has_plus = $current_field_map[0] == '+';
+                        
+                        if ($has_plus) {
+                            $current_field_map = ltrim($current_field_map, '+');
+                        }
+                        if (isset($field_map[$current_field_map])) {
+                            $suffix = $field_map[$current_field_map];
+                        }
+                        $field = ($has_plus ? '+' : '').explode('_', $field, 2)[1].$suffix;
+                        $new_query = $new_query.$field.":".(ltrim($field, '+') == 'type_s' ? '"node--': '"').trim($q_tmp[1], '"').'" ';
+                    }
+                    
+                    $new_query = "(".trim($new_query).")";
+                    $filterQuery->setQuery($new_query);
+                   
+                    $fq = sprintf('%s%s', $filterQuery->getLocalParameters()->render(), $filterQuery->getQuery());
 
-        //         $request->addParam('fq', $fq);
-        //     }
-        // }
+                    $request->addParam('fq', $fq);
+                }
+            }
+        }
 
         // add components to request
         foreach ($query->getComponents() as $component) {
@@ -65,7 +102,7 @@ class RequestBuilder extends BaseRequestBuilder
                 $request = $componentBuilder->buildComponent($component, $request);
             }
         }
-
+        // dump($request);
         return $request;
     }
 }
