@@ -77,7 +77,6 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
         }
         $method = $request->getMethod();
         $options = $this->createOptions($request, $endpoint);
-        print_r($uri);
         $handler = curl_init();
         curl_setopt($handler, CURLOPT_URL, $uri);
         curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
