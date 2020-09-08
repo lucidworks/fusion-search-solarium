@@ -896,8 +896,8 @@ class Client extends Configurable implements ClientInterface
             throw new UnexpectedValueException('$oauth2_client_id and $oauth2_client_secret were detected but $customer_id couldn\'t be determined from the "$path" value. Check your config settings.');
         }
         if ($has_oauth2) {
-            $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, false);
-            $request_headers = array('Authorization: '.$oauth2_token);
+            // $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, false);
+            // $request_headers = array('Authorization: '.$oauth2_token);
         }
         if ($has_jwt_token) {
           $request_headers = array('Authorization: Bearer '.$jwt_token);
@@ -915,21 +915,21 @@ class Client extends Configurable implements ClientInterface
 
         // try getting refreshed token and re-execute request
         // strpos($res_headers['content_type'], 'text/html') helps in making assertion if 200 is returned but lucidworks login page is opened
-        $res_headers = $response->getHeaders();
-        if ($has_oauth2 && ($response->getStatusCode() === 401 || strpos($res_headers['content_type'], 'text/html') !== false)) {
-            $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, true);
-            $request_headers = array('Authorization: '.$oauth2_token);
-            $request->setHeaders($request_headers);
+        // $res_headers = $response->getHeaders();
+        // if ($has_oauth2 && ($response->getStatusCode() === 401 || strpos($res_headers['content_type'], 'text/html') !== false)) {
+        //     $oauth2_token = $endpoint->getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, true);
+        //     $request_headers = array('Authorization: '.$oauth2_token);
+        //     $request->setHeaders($request_headers);
 
-            // Re-execute request
-            $event = new PreExecuteRequestEvent($request, $endpoint);
-            $this->eventDispatcher->dispatch($event, Events::PRE_EXECUTE_REQUEST);
-            if (null !== $event->getResponse()) {
-                $response = $event->getResponse(); //a plugin result overrules the standard execution result
-            } else {
-                $response = $this->getAdapter()->execute($request, $endpoint);
-            }
-        }
+        //     // Re-execute request
+        //     $event = new PreExecuteRequestEvent($request, $endpoint);
+        //     $this->eventDispatcher->dispatch($event, Events::PRE_EXECUTE_REQUEST);
+        //     if (null !== $event->getResponse()) {
+        //         $response = $event->getResponse(); //a plugin result overrules the standard execution result
+        //     } else {
+        //         $response = $this->getAdapter()->execute($request, $endpoint);
+        //     }
+        // }
 
         $event = new PostExecuteRequestEvent($request, $endpoint, $response);
         $this->eventDispatcher->dispatch($event, Events::POST_EXECUTE_REQUEST);
