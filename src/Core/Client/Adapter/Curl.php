@@ -179,7 +179,6 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
     {
         $handle = $this->createHandle($request, $endpoint);
         $httpResponse = curl_exec($handle);
-        // dump($httpResponse);
         return $this->getResponse($handle, $httpResponse);
     }
 

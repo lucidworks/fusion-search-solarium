@@ -31,7 +31,7 @@ class RequestBuilder extends BaseRequestBuilder
         );
         $request->addParam('start', $query->getStart());
         $request->addParam('rows', $query->getRows());
-        // APPBASE CHANGED
+        // LUCIDWORKS CHANGED
         // $request->addParam('fl', implode(',', $query->getFields()));
         $request->addParam('q.op', $query->getQueryDefaultOperator());
         $request->addParam('df', $query->getQueryDefaultField());
@@ -48,7 +48,7 @@ class RequestBuilder extends BaseRequestBuilder
         }
 
         // add filterqueries to request
-        // APPBASE CHANGED
+        // LUCIDWORKS CHANGED
         $field_map = array(
             "tm_X3b_" => "_t",
             "bs_" => "_b",
