@@ -9,7 +9,7 @@ well documented API.
 
 Please see the [docs](http://solarium.readthedocs.io/en/stable/) for a more detailed description.
 
-**Note:** This project is a fork of Solarium that adds support for authenticating all API requests to Solr using the OAuth2 protocol, used by Lucidworks Managed Service.
+**Note:** This project is a fork of Solarium that adds support for authenticating all API requests to Fusion using JWT, used by Lucidworks Fusion.
 
 Expected Configs:
 
@@ -20,8 +20,8 @@ Expected Configs:
 | port   | string | The Jetty example server is at port 8983, while Tomcat uses 8080 by default.              | yes   |
 | path   | string | The path that identifies the Solr instance to use on the node. | yes |
 | core   | string | This is the collection if you're using it in the Solrcloud mode. | yes |
-| oauth2_client_id | string | This is the Client ID for a SolrCloud cluster that supports OAuth2 | no |
-| oauth2_client_secret | string | This is the Client Secret for a SolrCloud cluster that supports OAuth2 | no |
+| jwt_token | string | This is the JWT token used to authenticate with the Fusion instance. | yes |
+| query_profile | string | This is the query profile id for Fusion. | yes |
 
 See [config.php](config.php) file for an example config.
 
