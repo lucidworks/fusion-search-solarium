@@ -1,11 +1,8 @@
-# Solarium PHP Solr client library
-
+# Solarium PHP Solr client library for Fusion
 
 ## What is Solarium?
 
-Solarium is a PHP Solr client library that accurately model Solr concepts. Where many other Solr libraries only handle
-the communication with Solr, Solarium also relieves you of handling all the complex Solr query parameters using a
-well documented API.
+Solarium is a PHP Solr client library that accurately model Solr concepts. Where many other Solr libraries only handle the communication with Solr, Solarium also relieves you of handling all the complex Solr query parameters using a well documented API.
 
 Please see the [docs](http://solarium.readthedocs.io/en/stable/) for a more detailed description.
 
@@ -40,14 +37,13 @@ The preferred way to install Solarium is by using Composer. Solarium is availabl
 
 Example:
 ```
-composer require lucidworks/managed-search-solarium
+composer require lucidworks/fusion-search-solarium
 ```
 
 ### Pitfall when upgrading from earlier versions to 5.x
 
 In the past, the V1 API endpoint **_solr_** was not added automatically, so most users set it as path on the endpoint.
-This bug was discovered with the addition of V2 API support. In almost every setup, the path has to be set to `/`
-instead of `/solr` with this release!
+This bug was discovered with the addition of V2 API support. In almost every setup, the path has to be set to `/` instead of `/solr` with this release!
 
 For the same reason it is a must to explicit configure the _core_ or _collection_.
 
