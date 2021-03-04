@@ -32,5 +32,5 @@ interface AdapterInterface extends ConfigurableInterface
      *
      * @return Response
      */
-    public function execute(Request $request, Endpoint $endpoint): Response;
+    public function execute($request, $endpoint);
 }

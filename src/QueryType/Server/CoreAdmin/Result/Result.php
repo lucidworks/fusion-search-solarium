@@ -12,16 +12,16 @@ class Result extends BaseResult
     /**
      * StatusResult collection when multiple statuses have been requested.
      *
-     * @var StatusResult[]|null
+     * @var StatusResult[]
      */
-    protected $statusResults;
+    protected $statusResults = null;
 
     /**
      * Status result when the status only for one core as requested.
      *
      * @var StatusResult
      */
-    protected $statusResult;
+    protected $statusResult = null;
 
     /**
      * @var bool
@@ -56,7 +56,7 @@ class Result extends BaseResult
      *
      * @return StatusResult[]|null
      */
-    public function getStatusResults(): ?array
+    public function getStatusResults()
     {
         $this->parseResponse();
         return $this->statusResults;
@@ -67,7 +67,7 @@ class Result extends BaseResult
      *
      * @return StatusResult|null
      */
-    public function getStatusResult(): ?StatusResult
+    public function getStatusResult()
     {
         $this->parseResponse();
         return $this->statusResult;
@@ -78,7 +78,7 @@ class Result extends BaseResult
      *
      * @return null|StatusResult
      */
-    public function getStatusResultByCoreName(string $coreName): ?StatusResult
+    public function getStatusResultByCoreName($coreName)
     {
         return $this->statusResults[$coreName] ?? null;
     }

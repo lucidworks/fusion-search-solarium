@@ -6,7 +6,6 @@ use Solarium\Core\Client\Endpoint;
 use Solarium\Core\Client\Request;
 use Solarium\Core\Client\Response;
 use Solarium\Core\Configurable;
-use Solarium\Core\ConfigurableInterface;
 use Solarium\Exception\HttpException;
 use Solarium\Exception\OutOfBoundsException;
 
@@ -18,8 +17,6 @@ use Solarium\Exception\OutOfBoundsException;
  * {@link http://framework.zend.com/manual/en/zend.http.html}
  *
  * To use this adapter you need to have the Zend Framework available (autoloading)
- *
- * @deprecated Deprecated since Solarium 5.2 and will be removed in Solarium 6. Use Psr18Adapter instead.
  */
 class Zend2Http extends Configurable implements AdapterInterface
 {
@@ -52,7 +49,7 @@ class Zend2Http extends Configurable implements AdapterInterface
      *
      * @return self Provides fluent interface
      */
-    public function setOptions($options, bool $overwrite = false): ConfigurableInterface
+    public function setOptions($options, $overwrite = false)
     {
         parent::setOptions($options, $overwrite);
 
@@ -132,7 +129,7 @@ class Zend2Http extends Configurable implements AdapterInterface
      *
      * @return Response
      */
-    public function execute(Request $request, Endpoint $endpoint): Response
+    public function execute($request, $endpoint)
     {
         $client = $this->getZendHttp();
         $client->resetParameters();
@@ -147,7 +144,7 @@ class Zend2Http extends Configurable implements AdapterInterface
                     $this->prepareFileUpload($client, $request);
                 } else {
                     $client->setRawBody($request->getRawData());
-                    $request->addHeader('Content-Type: text/xml; charset=utf-8');
+                    $request->addHeader('Content-Type: text/xml; charset=UTF-8');
                 }
                 break;
             case Request::METHOD_HEAD:
@@ -162,9 +159,7 @@ class Zend2Http extends Configurable implements AdapterInterface
                     $this->prepareFileUpload($client, $request);
                 } else {
                     $client->setRawBody($request->getRawData());
-                    $request->addHeader('Content-Type: application/json; charset=utf-8');
-                    // The Zend adapter automatically adds a "Connection: close" header which fails on Solr 8.5.0
-                    $request->addHeader('Connection: Keep-Alive');
+                    $request->addHeader('Content-Type: application/json; charset=UTF-8');
                 }
                 break;
             default:
@@ -197,10 +192,13 @@ class Zend2Http extends Configurable implements AdapterInterface
      *
      * @return Response
      */
-    protected function prepareResponse(Request $request, \Zend\Http\Response $response)
+    protected function prepareResponse($request, $response)
     {
         if ($response->isClientError()) {
-            throw new HttpException($response->getReasonPhrase(), $response->getStatusCode());
+            throw new HttpException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
         }
 
         if (Request::METHOD_HEAD == $request->getMethod()) {

@@ -16,7 +16,7 @@ abstract class AbstractResponseParser
      *
      * @return array
      */
-    public function convertToKeyValueArray(array $data): array
+    public function convertToKeyValueArray($data)
     {
         // key counter to convert values to arrays when keys are re-used
         $keys = [];
@@ -47,9 +47,9 @@ abstract class AbstractResponseParser
      * @param array $data
      * @param array $result
      *
-     * @return array
+     * @return mixed
      */
-    public function addHeaderInfo(array $data, array $result): array
+    public function addHeaderInfo($data, $result)
     {
         $status = null;
         $queryTime = null;

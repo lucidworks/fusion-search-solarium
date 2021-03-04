@@ -4,7 +4,6 @@ namespace Solarium\Component\RequestBuilder;
 
 use Solarium\Component\Stats\Stats as StatsComponent;
 use Solarium\Core\Client\Request;
-use Solarium\Core\ConfigurableInterface;
 
 /**
  * Add select component stats to the request.
@@ -19,7 +18,7 @@ class Stats implements ComponentRequestBuilderInterface
      *
      * @return Request
      */
-    public function buildComponent(ConfigurableInterface $component, Request $request): Request
+    public function buildComponent($component, $request)
     {
         // enable stats
         $request->addParam('stats', 'true');

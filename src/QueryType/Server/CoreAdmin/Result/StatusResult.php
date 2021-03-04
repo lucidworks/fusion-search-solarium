@@ -30,12 +30,12 @@ class StatusResult
     /**
      * @var \DateTime|null
      */
-    protected $startTime;
+    protected $startTime = null;
 
     /**
      * @var \DateTime|null
      */
-    protected $lastModified;
+    protected $lastModified = null;
 
     /**
      * @return string
@@ -47,13 +47,10 @@ class StatusResult
 
     /**
      * @param string $coreName
-     *
-     * @return self
      */
-    public function setCoreName(string $coreName): self
+    public function setCoreName(string $coreName)
     {
         $this->coreName = $coreName;
-        return $this;
     }
 
     /**
@@ -66,13 +63,10 @@ class StatusResult
 
     /**
      * @param int $numberOfDocuments
-     *
-     * @return self
      */
-    public function setNumberOfDocuments(int $numberOfDocuments): self
+    public function setNumberOfDocuments(int $numberOfDocuments)
     {
         $this->numberOfDocuments = $numberOfDocuments;
-        return $this;
     }
 
     /**
@@ -85,13 +79,10 @@ class StatusResult
 
     /**
      * @param int $uptime
-     *
-     * @return self
      */
-    public function setUptime(int $uptime): self
+    public function setUptime(int $uptime)
     {
         $this->uptime = $uptime;
-        return $this;
     }
 
     /**
@@ -104,50 +95,41 @@ class StatusResult
 
     /**
      * @param int $version
-     *
-     * @return self
      */
-    public function setVersion(int $version): self
+    public function setVersion(int $version)
     {
         $this->version = $version;
-        return $this;
     }
 
     /**
      * @return \DateTime|null
      */
-    public function getStartTime(): ?\DateTime
+    public function getStartTime()
     {
         return $this->startTime;
     }
 
     /**
      * @param \DateTime|null $startTime
-     *
-     * @return self
      */
-    public function setStartTime(?\DateTime $startTime): self
+    public function setStartTime($startTime)
     {
         $this->startTime = $startTime;
-        return $this;
     }
 
     /**
      * @return \DateTime|null
      */
-    public function getLastModified(): ?\DateTime
+    public function getLastModified()
     {
         return $this->lastModified;
     }
 
     /**
      * @param \DateTime|null $lastModified
-     *
-     * @return $this
      */
-    public function setLastModified(?\DateTime $lastModified): self
+    public function setLastModified($lastModified)
     {
         $this->lastModified = $lastModified;
-        return $this;
     }
 }

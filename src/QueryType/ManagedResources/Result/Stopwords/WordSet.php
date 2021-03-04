@@ -2,8 +2,6 @@
 
 namespace Solarium\QueryType\ManagedResources\Result\Stopwords;
 
-use Solarium\Core\Client\Response;
-use Solarium\Core\Query\AbstractQuery;
 use Solarium\Core\Query\Result\Result;
 use Solarium\Core\Query\Result\QueryType as BaseResult;
 
@@ -33,7 +31,7 @@ class WordSet extends BaseResult implements \IteratorAggregate, \Countable
     /**
      * Datetime when the resource was last updated.
      *
-     * @var string|null
+     * @var string
      */
     protected $updatedSinceInit;
 
@@ -47,10 +45,10 @@ class WordSet extends BaseResult implements \IteratorAggregate, \Countable
     /**
      * Constructor.
      *
-     * @param AbstractQuery $query
-     * @param Response      $response
+     * @param $query
+     * @param $response
      */
-    public function __construct(AbstractQuery $query, Response $response)
+    public function __construct($query, $response)
     {
         Result::__construct($query, $response);
         $this->parseResponse();
@@ -115,14 +113,5 @@ class WordSet extends BaseResult implements \IteratorAggregate, \Countable
     {
         $this->parseResponse();
         return $this->initializedOn;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUpdatedSinceInit(): ?string
-    {
-        $this->parseResponse();
-        return $this->updatedSinceInit;
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Solarium\Component\ResponseParser;
 
-use Solarium\Component\AbstractComponent;
-use Solarium\Component\ComponentAwareQueryInterface;
 use Solarium\Component\Result\Stats\FacetValue as ResultStatsFacetValue;
 use Solarium\Component\Result\Stats\Result as ResultStatsResult;
 use Solarium\Component\Result\Stats\Stats as ResultStats;
@@ -19,12 +17,12 @@ class Stats implements ComponentParserInterface
      * Parse result data into result objects.
      *
      * @param Query          $query
-     * @param StatsComponent $statsComponent
+     * @param StatsComponent $stats
      * @param array          $data
      *
      * @return ResultStats;
      */
-    public function parse(?ComponentAwareQueryInterface $query, ?AbstractComponent $statsComponent, array $data): ResultStats
+    public function parse($query, $stats, $data)
     {
         $results = [];
         if (isset($data['stats']['stats_fields'])) {

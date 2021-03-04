@@ -27,7 +27,7 @@ class Result
      * @param string $field
      * @param array  $stats
      */
-    public function __construct(string $field, array $stats)
+    public function __construct($field, $stats)
     {
         $this->field = $field;
         $this->stats = $stats;
@@ -36,9 +36,9 @@ class Result
     /**
      * Get field name.
      *
-     * @return string|null
+     * @return string
      */
-    public function getName(): ?string
+    public function getName()
     {
         return $this->field;
     }
@@ -46,9 +46,9 @@ class Result
     /**
      * Get min value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getMin(): ?string
+    public function getMin()
     {
         return $this->getValue('min');
     }
@@ -56,9 +56,9 @@ class Result
     /**
      * Get max value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getMax(): ?string
+    public function getMax()
     {
         return $this->getValue('max');
     }
@@ -66,9 +66,9 @@ class Result
     /**
      * Get sum value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getSum(): ?string
+    public function getSum()
     {
         return $this->getValue('sum');
     }
@@ -76,19 +76,19 @@ class Result
     /**
      * Get count value.
      *
-     * @return int|null
+     * @return string
      */
-    public function getCount(): ?int
+    public function getCount()
     {
-        return (int) $this->getValue('count');
+        return $this->getValue('count');
     }
 
     /**
      * Get missing value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getMissing(): ?string
+    public function getMissing()
     {
         return $this->getValue('missing');
     }
@@ -96,9 +96,9 @@ class Result
     /**
      * Get sumOfSquares value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getSumOfSquares(): ?string
+    public function getSumOfSquares()
     {
         return $this->getValue('sumOfSquares');
     }
@@ -106,9 +106,9 @@ class Result
     /**
      * Get mean value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getMean(): ?string
+    public function getMean()
     {
         return $this->getValue('mean');
     }
@@ -116,9 +116,9 @@ class Result
     /**
      * Get stddev value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getStddev(): ?string
+    public function getStddev()
     {
         return $this->getValue('stddev');
     }
@@ -126,9 +126,9 @@ class Result
     /**
      * Get facet stats.
      *
-     * @return array|null
+     * @return array
      */
-    public function getFacets(): ?array
+    public function getFacets()
     {
         return $this->getValue('facets');
     }
@@ -136,9 +136,9 @@ class Result
     /**
      * Get percentile stats.
      *
-     * @return array|null
+     * @return array
      */
-    public function getPercentiles(): ?array
+    public function getPercentiles()
     {
         return $this->getValue('percentiles');
     }
@@ -148,10 +148,10 @@ class Result
      *
      * @param mixed $name
      *
-     * @return string|array|null
+     * @return string
      */
     protected function getValue($name)
     {
-        return $this->stats[$name] ?? null;
+        return isset($this->stats[$name]) ? $this->stats[$name] : null;
     }
 }

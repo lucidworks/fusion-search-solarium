@@ -12,12 +12,12 @@ abstract class AbstractField extends AbstractFacet
     /**
      * Facet sort type index.
      */
-    public const SORT_INDEX = 'index';
+    const SORT_INDEX = 'index';
 
     /**
      * Facet sort type count.
      */
-    public const SORT_COUNT = 'count';
+    const SORT_COUNT = 'count';
 
     /**
      * Default options.
@@ -35,18 +35,17 @@ abstract class AbstractField extends AbstractFacet
      *
      * @return self Provides fluent interface
      */
-    public function setField(string $field): self
+    public function setField($field)
     {
-        $this->setOption('field', $field);
-        return $this;
+        return $this->setOption('field', $field);
     }
 
     /**
      * Get the field name.
      *
-     * @return string|null
+     * @return string
      */
-    public function getField(): ?string
+    public function getField()
     {
         return $this->getOption('field');
     }
@@ -60,18 +59,17 @@ abstract class AbstractField extends AbstractFacet
      *
      * @return self Provides fluent interface
      */
-    public function setSort(string $sort): self
+    public function setSort($sort)
     {
-        $this->setOption('sort', $sort);
-        return $this;
+        return $this->setOption('sort', $sort);
     }
 
     /**
      * Get the facet sort order.
      *
-     * @return string|null
+     * @return string
      */
-    public function getSort(): ?string
+    public function getSort()
     {
         return $this->getOption('sort');
     }
@@ -83,18 +81,17 @@ abstract class AbstractField extends AbstractFacet
      *
      * @return self Provides fluent interface
      */
-    public function setPrefix(string $prefix): self
+    public function setPrefix($prefix)
     {
-        $this->setOption('prefix', $prefix);
-        return $this;
+        return $this->setOption('prefix', $prefix);
     }
 
     /**
      * Get the facet prefix.
      *
-     * @return string|null
+     * @return string
      */
-    public function getPrefix(): ?string
+    public function getPrefix()
     {
         return $this->getOption('prefix');
     }
@@ -102,22 +99,21 @@ abstract class AbstractField extends AbstractFacet
     /**
      * Set the facet limit.
      *
-     * @param int $limit
+     * @param mixed $limit
      *
      * @return self Provides fluent interface
      */
-    public function setLimit(int $limit): self
+    public function setLimit($limit)
     {
-        $this->setOption('limit', $limit);
-        return $this;
+        return $this->setOption('limit', $limit);
     }
 
     /**
      * Get the facet limit.
      *
-     * @return int|null
+     * @return string
      */
-    public function getLimit(): ?int
+    public function getLimit()
     {
         return $this->getOption('limit');
     }
@@ -129,18 +125,17 @@ abstract class AbstractField extends AbstractFacet
      *
      * @return self Provides fluent interface
      */
-    public function setOffset(int $offset): self
+    public function setOffset($offset)
     {
-        $this->setOption('offset', $offset);
-        return $this;
+        return $this->setOption('offset', $offset);
     }
 
     /**
      * Get the facet offset.
      *
-     * @return int|null
+     * @return int
      */
-    public function getOffset(): ?int
+    public function getOffset()
     {
         return $this->getOption('offset');
     }
@@ -152,18 +147,17 @@ abstract class AbstractField extends AbstractFacet
      *
      * @return self Provides fluent interface
      */
-    public function setMinCount(int $minCount): self
+    public function setMinCount($minCount)
     {
-        $this->setOption('mincount', $minCount);
-        return $this;
+        return $this->setOption('mincount', $minCount);
     }
 
     /**
      * Get the facet mincount.
      *
-     * @return int|null
+     * @return int
      */
-    public function getMinCount(): ?int
+    public function getMinCount()
     {
         return $this->getOption('mincount');
     }
@@ -175,18 +169,17 @@ abstract class AbstractField extends AbstractFacet
      *
      * @return self Provides fluent interface
      */
-    public function setMissing(bool $missing): self
+    public function setMissing($missing)
     {
-        $this->setOption('missing', $missing);
-        return $this;
+        return $this->setOption('missing', $missing);
     }
 
     /**
      * Get the facet missing option.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getMissing(): ?bool
+    public function getMissing()
     {
         return $this->getOption('missing');
     }
@@ -200,18 +193,17 @@ abstract class AbstractField extends AbstractFacet
      *
      * @return self Provides fluent interface
      */
-    public function setMethod(string $method): self
+    public function setMethod($method)
     {
-        $this->setOption('method', $method);
-        return $this;
+        return $this->setOption('method', $method);
     }
 
     /**
      * Get the facet method.
      *
-     * @return string|null
+     * @return string
      */
-    public function getMethod(): ?string
+    public function getMethod()
     {
         return $this->getOption('method');
     }

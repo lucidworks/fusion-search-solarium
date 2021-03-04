@@ -9,8 +9,12 @@ use Solarium\Component\FacetSetInterface;
  *
  * @see http://wiki.apache.org/solr/SimpleFacetParameters#Facet_by_Range
  */
-class Range extends AbstractRange
+class Range extends AbstractRange implements ExcludeTagsInterface
 {
+    use ExcludeTagsTrait {
+        init as excludeTagsInit;
+    }
+
     /**
      * Get the facet type.
      *
@@ -28,19 +32,17 @@ class Range extends AbstractRange
      *
      * @return self Provides fluent interface
      */
-    public function setMinCount(int $minCount): self
+    public function setMinCount($minCount)
     {
-        $this->setOption('mincount', $minCount);
-
-        return $this;
+        return $this->setOption('mincount', $minCount);
     }
 
     /**
      * Get the facet mincount.
      *
-     * @return int|null
+     * @return int
      */
-    public function getMinCount(): ?int
+    public function getMinCount()
     {
         return $this->getOption('mincount');
     }
@@ -54,15 +56,6 @@ class Range extends AbstractRange
     protected function init()
     {
         parent::init();
-
-        foreach ($this->options as $name => $value) {
-            switch ($name) {
-                case 'exclude':
-                    $this->getLocalParameters()->addExcludes($value);
-                    break;
-                case 'pivot':
-                    $this->setPivot(new Pivot($value));
-            }
-        }
+        $this->excludeTagsInit();
     }
 }

@@ -19,7 +19,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @param array $fields
      */
-    public function __construct(array $fields)
+    public function __construct($fields)
     {
         $this->fields = $fields;
     }
@@ -29,7 +29,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getFields(): array
+    public function getFields()
     {
         return $this->fields;
     }
@@ -41,7 +41,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getField($key): array
+    public function getField($key)
     {
         if (isset($this->fields[$key])) {
             return $this->fields[$key];
@@ -55,7 +55,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->fields);
     }
@@ -65,7 +65,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->fields);
     }

@@ -4,7 +4,7 @@ namespace Solarium\Plugin\Loadbalancer\Event;
 
 use Solarium\Core\Client\Endpoint;
 use Solarium\Exception\HttpException;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * EndpointFailure event, see Events for details.
@@ -36,7 +36,7 @@ class EndpointFailure extends Event
     /**
      * @return Endpoint
      */
-    public function getEndpoint(): Endpoint
+    public function getEndpoint()
     {
         return $this->endpoint;
     }
@@ -44,7 +44,7 @@ class EndpointFailure extends Event
     /**
      * @return HttpException
      */
-    public function getException(): HttpException
+    public function getException()
     {
         return $this->exception;
     }

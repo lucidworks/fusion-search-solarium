@@ -8,22 +8,19 @@ trait CoreActionTrait
      * Set the core name that should be reloaded.
      *
      * @param string $core
-     *
-     * @return self
      */
-    public function setCore(string $core): CoreActionInterface
+    public function setCore(string $core)
     {
         $this->setOption('core', $core);
-        return $this;
     }
 
     /**
      * Get the related core name.
      *
-     * @return string|null
+     * @return string
      */
-    public function getCore(): ?string
+    public function getCore(): string
     {
-        return $this->getOption('core');
+        return (string) $this->getOption('core');
     }
 }

@@ -2,13 +2,10 @@
 
 namespace Solarium\Plugin\ParallelExecution;
 
-use Solarium\Component\QueryInterface;
-use Solarium\Core\Client\Adapter\Curl;
 use Solarium\Core\Client\Endpoint;
 use Solarium\Core\Plugin\AbstractPlugin;
 use Solarium\Core\Query\AbstractQuery;
 use Solarium\Exception\HttpException;
-use Solarium\Exception\RuntimeException;
 use Solarium\Plugin\ParallelExecution\Event\Events;
 use Solarium\Plugin\ParallelExecution\Event\ExecuteEnd as ExecuteEndEvent;
 use Solarium\Plugin\ParallelExecution\Event\ExecuteStart as ExecuteStartEvent;
@@ -51,7 +48,7 @@ class ParallelExecution extends AbstractPlugin
      *
      * @return self Provides fluent interface
      */
-    public function addQuery(string $key, QueryInterface $query, $endpoint = null)
+    public function addQuery($key, $query, $endpoint = null)
     {
         if (is_object($endpoint)) {
             $endpoint = $endpoint->getKey();
@@ -72,9 +69,9 @@ class ParallelExecution extends AbstractPlugin
     /**
      * Get queries (and coupled client instances).
      *
-     * @return QueryInterface[]
+     * @return AbstractQuery[]
      */
-    public function getQueries(): array
+    public function getQueries()
     {
         return $this->queries;
     }
@@ -84,7 +81,7 @@ class ParallelExecution extends AbstractPlugin
      *
      * @return self Provides fluent interface
      */
-    public function clearQueries(): self
+    public function clearQueries()
     {
         $this->queries = [];
 
@@ -97,16 +94,11 @@ class ParallelExecution extends AbstractPlugin
      * Execute queries parallel.
      *
      * @return \Solarium\Core\Query\Result\Result[]
-     *
-     * @throws RuntimeException
      */
-    public function execute(): array
+    public function execute()
     {
         // create handles and add all handles to the multihandle
         $adapter = $this->client->getAdapter();
-        if (!($adapter instanceof Curl)) {
-            throw new RuntimeException('Parallel execution requires the CurlAdapter');
-        }
         $multiHandle = curl_multi_init();
         $handles = [];
         foreach ($this->queries as $key => $data) {
@@ -118,8 +110,7 @@ class ParallelExecution extends AbstractPlugin
         }
 
         // executing multihandle (all requests)
-        $event = new ExecuteStartEvent();
-        $this->client->getEventDispatcher()->dispatch($event, Events::EXECUTE_START);
+        $this->client->getEventDispatcher()->dispatch(Events::EXECUTE_START, new ExecuteStartEvent());
 
         do {
             $mrc = curl_multi_exec($multiHandle, $active);
@@ -127,7 +118,7 @@ class ParallelExecution extends AbstractPlugin
 
         $timeout = $this->getOption('curlmultiselecttimeout');
         while ($active && CURLM_OK == $mrc) {
-            if (-1 === curl_multi_select($multiHandle, $timeout)) {
+            if (curl_multi_select($multiHandle, $timeout) == -1) {
                 usleep(100);
             }
 
@@ -136,8 +127,7 @@ class ParallelExecution extends AbstractPlugin
             } while (CURLM_CALL_MULTI_PERFORM == $mrc);
         }
 
-        $event = new ExecuteEndEvent();
-        $this->client->getEventDispatcher()->dispatch($event, Events::EXECUTE_END);
+        $this->client->getEventDispatcher()->dispatch(Events::EXECUTE_END, new ExecuteEndEvent());
 
         // get the results
         $results = [];

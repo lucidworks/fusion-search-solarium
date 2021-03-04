@@ -20,7 +20,7 @@ class Result extends BaseResult
      *
      * @return int
      */
-    public function getStatus(): int
+    public function getStatus()
     {
         return 0;
     }

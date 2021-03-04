@@ -29,7 +29,7 @@ class Dictionary implements \IteratorAggregate, \Countable
      *
      * @return Term[]
      */
-    public function getTerms(): array
+    public function getTerms()
     {
         return $this->terms;
     }
@@ -41,9 +41,13 @@ class Dictionary implements \IteratorAggregate, \Countable
      *
      * @return Term|null
      */
-    public function getTerm(string $term): ?Term
+    public function getTerm($term)
     {
-        return $this->terms[$term] ?? null;
+        if (isset($this->terms[$term])) {
+            return $this->terms[$term];
+        }
+
+        return null;
     }
 
     /**
@@ -51,7 +55,7 @@ class Dictionary implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->terms);
     }
@@ -61,7 +65,7 @@ class Dictionary implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->terms);
     }

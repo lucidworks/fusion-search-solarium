@@ -19,7 +19,7 @@ class Highlighting implements \IteratorAggregate, \Countable
      *
      * @param array $results
      */
-    public function __construct(array $results)
+    public function __construct($results)
     {
         $this->results = $results;
     }
@@ -31,9 +31,11 @@ class Highlighting implements \IteratorAggregate, \Countable
      *
      * @return Result|null
      */
-    public function getResult($key): ?Result
+    public function getResult($key)
     {
-        return $this->results[$key] ?? null;
+        if (isset($this->results[$key])) {
+            return $this->results[$key];
+        }
     }
 
     /**
@@ -41,7 +43,7 @@ class Highlighting implements \IteratorAggregate, \Countable
      *
      * @return Result[]
      */
-    public function getResults(): array
+    public function getResults()
     {
         return $this->results;
     }
@@ -51,7 +53,7 @@ class Highlighting implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->results);
     }
@@ -61,7 +63,7 @@ class Highlighting implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->results);
     }

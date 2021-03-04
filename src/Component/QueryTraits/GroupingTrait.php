@@ -3,7 +3,6 @@
 namespace Solarium\Component\QueryTraits;
 
 use Solarium\Component\ComponentAwareQueryInterface;
-use Solarium\Component\Grouping;
 
 /**
  * Trait query types supporting components.
@@ -17,7 +16,7 @@ trait GroupingTrait
      *
      * @return \Solarium\Component\Grouping
      */
-    public function getGrouping(): Grouping
+    public function getGrouping()
     {
         return $this->getComponent(ComponentAwareQueryInterface::COMPONENT_GROUPING, true);
     }

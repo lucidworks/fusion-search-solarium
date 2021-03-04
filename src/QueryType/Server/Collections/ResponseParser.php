@@ -4,7 +4,6 @@ namespace Solarium\QueryType\Server\Collections;
 
 use Solarium\Core\Query\AbstractResponseParser as ResponseParserAbstract;
 use Solarium\Core\Query\ResponseParserInterface;
-use Solarium\Core\Query\Result\ResultInterface;
 use Solarium\QueryType\Server\Collections\Result\AbstractResult;
 
 /**
@@ -19,7 +18,7 @@ class ResponseParser extends ResponseParserAbstract implements ResponseParserInt
      *
      * @return array
      */
-    public function parse(ResultInterface $result): array
+    public function parse($result)
     {
         $data = $result->getData();
         $data = $this->parseStatus($data, $result);
@@ -33,7 +32,7 @@ class ResponseParser extends ResponseParserAbstract implements ResponseParserInt
      *
      * @return array
      */
-    protected function parseStatus(array $data, AbstractResult $result): array
+    protected function parseStatus(array $data, AbstractResult $result)
     {
         $data['wasSuccessful'] = 200 === $result->getResponse()->getStatusCode();
         $data['statusMessage'] = $result->getResponse()->getStatusMessage();

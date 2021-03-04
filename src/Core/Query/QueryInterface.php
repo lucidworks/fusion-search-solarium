@@ -21,14 +21,14 @@ interface QueryInterface extends ConfigurableInterface
      *
      * @return RequestBuilderInterface
      */
-    public function getRequestBuilder(): RequestBuilderInterface;
+    public function getRequestBuilder();
 
     /**
      * Get the response parser class for this query.
      *
-     * @return ResponseParserInterface|null
+     * @return ResponseParserInterface
      */
-    public function getResponseParser(): ?ResponseParserInterface;
+    public function getResponseParser();
 
     /**
      * Set handler option.
@@ -37,14 +37,14 @@ interface QueryInterface extends ConfigurableInterface
      *
      * @return self Provides fluent interface
      */
-    public function setHandler(string $handler): self;
+    public function setHandler($handler);
 
     /**
      * Get handler option.
      *
-     * @return string|null
+     * @return string
      */
-    public function getHandler(): ?string;
+    public function getHandler();
 
     /**
      * Set resultclass option.
@@ -59,21 +59,21 @@ interface QueryInterface extends ConfigurableInterface
      *
      * @return self Provides fluent interface
      */
-    public function setResultClass(string $classname): self;
+    public function setResultClass($classname);
 
     /**
      * Get resultclass option.
      *
-     * @return string|null
+     * @return string
      */
-    public function getResultClass(): ?string;
+    public function getResultClass();
 
     /**
      * Get a helper instance.
      *
      * @return Helper
      */
-    public function getHelper(): Helper;
+    public function getHelper();
 
     /**
      * Add extra params to the request.
@@ -82,16 +82,16 @@ interface QueryInterface extends ConfigurableInterface
      * Therefore the params are limited in functionality. Only add and get
      *
      * @param string $name
-     * @param mixed  $value
+     * @param string $value
      *
      * @return self Provides fluent interface
      */
-    public function addParam(string $name, $value): self;
+    public function addParam($name, $value);
 
     /**
      * Get extra params.
      *
      * @return array
      */
-    public function getParams(): array;
+    public function getParams();
 }

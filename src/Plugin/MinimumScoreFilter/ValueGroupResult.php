@@ -39,7 +39,7 @@ class ValueGroupResult extends StandardValueGroup
      * @param int    $maximumScore
      * @param Query  $query
      */
-    public function __construct(string $value, int $numFound, int $start, array $documents, int $maximumScore, Query $query)
+    public function __construct($value, $numFound, $start, $documents, $maximumScore, $query)
     {
         $this->filterMode = $query->getFilterMode();
         $this->filterRatio = $query->getFilterRatio();
@@ -57,7 +57,7 @@ class ValueGroupResult extends StandardValueGroup
      *
      * @return array
      */
-    public function getDocuments(): array
+    public function getDocuments()
     {
         if (!$this->filtered) {
             $filter = new Filter();

@@ -3,12 +3,9 @@
 namespace Solarium\QueryType\Select;
 
 use Solarium\Core\Query\AbstractResponseParser as ResponseParserAbstract;
-use Solarium\Core\Query\ResponseParserInterface;
-use Solarium\Core\Query\Result\ResultInterface;
+use Solarium\Core\Query\ResponseParserInterface as ResponseParserInterface;
 use Solarium\Exception\RuntimeException;
-use Solarium\QueryType\Select\Query\Query;
 use Solarium\QueryType\Select\Result\Result;
-use Solarium\Core\Query\DocumentInterface;
 
 /**
  * Parse select response data.
@@ -24,17 +21,21 @@ class ResponseParser extends ResponseParserAbstract implements ResponseParserInt
      *
      * @return array
      */
-    public function parse(ResultInterface $result): array
+    public function parse($result)
     {
         $data = $result->getData();
 
-        /** @var Query $query */
+        /*
+         * @var Query
+         */
         $query = $result->getQuery();
 
         // create document instances
         $documentClass = $query->getOption('documentclass');
         $classes = class_implements($documentClass);
-        if (!in_array(DocumentInterface::class, $classes, true)) {
+        if (!in_array('Solarium\QueryType\Select\Result\DocumentInterface', $classes, true) &&
+            !in_array('Solarium\QueryType\Update\Query\Document\DocumentInterface', $classes, true)
+        ) {
             throw new RuntimeException('The result document class must implement a document interface');
         }
 
@@ -55,14 +56,32 @@ class ResponseParser extends ResponseParserAbstract implements ResponseParserInt
             }
         }
 
+        $numFound = null;
+
+        if (isset($data['response']['numFound'])) {
+            $numFound = $data['response']['numFound'];
+        }
+
+        $maxScore = null;
+
+        if (isset($data['response']['maxScore'])) {
+            $maxScore = $data['response']['maxScore'];
+        }
+
+        if (isset($data['nextCursorMark'])) {
+            $nextCursorMark = $data['nextCursorMark'];
+        } else {
+            $nextCursorMark = null;
+        }
+
         return $this->addHeaderInfo(
             $data,
             [
-                'numfound' => $data['response']['numFound'] ?? null,
-                'maxscore' => $data['response']['maxScore'] ?? null,
+                'numfound' => $numFound,
+                'maxscore' => $maxScore,
                 'documents' => $documents,
                 'components' => $components,
-                'nextcursormark' => $data['nextCursorMark'] ?? null,
+                'nextcursormark' => $nextCursorMark,
             ]
         );
     }

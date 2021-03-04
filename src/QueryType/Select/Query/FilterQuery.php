@@ -6,7 +6,6 @@ use Solarium\Component\QueryInterface;
 use Solarium\Component\QueryTrait;
 use Solarium\Core\Configurable;
 use Solarium\Core\Query\Helper;
-use Solarium\Core\Query\LocalParameters\LocalParametersTrait;
 
 /**
  * Filterquery.
@@ -16,7 +15,6 @@ use Solarium\Core\Query\LocalParameters\LocalParametersTrait;
 class FilterQuery extends Configurable implements QueryInterface
 {
     use QueryTrait;
-    use LocalParametersTrait;
 
     /**
      * Tags for this filterquery.
@@ -35,9 +33,9 @@ class FilterQuery extends Configurable implements QueryInterface
     /**
      * Get key value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getKey(): ?string
+    public function getKey()
     {
         return $this->getOption('key');
     }
@@ -49,11 +47,9 @@ class FilterQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function setKey(string $value): self
+    public function setKey($value)
     {
-        $this->setOption('key', $value);
-
-        return $this;
+        return $this->setOption('key', $value);
     }
 
     /**
@@ -63,9 +59,9 @@ class FilterQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function addTag(string $tag): self
+    public function addTag($tag)
     {
-        $this->getLocalParameters()->setTag($tag);
+        $this->tags[$tag] = true;
 
         return $this;
     }
@@ -77,9 +73,11 @@ class FilterQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function addTags(array $tags): self
+    public function addTags($tags)
     {
-        $this->getLocalParameters()->addTags($tags);
+        foreach ($tags as $tag) {
+            $this->addTag($tag);
+        }
 
         return $this;
     }
@@ -89,9 +87,9 @@ class FilterQuery extends Configurable implements QueryInterface
      *
      * @return array
      */
-    public function getTags(): array
+    public function getTags()
     {
-        return $this->getLocalParameters()->getTags();
+        return array_keys($this->tags);
     }
 
     /**
@@ -101,9 +99,11 @@ class FilterQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function removeTag(string $tag): self
+    public function removeTag($tag)
     {
-        $this->getLocalParameters()->removeTag($tag);
+        if (isset($this->tags[$tag])) {
+            unset($this->tags[$tag]);
+        }
 
         return $this;
     }
@@ -113,9 +113,9 @@ class FilterQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function clearTags(): self
+    public function clearTags()
     {
-        $this->getLocalParameters()->clearTags();
+        $this->tags = [];
 
         return $this;
     }
@@ -129,63 +129,11 @@ class FilterQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function setTags(array $tags): self
+    public function setTags($tags)
     {
-        $this->getLocalParameters()->clearTags()->addTags($tags);
+        $this->clearTags();
 
-        return $this;
-    }
-
-    /**
-     * Cache the filter query or not.
-     *
-     * @param bool $cache
-     *
-     * @return self Provides fluent interface
-     */
-    public function setCache(bool $cache): self
-    {
-        $this->getLocalParameters()->setCache($cache);
-
-        return $this;
-    }
-
-    /**
-     * Get the information if the filter query should be cached or not.
-     *
-     * @return bool
-     */
-    public function getCache(): bool
-    {
-        $cache = $this->getLocalParameters()->getCache();
-        // The default is to cache the filter Query.
-        return 'false' !== reset($cache);
-    }
-
-    /**
-     * Set the cost to cache the filter query.
-     *
-     * @param int $cost
-     *
-     * @return self Provides fluent interface
-     */
-    public function setCost(int $cost): self
-    {
-        $this->getLocalParameters()->setCost($cost);
-
-        return $this;
-    }
-
-    /**
-     * Get the cost of the filter query to be cached or not.
-     *
-     * @return int
-     */
-    public function getCost(): int
-    {
-        $cost = $this->getLocalParameters()->getCost();
-        // The default cost for filter queries is 0.
-        return (int) reset($cost);
+        return $this->addTags($tags);
     }
 
     /**
@@ -193,7 +141,7 @@ class FilterQuery extends Configurable implements QueryInterface
      *
      * @return \Solarium\Core\Query\Helper
      */
-    public function getHelper(): Helper
+    public function getHelper()
     {
         return new Helper();
     }
@@ -205,6 +153,12 @@ class FilterQuery extends Configurable implements QueryInterface
     {
         foreach ($this->options as $name => $value) {
             switch ($name) {
+                case 'tag':
+                    if (!is_array($value)) {
+                        $value = [$value];
+                    }
+                    $this->addTags($value);
+                    break;
                 case 'key':
                     $this->setKey($value);
                     break;

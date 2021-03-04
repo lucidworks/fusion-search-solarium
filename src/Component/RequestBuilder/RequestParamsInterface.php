@@ -14,14 +14,14 @@ interface RequestParamsInterface
      *
      * @return string|array
      */
-    public function getParam(string $key);
+    public function getParam($key);
 
     /**
      * Get all params.
      *
      * @return array
      */
-    public function getParams(): array;
+    public function getParams();
 
     /**
      * Set request params.
@@ -30,7 +30,7 @@ interface RequestParamsInterface
      *
      * @return self Provides fluent interface
      */
-    public function setParams(array $params): self;
+    public function setParams($params);
 
     /**
      * Add a request param.
@@ -47,7 +47,7 @@ interface RequestParamsInterface
      *
      * @return self Provides fluent interface
      */
-    public function addParam(string $key, $value, bool $overwrite = false): self;
+    public function addParam($key, $value, $overwrite = false);
 
     /**
      * Add multiple params to the request.
@@ -57,7 +57,7 @@ interface RequestParamsInterface
      *
      * @return self Provides fluent interface
      */
-    public function addParams(array $params, bool $overwrite = false): self;
+    public function addParams($params, $overwrite = false);
 
     /**
      * Remove a param by key.
@@ -66,21 +66,19 @@ interface RequestParamsInterface
      *
      * @return self Provides fluent interface
      */
-    public function removeParam(string $key): self;
+    public function removeParam($key);
 
     /**
      * Clear all request params.
      *
      * @return self Provides fluent interface
      */
-    public function clearParams(): self;
+    public function clearParams();
 
     /**
      * Get the query string for this request.
      *
-     * @param string $separator
-     *
      * @return string
      */
-    public function getQueryString(string $separator = '&'): string;
+    public function getQueryString();
 }

@@ -2,12 +2,8 @@
 
 namespace Solarium\Component;
 
-use Solarium\Component\RequestBuilder\ComponentRequestBuilderInterface;
 use Solarium\Component\RequestBuilder\Grouping as RequestBuilder;
-use Solarium\Component\ResponseParser\ComponentParserInterface;
 use Solarium\Component\ResponseParser\Grouping as ResponseParser;
-use Solarium\Component\Result\Grouping\QueryGroup;
-use Solarium\Component\Result\Grouping\ValueGroup;
 
 /**
  * Grouping component.
@@ -15,7 +11,7 @@ use Solarium\Component\Result\Grouping\ValueGroup;
  * Also known as Result Grouping or Field Collapsing.
  * See the Solr wiki for more info about this functionality
  *
- * @see https://lucene.apache.org/solr/guide/8_1/result-grouping.html
+ * @see  http://wiki.apache.org/solr/FieldCollapsing
  * @since 2.1.0
  */
 class Grouping extends AbstractComponent
@@ -43,8 +39,8 @@ class Grouping extends AbstractComponent
      * @var array
      */
     protected $options = [
-        'resultquerygroupclass' => QueryGroup::class,
-        'resultvaluegroupclass' => ValueGroup::class,
+        'resultquerygroupclass' => 'Solarium\Component\Result\Grouping\QueryGroup',
+        'resultvaluegroupclass' => 'Solarium\Component\Result\Grouping\ValueGroup',
     ];
 
     /**
@@ -76,7 +72,7 @@ class Grouping extends AbstractComponent
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): ComponentRequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
@@ -86,7 +82,7 @@ class Grouping extends AbstractComponent
      *
      * @return ResponseParser
      */
-    public function getResponseParser(): ?ComponentParserInterface
+    public function getResponseParser()
     {
         return new ResponseParser();
     }
@@ -100,7 +96,7 @@ class Grouping extends AbstractComponent
      *
      * @return self fluent interface
      */
-    public function addField(string $field): self
+    public function addField($field)
     {
         $this->fields[] = $field;
 
@@ -116,7 +112,7 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function addFields($fields): self
+    public function addFields($fields)
     {
         if (is_string($fields)) {
             $fields = explode(',', $fields);
@@ -133,7 +129,7 @@ class Grouping extends AbstractComponent
      *
      * @return array
      */
-    public function getFields(): array
+    public function getFields()
     {
         return $this->fields;
     }
@@ -143,7 +139,7 @@ class Grouping extends AbstractComponent
      *
      * @return self fluent interface
      */
-    public function clearFields(): self
+    public function clearFields()
     {
         $this->fields = [];
 
@@ -155,11 +151,11 @@ class Grouping extends AbstractComponent
      *
      * This overwrites any existing fields
      *
-     * @param string|array $fields
+     * @param array $fields
      *
      * @return self Provides fluent interface
      */
-    public function setFields($fields): self
+    public function setFields($fields)
     {
         $this->clearFields();
         $this->addFields($fields);
@@ -176,7 +172,7 @@ class Grouping extends AbstractComponent
      *
      * @return self fluent interface
      */
-    public function addQuery(string $query): self
+    public function addQuery($query)
     {
         $this->queries[] = $query;
 
@@ -190,7 +186,7 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function addQueries($queries): self
+    public function addQueries($queries)
     {
         if (!is_array($queries)) {
             $queries = [$queries];
@@ -206,7 +202,7 @@ class Grouping extends AbstractComponent
      *
      * @return array
      */
-    public function getQueries(): array
+    public function getQueries()
     {
         return $this->queries;
     }
@@ -216,7 +212,7 @@ class Grouping extends AbstractComponent
      *
      * @return self fluent interface
      */
-    public function clearQueries(): self
+    public function clearQueries()
     {
         $this->queries = [];
 
@@ -229,15 +225,11 @@ class Grouping extends AbstractComponent
      * This overwrites any existing queries
      *
      * @param array $queries
-     *
-     * @return self Provides fluent interface
      */
-    public function setQueries($queries): self
+    public function setQueries($queries)
     {
         $this->clearQueries();
         $this->addQueries($queries);
-
-        return $this;
     }
 
     /**
@@ -249,18 +241,17 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setLimit(int $limit): self
+    public function setLimit($limit)
     {
-        $this->setOption('limit', $limit);
-        return $this;
+        return $this->setOption('limit', $limit);
     }
 
     /**
      * Get limit option.
      *
-     * @return int|null
+     * @return string|null
      */
-    public function getLimit(): ?int
+    public function getLimit()
     {
         return $this->getOption('limit');
     }
@@ -274,18 +265,17 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setOffset(int $offset): self
+    public function setOffset($offset)
     {
-        $this->setOption('offset', $offset);
-        return $this;
+        return $this->setOption('offset', $offset);
     }
 
     /**
      * Get offset option.
      *
-     * @return int|null
+     * @return string|null
      */
-    public function getOffset(): ?int
+    public function getOffset()
     {
         return $this->getOption('offset');
     }
@@ -299,10 +289,9 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setSort(string $sort): self
+    public function setSort($sort)
     {
-        $this->setOption('sort', $sort);
-        return $this;
+        return $this->setOption('sort', $sort);
     }
 
     /**
@@ -310,7 +299,7 @@ class Grouping extends AbstractComponent
      *
      * @return string|null
      */
-    public function getSort(): ?string
+    public function getSort()
     {
         return $this->getOption('sort');
     }
@@ -325,10 +314,9 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setMainResult(bool $value): self
+    public function setMainResult($value)
     {
-        $this->setOption('mainresult', $value);
-        return $this;
+        return $this->setOption('mainresult', $value);
     }
 
     /**
@@ -336,7 +324,7 @@ class Grouping extends AbstractComponent
      *
      * @return bool|null
      */
-    public function getMainResult(): ?bool
+    public function getMainResult()
     {
         return $this->getOption('mainresult');
     }
@@ -350,10 +338,9 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setNumberOfGroups(bool $value): self
+    public function setNumberOfGroups($value)
     {
-        $this->setOption('numberofgroups', $value);
-        return $this;
+        return $this->setOption('numberofgroups', $value);
     }
 
     /**
@@ -361,7 +348,7 @@ class Grouping extends AbstractComponent
      *
      * @return bool|null
      */
-    public function getNumberOfGroups(): ?bool
+    public function getNumberOfGroups()
     {
         return $this->getOption('numberofgroups');
     }
@@ -380,10 +367,9 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setCachePercentage(int $value): self
+    public function setCachePercentage($value)
     {
-        $this->setOption('cachepercentage', $value);
-        return $this;
+        return $this->setOption('cachepercentage', $value);
     }
 
     /**
@@ -391,7 +377,7 @@ class Grouping extends AbstractComponent
      *
      * @return int|null
      */
-    public function getCachePercentage(): ?int
+    public function getCachePercentage()
     {
         return $this->getOption('cachepercentage');
     }
@@ -406,10 +392,9 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setTruncate(bool $value): self
+    public function setTruncate($value)
     {
-        $this->setOption('truncate', $value);
-        return $this;
+        return $this->setOption('truncate', $value);
     }
 
     /**
@@ -417,7 +402,7 @@ class Grouping extends AbstractComponent
      *
      * @return bool|null
      */
-    public function getTruncate(): ?bool
+    public function getTruncate()
     {
         return $this->getOption('truncate');
     }
@@ -431,10 +416,9 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setFunction(string $value): self
+    public function setFunction($value)
     {
-        $this->setOption('function', $value);
-        return $this;
+        return $this->setOption('function', $value);
     }
 
     /**
@@ -442,7 +426,7 @@ class Grouping extends AbstractComponent
      *
      * @return string|null
      */
-    public function getFunction(): ?string
+    public function getFunction()
     {
         return $this->getOption('function');
     }
@@ -458,10 +442,9 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setFacet(bool $value): self
+    public function setFacet($value)
     {
-        $this->setOption('facet', $value);
-        return $this;
+        return $this->setOption('facet', $value);
     }
 
     /**
@@ -469,7 +452,7 @@ class Grouping extends AbstractComponent
      *
      * @return bool|null
      */
-    public function getFacet(): ?bool
+    public function getFacet()
     {
         return $this->getOption('facet');
     }
@@ -484,10 +467,9 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setFormat(string $value): self
+    public function setFormat($value)
     {
-        $this->setOption('format', $value);
-        return $this;
+        return $this->setOption('format', $value);
     }
 
     /**
@@ -495,7 +477,7 @@ class Grouping extends AbstractComponent
      *
      * @return string|null
      */
-    public function getFormat(): ?string
+    public function getFormat()
     {
         return $this->getOption('format');
     }
@@ -507,10 +489,9 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setResultQueryGroupClass(string $value): self
+    public function setResultQueryGroupClass($value)
     {
-        $this->setOption('resultquerygroupclass', $value);
-        return $this;
+        return $this->setOption('resultquerygroupclass', $value);
     }
 
     /**
@@ -518,9 +499,9 @@ class Grouping extends AbstractComponent
      *
      * The value is a classname, not an instance
      *
-     * @return string|null
+     * @return string
      */
-    public function getResultQueryGroupClass(): ?string
+    public function getResultQueryGroupClass()
     {
         return $this->getOption('resultquerygroupclass');
     }
@@ -532,10 +513,9 @@ class Grouping extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setResultValueGroupClass(string $value): self
+    public function setResultValueGroupClass($value)
     {
-        $this->setOption('resultvaluegroupclass', $value);
-        return  $this;
+        return $this->setOption('resultvaluegroupclass', $value);
     }
 
     /**
@@ -543,9 +523,9 @@ class Grouping extends AbstractComponent
      *
      * The value is a classname, not an instance
      *
-     * @return string|null
+     * @return string
      */
-    public function getResultValueGroupClass(): ?string
+    public function getResultValueGroupClass()
     {
         return $this->getOption('resultvaluegroupclass');
     }

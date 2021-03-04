@@ -2,9 +2,7 @@
 
 namespace Solarium\Component;
 
-use Solarium\Component\RequestBuilder\ComponentRequestBuilderInterface;
 use Solarium\Component\RequestBuilder\MoreLikeThis as RequestBuilder;
-use Solarium\Component\ResponseParser\ComponentParserInterface;
 use Solarium\Component\ResponseParser\MoreLikeThis as ResponseParser;
 
 /**
@@ -29,7 +27,7 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): ComponentRequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
@@ -39,7 +37,7 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return ResponseParser
      */
-    public function getResponseParser(): ?ComponentParserInterface
+    public function getResponseParser()
     {
         return new ResponseParser();
     }
@@ -56,15 +54,14 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setFields($fields): self
+    public function setFields($fields)
     {
         if (is_string($fields)) {
             $fields = explode(',', $fields);
             $fields = array_map('trim', $fields);
         }
 
-        $this->setOption('fields', $fields);
-        return $this;
+        return $this->setOption('fields', $fields);
     }
 
     /**
@@ -72,7 +69,7 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return array
      */
-    public function getFields(): array
+    public function getFields()
     {
         $fields = $this->getOption('fields');
         if (null === $fields) {
@@ -80,82 +77,6 @@ class MoreLikeThis extends AbstractComponent
         }
 
         return $fields;
-    }
-
-    /**
-     * Set the interestingTerms parameter.  Must be one of: none, list, details.
-     *
-     * @see http://wiki.apache.org/solr/MoreLikeThisHandler#Params
-     *
-     * @param string $term
-     *
-     * @return self Provides fluent interface
-     */
-    public function setInterestingTerms(string $term): self
-    {
-        $this->setOption('interestingTerms', $term);
-        return $this;
-    }
-
-    /**
-     * Get the interestingTerm parameter.
-     *
-     * @return string|null
-     */
-    public function getInterestingTerms(): ?string
-    {
-        return $this->getOption('interestingTerms');
-    }
-
-    /**
-     * Set the match.include parameter, which is either 'true' or 'false'.
-     *
-     * @see http://wiki.apache.org/solr/MoreLikeThisHandler#Params
-     *
-     * @param bool $include
-     *
-     * @return self Provides fluent interface
-     */
-    public function setMatchInclude(bool $include): self
-    {
-        $this->setOption('matchinclude', $include);
-        return $this;
-    }
-
-    /**
-     * Get the match.include parameter.
-     *
-     * @return bool|null
-     */
-    public function getMatchInclude(): ?bool
-    {
-        return $this->getOption('matchinclude');
-    }
-
-    /**
-     * Set the mlt.match.offset parameter, which determines the which result from the query should be used for MLT
-     * For paging of MLT use setStart / setRows.
-     *
-     * @see http://wiki.apache.org/solr/MoreLikeThisHandler#Params
-     *
-     * @param int $offset
-     *
-     * @return self Provides fluent interface
-     */
-    public function setMatchOffset(int $offset): self
-    {
-        $this->setOption('matchoffset', $offset);
-        return $this;
-    }
-
-    /**
-     * Get the mlt.match.offset parameter.
-     *
-     * @return int|null
-     */
-    public function getMatchOffset(): ?int
-    {
-        return $this->getOption('matchoffset');
     }
 
     /**
@@ -168,10 +89,9 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setMinimumTermFrequency(int $minimum): self
+    public function setMinimumTermFrequency($minimum)
     {
-        $this->setOption('minimumtermfrequency', $minimum);
-        return $this;
+        return $this->setOption('minimumtermfrequency', $minimum);
     }
 
     /**
@@ -179,7 +99,7 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return int|null
      */
-    public function getMinimumTermFrequency(): ?int
+    public function getMinimumTermFrequency()
     {
         return $this->getOption('minimumtermfrequency');
     }
@@ -194,10 +114,9 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setMinimumDocumentFrequency(int $minimum): self
+    public function setMinimumDocumentFrequency($minimum)
     {
-        $this->setOption('minimumdocumentfrequency', $minimum);
-        return $this;
+        return $this->setOption('minimumdocumentfrequency', $minimum);
     }
 
     /**
@@ -205,7 +124,7 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return int|null
      */
-    public function getMinimumDocumentFrequency(): ?int
+    public function getMinimumDocumentFrequency()
     {
         return $this->getOption('minimumdocumentfrequency');
     }
@@ -219,10 +138,9 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setMinimumWordLength(int $minimum): self
+    public function setMinimumWordLength($minimum)
     {
-        $this->setOption('minimumwordlength', $minimum);
-        return $this;
+        return $this->setOption('minimumwordlength', $minimum);
     }
 
     /**
@@ -230,7 +148,7 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return int|null
      */
-    public function getMinimumWordLength(): ?int
+    public function getMinimumWordLength()
     {
         return $this->getOption('minimumwordlength');
     }
@@ -244,10 +162,9 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setMaximumWordLength(int $maximum): self
+    public function setMaximumWordLength($maximum)
     {
-        $this->setOption('maximumwordlength', $maximum);
-        return $this;
+        return $this->setOption('maximumwordlength', $maximum);
     }
 
     /**
@@ -255,7 +172,7 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return int|null
      */
-    public function getMaximumWordLength(): ?int
+    public function getMaximumWordLength()
     {
         return $this->getOption('maximumwordlength');
     }
@@ -270,10 +187,9 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setMaximumQueryTerms(int $maximum): self
+    public function setMaximumQueryTerms($maximum)
     {
-        $this->setOption('maximumqueryterms', $maximum);
-        return $this;
+        return $this->setOption('maximumqueryterms', $maximum);
     }
 
     /**
@@ -281,7 +197,7 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return int|null
      */
-    public function getMaximumQueryTerms(): ?int
+    public function getMaximumQueryTerms()
     {
         return $this->getOption('maximumqueryterms');
     }
@@ -296,10 +212,9 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setMaximumNumberOfTokens(int $maximum): self
+    public function setMaximumNumberOfTokens($maximum)
     {
-        $this->setOption('maximumnumberoftokens', $maximum);
-        return $this;
+        return $this->setOption('maximumnumberoftokens', $maximum);
     }
 
     /**
@@ -307,7 +222,7 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return int|null
      */
-    public function getMaximumNumberOfTokens(): ?int
+    public function getMaximumNumberOfTokens()
     {
         return $this->getOption('maximumnumberoftokens');
     }
@@ -321,10 +236,9 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setBoost(bool $boost): self
+    public function setBoost($boost)
     {
-        $this->setOption('boost', $boost);
-        return $this;
+        return $this->setOption('boost', $boost);
     }
 
     /**
@@ -332,7 +246,7 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return bool|null
      */
-    public function getBoost(): ?bool
+    public function getBoost()
     {
         return $this->getOption('boost');
     }
@@ -345,19 +259,18 @@ class MoreLikeThis extends AbstractComponent
      *
      * When using string input you can separate multiple fields with commas.
      *
-     * @param string|array $queryFields
+     * @param string $queryFields
      *
      * @return self Provides fluent interface
      */
-    public function setQueryFields($queryFields): self
+    public function setQueryFields($queryFields)
     {
         if (is_string($queryFields)) {
             $queryFields = explode(',', $queryFields);
             $queryFields = array_map('trim', $queryFields);
         }
 
-        $this->setOption('queryfields', $queryFields);
-        return $this;
+        return $this->setOption('queryfields', $queryFields);
     }
 
     /**
@@ -365,7 +278,7 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return array
      */
-    public function getQueryFields(): array
+    public function getQueryFields()
     {
         $queryfields = $this->getOption('queryfields');
         if (null === $queryfields) {
@@ -384,10 +297,9 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setCount(int $count): self
+    public function setCount($count)
     {
-        $this->setOption('count', $count);
-        return $this;
+        return $this->setOption('count', $count);
     }
 
     /**
@@ -395,25 +307,8 @@ class MoreLikeThis extends AbstractComponent
      *
      * @return int|null
      */
-    public function getCount(): ?int
+    public function getCount()
     {
         return $this->getOption('count');
-    }
-
-    /**
-     * Initialize options.
-     */
-    protected function init()
-    {
-        foreach ($this->options as $name => $value) {
-            switch ($name) {
-                case 'fields':
-                    $this->setFields($value);
-                    break;
-                case 'queryfields':
-                    $this->setQueryFields($value);
-                    break;
-            }
-        }
     }
 }

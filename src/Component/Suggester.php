@@ -3,9 +3,7 @@
 namespace Solarium\Component;
 
 use Solarium\Component\ComponentTraits\SuggesterTrait;
-use Solarium\Component\RequestBuilder\ComponentRequestBuilderInterface;
 use Solarium\Component\RequestBuilder\Suggester as RequestBuilder;
-use Solarium\Component\ResponseParser\ComponentParserInterface;
 use Solarium\Component\ResponseParser\Suggester as ResponseParser;
 
 /**
@@ -33,7 +31,7 @@ class Suggester extends AbstractComponent implements SuggesterInterface, QueryIn
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): ComponentRequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
@@ -43,7 +41,7 @@ class Suggester extends AbstractComponent implements SuggesterInterface, QueryIn
      *
      * @return ResponseParser
      */
-    public function getResponseParser(): ?ComponentParserInterface
+    public function getResponseParser()
     {
         return new ResponseParser();
     }

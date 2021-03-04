@@ -2,7 +2,7 @@
 
 namespace Solarium\Component\Result;
 
-use Solarium\Component\Result\Facet\FacetResultInterface;
+use Solarium\Component\Facet\FacetInterface;
 
 /**
  * Select component facetset result.
@@ -12,16 +12,16 @@ class FacetSet implements \IteratorAggregate, \Countable
     /**
      * Facet array.
      *
-     * @var FacetResultInterface[]
+     * @var array
      */
     protected $facets;
 
     /**
      * Constructor.
      *
-     * @param FacetResultInterface[] $facets
+     * @param array $facets
      */
-    public function __construct(array $facets)
+    public function __construct($facets)
     {
         $this->facets = $facets;
     }
@@ -31,17 +31,19 @@ class FacetSet implements \IteratorAggregate, \Countable
      *
      * @param mixed $key
      *
-     * @return FacetResultInterface|null
+     * @return FacetInterface
      */
-    public function getFacet($key): ?FacetResultInterface
+    public function getFacet($key)
     {
-        return $this->facets[$key] ?? null;
+        if (isset($this->facets[$key])) {
+            return $this->facets[$key];
+        }
     }
 
     /**
      * Get all facet results.
      *
-     * @return FacetResultInterface[]
+     * @return array
      */
     public function getFacets(): array
     {

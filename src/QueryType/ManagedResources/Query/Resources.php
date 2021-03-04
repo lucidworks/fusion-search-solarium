@@ -3,12 +3,9 @@
 namespace Solarium\QueryType\ManagedResources\Query;
 
 use Solarium\Core\Client\Client;
-use Solarium\Core\Query\RequestBuilderInterface;
-use Solarium\Core\Query\ResponseParserInterface;
 use Solarium\QueryType\ManagedResources\RequestBuilder\Resources as RequestBuilder;
 use Solarium\QueryType\ManagedResources\ResponseParser\Resources as ResponseParser;
 use Solarium\Core\Query\AbstractQuery;
-use Solarium\QueryType\ManagedResources\Result\Resources\ResourceList;
 
 class Resources extends AbstractQuery
 {
@@ -26,7 +23,7 @@ class Resources extends AbstractQuery
      */
     protected $options = [
         'handler' => 'schema/managed',
-        'resultclass' => ResourceList::class,
+        'resultclass' => 'Solarium\QueryType\ManagedResources\Result\Resources\ResourceList',
         'omitheader' => true,
     ];
 
@@ -55,7 +52,7 @@ class Resources extends AbstractQuery
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): RequestBuilderInterface
+    public function getRequestBuilder(): RequestBuilder
     {
         return new RequestBuilder();
     }
@@ -65,7 +62,7 @@ class Resources extends AbstractQuery
      *
      * @return ResponseParser
      */
-    public function getResponseParser(): ResponseParserInterface
+    public function getResponseParser(): ResponseParser
     {
         return new ResponseParser();
     }

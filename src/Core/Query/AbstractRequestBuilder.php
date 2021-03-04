@@ -11,20 +11,13 @@ use Solarium\QueryType\Server\AbstractServerQuery;
 abstract class AbstractRequestBuilder implements RequestBuilderInterface
 {
     /**
-     * Helper instance.
-     *
-     * @var Helper
-     */
-    protected $helper;
-
-    /**
      * Build request for a select query.
      *
-     * @param AbstractQuery|QueryInterface $query
+     * @param QueryInterface|Query $query
      *
      * @return Request
      */
-    public function build(AbstractQuery $query): Request
+    public function build(QueryInterface $query)
     {
         $request = new Request();
         $request->setHandler($query->getHandler());
@@ -34,7 +27,7 @@ abstract class AbstractRequestBuilder implements RequestBuilderInterface
         $request->addParam('NOW', $query->getNow());
         $request->addParam('TZ', $query->getTimeZone());
         $request->addParams($query->getParams());
-        
+
         $request->addParam('wt', $query->getResponseWriter());
         if ($query::WT_JSON === $query->getResponseWriter()) {
             // Only flat JSON format is supported. Other JSON formats are easier to handle but might loose information.
@@ -59,7 +52,7 @@ abstract class AbstractRequestBuilder implements RequestBuilderInterface
      *
      * @return string with Solr localparams syntax
      */
-    public function renderLocalParams(string $value, array $localParams = []): string
+    public function renderLocalParams($value, $localParams = [])
     {
         $params = '';
         foreach ($localParams as $paramName => $paramValue) {
@@ -68,7 +61,7 @@ abstract class AbstractRequestBuilder implements RequestBuilderInterface
             }
 
             if (is_array($paramValue)) {
-                $paramValue = implode(',', $paramValue);
+                $paramValue = implode($paramValue, ',');
             }
 
             $params .= $paramName.'='.$paramValue.' ';
@@ -86,17 +79,17 @@ abstract class AbstractRequestBuilder implements RequestBuilderInterface
      *
      * For use in building XML messages
      *
-     * @param string    $name
-     * @param bool|null $value
+     * @param string $name
+     * @param bool   $value
      *
      * @return string
      */
-    public function boolAttrib(string $name, ?bool $value): string
+    public function boolAttrib($name, $value)
     {
         if (null !== $value) {
-            $stringValue = (true === (bool) $value) ? 'true' : 'false';
+            $value = (true === (bool) $value) ? 'true' : 'false';
 
-            return $this->attrib($name, $stringValue);
+            return $this->attrib($name, $value);
         }
 
         return '';
@@ -107,33 +100,17 @@ abstract class AbstractRequestBuilder implements RequestBuilderInterface
      *
      * For use in building XML messages
      *
-     * @param string      $name
-     * @param string|null $value
+     * @param string $name
+     * @param string $value
      *
      * @return string
      */
-    public function attrib(string $name, ?string $value): string
+    public function attrib($name, $value)
     {
         if (null !== $value) {
             return ' '.$name.'="'.$value.'"';
         }
 
         return '';
-    }
-
-    /**
-     * Get a helper instance.
-     *
-     * Uses lazy loading: the helper is instantiated on first use
-     *
-     * @return Helper
-     */
-    public function getHelper(): Helper
-    {
-        if (null === $this->helper) {
-            $this->helper = new Helper();
-        }
-
-        return $this->helper;
     }
 }

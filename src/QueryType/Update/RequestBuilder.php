@@ -3,15 +3,9 @@
 namespace Solarium\QueryType\Update;
 
 use Solarium\Core\Client\Request;
-use Solarium\Core\Query\AbstractQuery;
 use Solarium\Core\Query\AbstractRequestBuilder as BaseRequestBuilder;
 use Solarium\Core\Query\QueryInterface;
 use Solarium\Exception\RuntimeException;
-use Solarium\QueryType\Update\Query\Command\Add;
-use Solarium\QueryType\Update\Query\Command\Commit;
-use Solarium\QueryType\Update\Query\Command\Delete;
-use Solarium\QueryType\Update\Query\Command\Optimize;
-use Solarium\QueryType\Update\Query\Document;
 use Solarium\QueryType\Update\Query\Query as UpdateQuery;
 
 /**
@@ -22,11 +16,11 @@ class RequestBuilder extends BaseRequestBuilder
     /**
      * Build request for an update query.
      *
-     * @param QueryInterface|AbstractQuery|UpdateQuery $query
+     * @param QueryInterface|UpdateQuery $query
      *
      * @return Request
      */
-    public function build(AbstractQuery $query): Request
+    public function build(QueryInterface $query)
     {
         $request = parent::build($query);
         $request->setMethod(Request::METHOD_POST);
@@ -46,13 +40,13 @@ class RequestBuilder extends BaseRequestBuilder
      *
      * @return string
      */
-    public function getRawData(UpdateQuery $query): string
+    public function getRawData($query)
     {
         $xml = '<update>';
         foreach ($query->getCommands() as $command) {
             switch ($command->getType()) {
                 case UpdateQuery::COMMAND_ADD:
-                    $xml .= $this->buildAddXml($command);
+                    $xml .= $this->buildAddXml($command, $query);
                     break;
                 case UpdateQuery::COMMAND_DELETE:
                     $xml .= $this->buildDeleteXml($command);
@@ -79,11 +73,12 @@ class RequestBuilder extends BaseRequestBuilder
     /**
      * Build XML for an add command.
      *
-     * @param Add $command
+     * @param \Solarium\QueryType\Update\Query\Command\Add $command
+     * @param UpdateQuery                                  $query
      *
      * @return string
      */
-    public function buildAddXml(Add $command): string
+    public function buildAddXml($command, $query = null)
     {
         $xml = '<add';
         $xml .= $this->boolAttrib('overwrite', $command->getOverwrite());
@@ -98,7 +93,7 @@ class RequestBuilder extends BaseRequestBuilder
             foreach ($doc->getFields() as $name => $value) {
                 $boost = $doc->getFieldBoost($name);
                 $modifier = $doc->getFieldModifier($name);
-                $xml .= $this->buildFieldsXml($name, $boost, $value, $modifier);
+                $xml .= $this->buildFieldsXml($name, $boost, $value, $modifier, $query);
             }
 
             $version = $doc->getVersion();
@@ -117,18 +112,18 @@ class RequestBuilder extends BaseRequestBuilder
     /**
      * Build XML for a delete command.
      *
-     * @param Delete $command
+     * @param \Solarium\QueryType\Update\Query\Command\Delete $command
      *
      * @return string
      */
-    public function buildDeleteXml(Delete $command): string
+    public function buildDeleteXml($command)
     {
         $xml = '<delete>';
         foreach ($command->getIds() as $id) {
-            $xml .= '<id>'.htmlspecialchars($id, ENT_NOQUOTES).'</id>';
+            $xml .= '<id>'.htmlspecialchars($id, ENT_NOQUOTES, 'UTF-8').'</id>';
         }
         foreach ($command->getQueries() as $query) {
-            $xml .= '<query>'.htmlspecialchars($query, ENT_NOQUOTES).'</query>';
+            $xml .= '<query>'.htmlspecialchars($query, ENT_NOQUOTES, 'UTF-8').'</query>';
         }
         $xml .= '</delete>';
 
@@ -138,11 +133,11 @@ class RequestBuilder extends BaseRequestBuilder
     /**
      * Build XML for an update command.
      *
-     * @param Optimize $command
+     * @param \Solarium\QueryType\Update\Query\Command\Optimize $command
      *
      * @return string
      */
-    public function buildOptimizeXml(Optimize $command): string
+    public function buildOptimizeXml($command)
     {
         $xml = '<optimize';
         $xml .= $this->boolAttrib('softCommit', $command->getSoftCommit());
@@ -156,11 +151,11 @@ class RequestBuilder extends BaseRequestBuilder
     /**
      * Build XML for a commit command.
      *
-     * @param Commit $command
+     * @param \Solarium\QueryType\Update\Query\Command\Commit $command
      *
      * @return string
      */
-    public function buildCommitXml(Commit $command): string
+    public function buildCommitXml($command)
     {
         $xml = '<commit';
         $xml .= $this->boolAttrib('softCommit', $command->getSoftCommit());
@@ -176,7 +171,7 @@ class RequestBuilder extends BaseRequestBuilder
      *
      * @return string
      */
-    public function buildRollbackXml(): string
+    public function buildRollbackXml()
     {
         return '<rollback/>';
     }
@@ -187,13 +182,14 @@ class RequestBuilder extends BaseRequestBuilder
      * Used in the add command
      *
      * @param string      $name
-     * @param float|null  $boost
+     * @param float       $boost
      * @param mixed       $value
-     * @param string|null $modifier
+     * @param string      $modifier
+     * @param UpdateQuery $query
      *
      * @return string
      */
-    protected function buildFieldXml(string $name, ?float $boost, $value, ?string $modifier = null): string
+    protected function buildFieldXml($name, $boost, $value, $modifier = null, $query = null)
     {
         $xml = '<field name="'.$name.'"';
         $xml .= $this->attrib('boost', $boost);
@@ -204,10 +200,10 @@ class RequestBuilder extends BaseRequestBuilder
             $value = 'false';
         } elseif (true === $value) {
             $value = 'true';
-        } elseif ($value instanceof \DateTimeInterface) {
-            $value = $this->getHelper()->formatDate($value);
+        } elseif ($value instanceof \DateTime) {
+            $value = $query->getHelper()->formatDate($value);
         } else {
-            $value = htmlspecialchars($value, ENT_NOQUOTES);
+            $value = htmlspecialchars($value, ENT_NOQUOTES, 'UTF-8');
         }
 
         $xml .= '>'.$value.'</field>';
@@ -217,36 +213,30 @@ class RequestBuilder extends BaseRequestBuilder
 
     /**
      * @param string      $key
-     * @param float|null  $boost
+     * @param float       $boost
      * @param mixed       $value
-     * @param string|null $modifier
+     * @param string      $modifier
+     * @param UpdateQuery $query
      *
      * @return string
      */
-    private function buildFieldsXml(string $key, ?float $boost, $value, ?string $modifier): string
+    private function buildFieldsXml($key, $boost, $value, $modifier, $query)
     {
         $xml = '';
-
-        // Remove the values if 'null' or empty list is specified as the new value
-        // @see https://lucene.apache.org/solr/guide/8_1/updating-parts-of-documents.html
-        if (Document::MODIFIER_SET === $modifier && is_array($value) && empty($value)) {
-            $value = null;
-        }
-
         if (is_array($value)) {
             foreach ($value as $multival) {
                 if (is_array($multival)) {
                     $xml .= '<doc>';
                     foreach ($multival as $k => $v) {
-                        $xml .= $this->buildFieldsXml($k, $boost, $v, $modifier);
+                        $xml .= $this->buildFieldsXml($k, $boost, $v, $modifier, $query);
                     }
                     $xml .= '</doc>';
                 } else {
-                    $xml .= $this->buildFieldXml($key, $boost, $multival, $modifier);
+                    $xml .= $this->buildFieldXml($key, $boost, $multival, $modifier, $query);
                 }
             }
         } else {
-            $xml .= $this->buildFieldXml($key, $boost, $value, $modifier);
+            $xml .= $this->buildFieldXml($key, $boost, $value, $modifier, $query);
         }
 
         return $xml;

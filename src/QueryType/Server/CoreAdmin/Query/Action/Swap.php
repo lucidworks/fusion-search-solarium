@@ -26,19 +26,18 @@ class Swap extends AbstractAsyncAction implements CoreActionInterface
      *
      * @return self Provides fluent interface
      */
-    public function setOther($other): self
+    public function setOther($other)
     {
-        $this->setOption('other', $other);
-        return $this;
+        return $this->setOption('other', $other);
     }
 
     /**
      * Get the other core that should ne used for swapping.
      *
-     * @return string|null
+     * @return string
      */
-    public function getOther(): ?string
+    public function getOther(): string
     {
-        return $this->getOption('other');
+        return (string) $this->getOption('other');
     }
 }

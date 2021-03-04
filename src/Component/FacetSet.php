@@ -3,19 +3,7 @@
 namespace Solarium\Component;
 
 use Solarium\Component\Facet\FacetInterface;
-use Solarium\Component\Facet\Field;
-use Solarium\Component\Facet\Interval;
-use Solarium\Component\Facet\JsonAggregation;
-use Solarium\Component\Facet\JsonQuery;
-use Solarium\Component\Facet\JsonRange;
-use Solarium\Component\Facet\JsonTerms;
-use Solarium\Component\Facet\MultiQuery;
-use Solarium\Component\Facet\Pivot;
-use Solarium\Component\Facet\Query;
-use Solarium\Component\Facet\Range;
-use Solarium\Component\RequestBuilder\ComponentRequestBuilderInterface;
 use Solarium\Component\RequestBuilder\FacetSet as RequestBuilder;
-use Solarium\Component\ResponseParser\ComponentParserInterface;
 use Solarium\Component\ResponseParser\FacetSet as ResponseParser;
 
 /**
@@ -31,17 +19,24 @@ class FacetSet extends AbstractComponent implements FacetSetInterface
      * @var array
      */
     protected $facetTypes = [
-        FacetSetInterface::FACET_FIELD => Field::class,
-        FacetSetInterface::FACET_QUERY => Query::class,
-        FacetSetInterface::FACET_MULTIQUERY => MultiQuery::class,
-        FacetSetInterface::FACET_RANGE => Range::class,
-        FacetSetInterface::FACET_PIVOT => Pivot::class,
-        FacetSetInterface::FACET_INTERVAL => Interval::class,
-        FacetSetInterface::JSON_FACET_AGGREGATION => JsonAggregation::class,
-        FacetSetInterface::JSON_FACET_TERMS => JsonTerms::class,
-        FacetSetInterface::JSON_FACET_QUERY => JsonQuery::class,
-        FacetSetInterface::JSON_FACET_RANGE => JsonRange::class,
+        FacetSetInterface::FACET_FIELD => 'Solarium\Component\Facet\Field',
+        FacetSetInterface::FACET_QUERY => 'Solarium\Component\Facet\Query',
+        FacetSetInterface::FACET_MULTIQUERY => 'Solarium\Component\Facet\MultiQuery',
+        FacetSetInterface::FACET_RANGE => 'Solarium\Component\Facet\Range',
+        FacetSetInterface::FACET_PIVOT => 'Solarium\Component\Facet\Pivot',
+        FacetSetInterface::FACET_INTERVAL => 'Solarium\Component\Facet\Interval',
+        FacetSetInterface::JSON_FACET_AGGREGATION => 'Solarium\Component\Facet\JsonAggregation',
+        FacetSetInterface::JSON_FACET_TERMS => 'Solarium\Component\Facet\JsonTerms',
+        FacetSetInterface::JSON_FACET_QUERY => 'Solarium\Component\Facet\JsonQuery',
+        FacetSetInterface::JSON_FACET_RANGE => 'Solarium\Component\Facet\JsonRange',
     ];
+
+    /**
+     * Facets.
+     *
+     * @var FacetInterface[]
+     */
+    protected $facets = [];
 
     /**
      * Get component type.
@@ -58,7 +53,7 @@ class FacetSet extends AbstractComponent implements FacetSetInterface
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): ComponentRequestBuilderInterface
+    public function getRequestBuilder(): RequestBuilder
     {
         return new RequestBuilder();
     }
@@ -68,7 +63,7 @@ class FacetSet extends AbstractComponent implements FacetSetInterface
      *
      * @return ResponseParser
      */
-    public function getResponseParser(): ?ComponentParserInterface
+    public function getResponseParser(): ResponseParser
     {
         return new ResponseParser();
     }

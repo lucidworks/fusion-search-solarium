@@ -3,7 +3,6 @@
 namespace Solarium\Component\QueryTraits;
 
 use Solarium\Component\ComponentAwareQueryInterface;
-use Solarium\Component\EdisMax;
 
 /**
  * Trait query types supporting components.
@@ -17,7 +16,7 @@ trait EDisMaxTrait
      *
      * @return \Solarium\Component\EdisMax
      */
-    public function getEDisMax(): EdisMax
+    public function getEDisMax()
     {
         return $this->getComponent(ComponentAwareQueryInterface::COMPONENT_EDISMAX, true);
     }

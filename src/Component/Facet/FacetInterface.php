@@ -3,7 +3,7 @@
 namespace Solarium\Component\Facet;
 
 /**
- * Facet interface.
+ * Facet base class.
  *
  * @see http://wiki.apache.org/solr/SimpleFacetParameters
  */
@@ -19,18 +19,18 @@ interface FacetInterface
     public function getType(): string;
 
     /**
-     * Get key.
+     * Get key value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getKey(): ?string;
+    public function getKey();
 
     /**
-     * Set key.
+     * Set key value.
      *
-     * @param string $key
+     * @param string $value
      *
-     * @return self
+     * @return FacetInterface
      */
-    public function setKey(string $key): self;
+    public function setKey($value);
 }

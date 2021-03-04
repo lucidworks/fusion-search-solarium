@@ -56,7 +56,7 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function getStatus(): int
+    public function getStatus()
     {
         $this->parseResponse();
 
@@ -71,7 +71,7 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function getQueryTime(): int
+    public function getQueryTime()
     {
         $this->parseResponse();
 
@@ -83,7 +83,7 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getResults(): array
+    public function getResults()
     {
         $this->parseResponse();
 
@@ -95,7 +95,7 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getAll(): array
+    public function getAll()
     {
         $this->parseResponse();
 
@@ -109,11 +109,15 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getTerm(string $term): ?Term
+    public function getTerm($term)
     {
         $this->parseResponse();
 
-        return $this->results[$term] ?? null;
+        if (isset($this->results[$term])) {
+            return $this->results[$term];
+        }
+
+        return [];
     }
 
     /**
@@ -121,7 +125,7 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         $this->parseResponse();
 
@@ -133,7 +137,7 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         $this->parseResponse();
 
@@ -145,7 +149,7 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return null|string
      */
-    public function getCollation(): ?string
+    public function getCollation()
     {
         $this->parseResponse();
 

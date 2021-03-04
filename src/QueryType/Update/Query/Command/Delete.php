@@ -42,7 +42,7 @@ class Delete extends AbstractCommand
      *
      * @return self Provides fluent interface
      */
-    public function addId($id): self
+    public function addId($id)
     {
         $this->ids[] = $id;
 
@@ -56,7 +56,7 @@ class Delete extends AbstractCommand
      *
      * @return self Provides fluent interface
      */
-    public function addIds(array $ids): self
+    public function addIds($ids)
     {
         $this->ids = array_merge($this->ids, $ids);
 
@@ -70,7 +70,7 @@ class Delete extends AbstractCommand
      *
      * @return self Provides fluent interface
      */
-    public function addQuery(string $query): self
+    public function addQuery($query)
     {
         $this->queries[] = $query;
 
@@ -84,7 +84,7 @@ class Delete extends AbstractCommand
      *
      * @return self Provides fluent interface
      */
-    public function addQueries(array $queries): self
+    public function addQueries($queries)
     {
         $this->queries = array_merge($this->queries, $queries);
 
@@ -96,7 +96,7 @@ class Delete extends AbstractCommand
      *
      * @return array
      */
-    public function getQueries(): array
+    public function getQueries()
     {
         return $this->queries;
     }
@@ -106,7 +106,7 @@ class Delete extends AbstractCommand
      *
      * @return array
      */
-    public function getIds(): array
+    public function getIds()
     {
         return $this->ids;
     }

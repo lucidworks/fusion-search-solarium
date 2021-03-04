@@ -40,7 +40,7 @@ class Detail
      * @param float  $value
      * @param string $description
      */
-    public function __construct(bool $match, float $value, string $description)
+    public function __construct($match, $value, $description)
     {
         $this->match = $match;
         $this->value = $value;
@@ -52,7 +52,7 @@ class Detail
      *
      * @return bool
      */
-    public function getMatch(): bool
+    public function getMatch()
     {
         return $this->match;
     }
@@ -62,7 +62,7 @@ class Detail
      *
      * @return float
      */
-    public function getValue(): float
+    public function getValue()
     {
         return $this->value;
     }
@@ -72,26 +72,23 @@ class Detail
      *
      * @return string
      */
-    public function getDescription(): string
+    public function getDescription()
     {
         return $this->description;
     }
 
     /**
      * @param array $subDetails
-     *
-     * @return self
      */
-    public function setSubDetails(array $subDetails): self
+    public function setSubDetails($subDetails)
     {
         $this->subDetails = $subDetails;
-        return $this;
     }
 
     /**
      * @return array
      */
-    public function getSubDetails(): array
+    public function getSubDetails()
     {
         return $this->subDetails;
     }

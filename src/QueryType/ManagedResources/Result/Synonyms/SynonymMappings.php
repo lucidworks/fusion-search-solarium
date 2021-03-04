@@ -2,8 +2,6 @@
 
 namespace Solarium\QueryType\ManagedResources\Result\Synonyms;
 
-use Solarium\Core\Client\Response;
-use Solarium\Core\Query\AbstractQuery;
 use Solarium\Core\Query\Result\QueryType as BaseResult;
 use Solarium\Core\Query\Result\Result;
 
@@ -40,7 +38,7 @@ class SynonymMappings extends BaseResult implements \IteratorAggregate, \Countab
     /**
      * Datetime when the resource was last updated.
      *
-     * @var string|null
+     * @var string
      */
     protected $updatedSinceInit;
 
@@ -54,10 +52,10 @@ class SynonymMappings extends BaseResult implements \IteratorAggregate, \Countab
     /**
      * Constructor.
      *
-     * @param AbstractQuery $query
-     * @param Response      $response
+     * @param $query
+     * @param $response
      */
-    public function __construct(AbstractQuery $query, Response $response)
+    public function __construct($query, $response)
     {
         Result::__construct($query, $response);
     }
@@ -130,14 +128,5 @@ class SynonymMappings extends BaseResult implements \IteratorAggregate, \Countab
     {
         $this->parseResponse();
         return $this->initializedOn;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUpdatedSinceInit(): ?string
-    {
-        $this->parseResponse();
-        return $this->updatedSinceInit;
     }
 }

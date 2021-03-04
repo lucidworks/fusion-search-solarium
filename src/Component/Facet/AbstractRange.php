@@ -12,52 +12,52 @@ abstract class AbstractRange extends AbstractFacet
     /**
      * Value for the 'other' option.
      */
-    public const OTHER_BEFORE = 'before';
+    const OTHER_BEFORE = 'before';
 
     /**
      * Value for the 'other' option.
      */
-    public const OTHER_AFTER = 'after';
+    const OTHER_AFTER = 'after';
 
     /**
      * Value for the 'other' option.
      */
-    public const OTHER_BETWEEN = 'between';
+    const OTHER_BETWEEN = 'between';
 
     /**
      * Value for the 'other' option.
      */
-    public const OTHER_ALL = 'all';
+    const OTHER_ALL = 'all';
 
     /**
      * Value for the 'other' option.
      */
-    public const OTHER_NONE = 'none';
+    const OTHER_NONE = 'none';
 
     /**
      * Value for the 'include' option.
      */
-    public const INCLUDE_LOWER = 'lower';
+    const INCLUDE_LOWER = 'lower';
 
     /**
      * Value for the 'include' option.
      */
-    public const INCLUDE_UPPER = 'upper';
+    const INCLUDE_UPPER = 'upper';
 
     /**
      * Value for the 'include' option.
      */
-    public const INCLUDE_EDGE = 'edge';
+    const INCLUDE_EDGE = 'edge';
 
     /**
      * Value for the 'include' option.
      */
-    public const INCLUDE_OUTER = 'outer';
+    const INCLUDE_OUTER = 'outer';
 
     /**
      * Value for the 'include' option.
      */
-    public const INCLUDE_ALL = 'all';
+    const INCLUDE_ALL = 'all';
 
     /**
      * Set the field name.
@@ -66,19 +66,17 @@ abstract class AbstractRange extends AbstractFacet
      *
      * @return self Provides fluent interface
      */
-    public function setField(string $field): self
+    public function setField($field)
     {
-        $this->setOption('field', $field);
-
-        return $this;
+        return $this->setOption('field', $field);
     }
 
     /**
      * Get the field name.
      *
-     * @return string|null
+     * @return string
      */
-    public function getField(): ?string
+    public function getField()
     {
         return $this->getOption('field');
     }
@@ -86,23 +84,21 @@ abstract class AbstractRange extends AbstractFacet
     /**
      * Set the lower bound of the range.
      *
-     * @param string|int|float $start A date expression or a number
+     * @param string $start
      *
      * @return self Provides fluent interface
      */
-    public function setStart($start): self
+    public function setStart($start)
     {
-        $this->setOption('start', (string) $start);
-
-        return $this;
+        return $this->setOption('start', $start);
     }
 
     /**
      * Get the lower bound of the range.
      *
-     * @return string|null
+     * @return string
      */
-    public function getStart(): ?string
+    public function getStart()
     {
         return $this->getOption('start');
     }
@@ -110,23 +106,21 @@ abstract class AbstractRange extends AbstractFacet
     /**
      * Set the upper bound of the range.
      *
-     * @param string|int|float $end A date expression or a number
+     * @param string $end
      *
      * @return self Provides fluent interface
      */
-    public function setEnd($end): self
+    public function setEnd($end)
     {
-        $this->setOption('end', (string) $end);
-
-        return $this;
+        return $this->setOption('end', $end);
     }
 
     /**
      * Get the upper bound of the range.
      *
-     * @return string|null
+     * @return string
      */
-    public function getEnd(): ?string
+    public function getEnd()
     {
         return $this->getOption('end');
     }
@@ -136,15 +130,13 @@ abstract class AbstractRange extends AbstractFacet
      *
      * The size of each range expressed as a value to be added to the lower bound
      *
-     * @param string|int|float $gap A date expression or a number
+     * @param string $gap
      *
      * @return self Provides fluent interface
      */
-    public function setGap($gap): self
+    public function setGap($gap)
     {
-        $this->setOption('gap', $gap);
-
-        return $this;
+        return $this->setOption('gap', $gap);
     }
 
     /**
@@ -152,9 +144,9 @@ abstract class AbstractRange extends AbstractFacet
      *
      * The size of each range expressed as a value to be added to the lower bound
      *
-     * @return string|null
+     * @return string
      */
-    public function getGap(): ?string
+    public function getGap()
     {
         return $this->getOption('gap');
     }
@@ -169,19 +161,17 @@ abstract class AbstractRange extends AbstractFacet
      *
      * @return self Provides fluent interface
      */
-    public function setHardend(bool $hardend): self
+    public function setHardend($hardend)
     {
-        $this->setOption('hardend', $hardend);
-
-        return $this;
+        return $this->setOption('hardend', $hardend);
     }
 
     /**
      * Get hardend option.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getHardend(): ?bool
+    public function getHardend()
     {
         return $this->getOption('hardend');
     }
@@ -196,16 +186,14 @@ abstract class AbstractRange extends AbstractFacet
      *
      * @return self Provides fluent interface
      */
-    public function setOther($other): self
+    public function setOther($other)
     {
-        if (\is_string($other)) {
+        if (is_string($other)) {
             $other = explode(',', $other);
             $other = array_map('trim', $other);
         }
 
-        $this->setOption('other', $other);
-
-        return $this;
+        return $this->setOption('other', $other);
     }
 
     /**
@@ -213,7 +201,7 @@ abstract class AbstractRange extends AbstractFacet
      *
      * @return array
      */
-    public function getOther(): array
+    public function getOther()
     {
         $other = $this->getOption('other');
         if (null === $other) {
@@ -233,16 +221,14 @@ abstract class AbstractRange extends AbstractFacet
      *
      * @return self Provides fluent interface
      */
-    public function setInclude($include): self
+    public function setInclude($include)
     {
-        if (\is_string($include)) {
+        if (is_string($include)) {
             $include = explode(',', $include);
             $include = array_map('trim', $include);
         }
 
-        $this->setOption('include', $include);
-
-        return $this;
+        return $this->setOption('include', $include);
     }
 
     /**
@@ -250,7 +236,7 @@ abstract class AbstractRange extends AbstractFacet
      *
      * @return array
      */
-    public function getInclude(): array
+    public function getInclude()
     {
         $include = $this->getOption('include');
         if (null === $include) {
@@ -258,24 +244,6 @@ abstract class AbstractRange extends AbstractFacet
         }
 
         return $include;
-    }
-
-    /**
-     * @param \Solarium\Component\Facet\Pivot|array $pivot
-     *
-     * @return \Solarium\Core\Configurable
-     */
-    public function setPivot($pivot)
-    {
-        return $this->setOption('pivot', $pivot);
-    }
-
-    /**
-     * @return \Solarium\Component\Facet\Pivot|array|null
-     */
-    public function getPivot()
-    {
-        return $this->getOption('pivot');
     }
 
     /**

@@ -19,14 +19,13 @@ class Types extends ResultList
      *
      * @return ResultList|null
      */
-    public function getIndexAnalysis(): ?ResultList
+    public function getIndexAnalysis()
     {
         foreach ($this->items as $item) {
-            if ('index' === $item->getName()) {
+            if ('index' == $item->getName()) {
                 return $item;
             }
         }
-        return null;
     }
 
     /**
@@ -34,13 +33,12 @@ class Types extends ResultList
      *
      * @return ResultList|null
      */
-    public function getQueryAnalysis(): ?ResultList
+    public function getQueryAnalysis()
     {
         foreach ($this->items as $item) {
-            if ('query' === $item->getName()) {
+            if ('query' == $item->getName()) {
                 return $item;
             }
         }
-        return null;
     }
 }

@@ -40,7 +40,10 @@ trait JsonFacetTrait
     public function getDomainFilter()
     {
         $domain = $this->getOption('domain');
-        return $domain['filter'] ?? null;
+        if ($domain && isset($domain['filter'])) {
+            return $domain['filter'];
+        }
+        return null;
     }
 
     /**
@@ -63,19 +66,16 @@ trait JsonFacetTrait
         $filter = $this->getDomainFilter();
         if (!$filter || is_string($filter)) {
             return $this->setOption('domain', ['filter' => $query]);
-        }
-
-        foreach ($filter as &$param_or_query) {
-            if (is_string($param_or_query)) {
-                $param_or_query = $query;
-                return $this->setOption('domain', ['filter' => $filter]);
+        } else {
+            foreach ($filter as &$param_or_query) {
+                if (is_string($param_or_query)) {
+                    $param_or_query = $query;
+                    return $this->setOption('domain', ['filter' => $filter]);
+                }
             }
+            $filter[] = $query;
+            return $this->setOption('domain', ['filter' => $filter]);
         }
-        unset($param_or_query);
-
-        /* @noinspection UnsupportedStringOffsetOperationsInspection */
-        $filter[] = $query;
-        return $this->setOption('domain', ['filter' => $filter]);
     }
 
     /**
@@ -90,22 +90,17 @@ trait JsonFacetTrait
         $filter = $this->getDomainFilter();
         if (!$filter) {
             return $this->setOption('domain', ['filter' => ['param' => $param]]);
-        }
-
-        if (is_string($filter) || 1 == count($filter)) {
+        } elseif (is_string($filter) || 1 == count($filter)) {
             return $this->setOption('domain', ['filter' => [$filter, ['param' => $param]]]);
-        }
-
-        foreach ($filter as &$param_or_query) {
-            if (is_array($param_or_query) && $param_or_query['param'] == $param) {
-                return $this;
+        } else {
+            foreach ($filter as &$param_or_query) {
+                if (is_array($param_or_query) && $param_or_query['param'] == $param) {
+                    return $this;
+                }
             }
+            $filter[] = ['param' => $param];
+            return $this->setOption('domain', ['filter' => $filter]);
         }
-        unset($param_or_query);
-
-        /* @noinspection UnsupportedStringOffsetOperationsInspection */
-        $filter[] = ['param' => $param];
-        return $this->setOption('domain', ['filter' => $filter]);
     }
 
     /**
@@ -152,9 +147,9 @@ trait JsonFacetTrait
             $this->serialize();
 
             return $this;
+        } else {
+            throw new InvalidArgumentException('Only JSON facets can be nested.');
         }
-
-        throw new InvalidArgumentException('Only JSON facets can be nested.');
     }
 
     /**

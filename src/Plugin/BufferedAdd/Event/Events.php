@@ -5,7 +5,7 @@ namespace Solarium\Plugin\BufferedAdd\Event;
 /**
  * Event definitions.
  */
-interface Events
+class Events
 {
     /**
      * This event is called before a buffer flush.

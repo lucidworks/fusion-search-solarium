@@ -27,7 +27,7 @@ class Result implements \IteratorAggregate, \Countable
      * @param array $results
      * @param array $all
      */
-    public function __construct(array $results, array $all)
+    public function __construct($results, $all)
     {
         $this->results = $results;
         $this->all = $all;
@@ -38,7 +38,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getResults(): array
+    public function getResults()
     {
         return $this->results;
     }
@@ -48,7 +48,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getAll(): array
+    public function getAll()
     {
         return $this->all;
     }
@@ -60,9 +60,13 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return Field|null
      */
-    public function getField($field): ?Field
+    public function getField($field)
     {
-        return $this->results[$field] ?? null;
+        if (isset($this->results[$field])) {
+            return $this->results[$field];
+        }
+
+        return null;
     }
 
     /**
@@ -70,7 +74,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->results);
     }
@@ -80,7 +84,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->results);
     }

@@ -5,14 +5,9 @@ namespace Solarium\QueryType\ManagedResources\Query;
 use InvalidArgumentException;
 use Solarium\Core\Client\Client;
 use Solarium\Core\Query\AbstractQuery as BaseQuery;
-use Solarium\Core\Query\RequestBuilderInterface;
-use Solarium\Core\Query\ResponseParserInterface;
-use Solarium\QueryType\ManagedResources\Query\Stopwords\Command\Add;
-use Solarium\QueryType\ManagedResources\Query\Stopwords\Command\Delete;
-use Solarium\QueryType\ManagedResources\Query\Stopwords\Command\Exists;
+use Solarium\QueryType\ManagedResources\Query\Stopwords\Command\AbstractCommand;
 use Solarium\QueryType\ManagedResources\RequestBuilder\Stopwords as RequestBuilder;
 use Solarium\QueryType\ManagedResources\ResponseParser\Stopwords as ResponseParser;
-use Solarium\QueryType\ManagedResources\Result\Stopwords\WordSet;
 
 class Stopwords extends BaseQuery
 {
@@ -51,9 +46,9 @@ class Stopwords extends BaseQuery
      * @var array
      */
     protected $commandTypes = [
-        self::COMMAND_ADD => Add::class,
-        self::COMMAND_DELETE => Delete::class,
-        self::COMMAND_EXISTS => Exists::class,
+        self::COMMAND_ADD => 'Solarium\QueryType\ManagedResources\Query\Stopwords\Command\Add',
+        self::COMMAND_DELETE => 'Solarium\QueryType\ManagedResources\Query\Stopwords\Command\Delete',
+        self::COMMAND_EXISTS => 'Solarium\QueryType\ManagedResources\Query\Stopwords\Command\Exists',
     ];
 
     /**
@@ -63,7 +58,7 @@ class Stopwords extends BaseQuery
      */
     protected $options = [
         'handler' => 'schema/analysis/stopwords/',
-        'resultclass' => WordSet::class,
+        'resultclass' => 'Solarium\QueryType\ManagedResources\Result\Stopwords\WordSet',
         'omitheader' => true,
     ];
 
@@ -82,7 +77,7 @@ class Stopwords extends BaseQuery
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): RequestBuilderInterface
+    public function getRequestBuilder(): RequestBuilder
     {
         return new RequestBuilder();
     }
@@ -92,7 +87,7 @@ class Stopwords extends BaseQuery
      *
      * @return ResponseParser
      */
-    public function getResponseParser(): ResponseParserInterface
+    public function getResponseParser(): ResponseParser
     {
         return new ResponseParser();
     }
@@ -111,13 +106,10 @@ class Stopwords extends BaseQuery
      * Set the name of the stopwords resource.
      *
      * @param string $name
-     *
-     * @return self
      */
-    public function setName(string $name): self
+    public function setName(string $name)
     {
         $this->name = $name;
-        return $this;
     }
 
     /**
@@ -148,7 +140,7 @@ class Stopwords extends BaseQuery
      *
      * @return AbstractCommand|null
      */
-    public function getCommand(): ?AbstractCommand
+    public function getCommand()
     {
         return $this->command;
     }

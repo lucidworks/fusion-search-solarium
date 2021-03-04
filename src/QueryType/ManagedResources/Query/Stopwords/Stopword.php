@@ -10,8 +10,6 @@ class Stopword
     protected $term;
 
     /**
-     * Get the term.
-     *
      * @return string
      */
     public function getTerm(): string
@@ -20,15 +18,10 @@ class Stopword
     }
 
     /**
-     * Set the term.
-     *
      * @param string $term
-     *
-     * @return self
      */
-    public function setTerm(string $term): self
+    public function setTerm(string $term)
     {
         $this->term = $term;
-        return $this;
     }
 }

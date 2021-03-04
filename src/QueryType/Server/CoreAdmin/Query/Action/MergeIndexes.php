@@ -35,11 +35,11 @@ class MergeIndexes extends AbstractAsyncAction implements CoreActionInterface
     /**
      * Get the other core that should be the new name.
      *
-     * @return string[]|null
+     * @return string[]
      */
-    public function getIndexDir(): ?array
+    public function getIndexDir(): array
     {
-        return $this->getOption('indexDir');
+        return (array) $this->getOption('indexDir');
     }
 
     /**
@@ -58,10 +58,10 @@ class MergeIndexes extends AbstractAsyncAction implements CoreActionInterface
     /**
      * Get the other core that should be the new name.
      *
-     * @return string[]|null
+     * @return string[]
      */
-    public function getSrcCore(): ?array
+    public function getSrcCore(): array
     {
-        return $this->getOption('srcCore');
+        return (array) $this->getOption('srcCore');
     }
 }

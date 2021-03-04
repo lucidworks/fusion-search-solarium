@@ -3,7 +3,6 @@
 namespace Solarium\Component\QueryTraits;
 
 use Solarium\Component\ComponentAwareQueryInterface;
-use Solarium\Component\Suggester;
 
 /**
  * Trait query types supporting components.
@@ -17,7 +16,7 @@ trait SuggesterTrait
      *
      * @return \Solarium\Component\Suggester
      */
-    public function getSuggester(): Suggester
+    public function getSuggester()
     {
         return $this->getComponent(ComponentAwareQueryInterface::COMPONENT_SUGGESTER, true);
     }

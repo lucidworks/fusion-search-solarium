@@ -3,23 +3,25 @@
 namespace Solarium\QueryType\Analysis\Query;
 
 use Solarium\Core\Client\Client;
-use Solarium\Core\Query\RequestBuilderInterface;
-use Solarium\Core\Query\ResponseParserInterface;
 use Solarium\Exception\RuntimeException;
 use Solarium\QueryType\Analysis\RequestBuilder\Document as RequestBuilder;
 use Solarium\QueryType\Analysis\ResponseParser\Document as ResponseParser;
-use Solarium\QueryType\Analysis\Result\Document as ResultDocument;
-use Solarium\Core\Query\DocumentInterface;
+use Solarium\QueryType\Select\Result\DocumentInterface as ReadOnlyDocumentInterface;
+use Solarium\QueryType\Update\Query\Document\DocumentInterface as DocumentInterface;
 
 /**
  * Analysis document query.
  */
 class Document extends AbstractQuery
 {
+    const DOCUMENT_TYPE_HINT_EXCEPTION_MESSAGE = 'The document argument must either implement
+        \Solarium\QueryType\Select\Result\DocumentInterface (read-only) or
+        \Solarium\QueryType\Update\Query\Document\DocumentInterface (read-write), instance of %s given.';
+
     /**
      * Documents to analyze.
      *
-     * @var DocumentInterface[]
+     * @var ReadOnlyDocumentInterface[]|DocumentInterface[]
      */
     protected $documents = [];
 
@@ -30,7 +32,7 @@ class Document extends AbstractQuery
      */
     protected $options = [
         'handler' => 'analysis/document',
-        'resultclass' => ResultDocument::class,
+        'resultclass' => 'Solarium\QueryType\Analysis\Result\Document',
         'omitheader' => true,
     ];
 
@@ -49,7 +51,7 @@ class Document extends AbstractQuery
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): RequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
@@ -59,7 +61,7 @@ class Document extends AbstractQuery
      *
      * @return ResponseParser
      */
-    public function getResponseParser(): ResponseParserInterface
+    public function getResponseParser()
     {
         return new ResponseParser();
     }
@@ -67,14 +69,18 @@ class Document extends AbstractQuery
     /**
      * Add a single document.
      *
-     * @param DocumentInterface $document
+     * @param ReadOnlyDocumentInterface|DocumentInterface $document
      *
      * @throws RuntimeException If the given document doesn't have the right interface
      *
      * @return self Provides fluent interface
      */
-    public function addDocument(DocumentInterface $document): self
+    public function addDocument($document)
     {
+        if (!($document instanceof ReadOnlyDocumentInterface) && !($document instanceof DocumentInterface)) {
+            throw new RuntimeException(sprintf(static::DOCUMENT_TYPE_HINT_EXCEPTION_MESSAGE, get_class($document)));
+        }
+
         $this->documents[] = $document;
 
         return $this;
@@ -83,17 +89,17 @@ class Document extends AbstractQuery
     /**
      * Add multiple documents.
      *
-     * @param DocumentInterface[] $documents
+     * @param ReadOnlyDocumentInterface[]|DocumentInterface[] $documents
      *
      * @throws RuntimeException If the given documents doesn't have the right interface
      *
      * @return self Provides fluent interface
      */
-    public function addDocuments(array $documents): self
+    public function addDocuments($documents)
     {
         foreach ($documents as $document) {
-            if (!($document instanceof DocumentInterface)) {
-                throw new RuntimeException('Document must implement DocumentInterface.');
+            if (!($document instanceof ReadOnlyDocumentInterface) && !($document instanceof DocumentInterface)) {
+                throw new RuntimeException(sprintf(static::DOCUMENT_TYPE_HINT_EXCEPTION_MESSAGE, get_class($document)));
             }
         }
 
@@ -105,9 +111,9 @@ class Document extends AbstractQuery
     /**
      * Get all documents.
      *
-     * @return DocumentInterface
+     * @return ReadOnlyDocumentInterface[]|DocumentInterface[]
      */
-    public function getDocuments(): array
+    public function getDocuments()
     {
         return $this->documents;
     }

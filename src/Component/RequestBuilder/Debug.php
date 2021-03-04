@@ -4,7 +4,6 @@ namespace Solarium\Component\RequestBuilder;
 
 use Solarium\Component\Debug as DebugComponent;
 use Solarium\Core\Client\Request;
-use Solarium\Core\ConfigurableInterface;
 
 /**
  * Add select component debug to the request.
@@ -19,7 +18,7 @@ class Debug implements ComponentRequestBuilderInterface
      *
      * @return Request
      */
-    public function buildComponent(ConfigurableInterface $component, Request $request): Request
+    public function buildComponent($component, $request)
     {
         $request->addParam('debugQuery', 'true');
         $request->addParam('debug.explain.structured', 'true');

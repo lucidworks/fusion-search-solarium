@@ -5,7 +5,7 @@ namespace Solarium\Core\Event;
 use Solarium\Core\Client\Endpoint;
 use Solarium\Core\Client\Request;
 use Solarium\Core\Client\Response;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * PreExecuteRequest event, see Events for details.
@@ -44,7 +44,7 @@ class PreExecuteRequest extends Event
      *
      * @return Endpoint
      */
-    public function getEndpoint(): Endpoint
+    public function getEndpoint()
     {
         return $this->endpoint;
     }
@@ -54,7 +54,7 @@ class PreExecuteRequest extends Event
      *
      * @return Request
      */
-    public function getRequest(): Request
+    public function getRequest()
     {
         return $this->request;
     }
@@ -63,21 +63,18 @@ class PreExecuteRequest extends Event
      * Get the request object for this event.
      *
      * @param Request $request
-     *
-     * @return self Provides fluent interface
      */
-    public function setRequest(Request $request): self
+    public function setRequest($request)
     {
         $this->request = $request;
-        return $this;
     }
 
     /**
      * Get the response object for this event.
      *
-     * @return Response|null
+     * @return Response
      */
-    public function getResponse(): ?Response
+    public function getResponse()
     {
         return $this->response;
     }
@@ -86,12 +83,9 @@ class PreExecuteRequest extends Event
      * Set the response object for this event, overrides default execution.
      *
      * @param Response $response
-     *
-     * @return self Provides fluent interface
      */
-    public function setResponse(Response $response): self
+    public function setResponse($response)
     {
         $this->response = $response;
-        return $this;
     }
 }

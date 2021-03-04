@@ -39,7 +39,7 @@ class Result extends BaseResult
      *
      * @return int
      */
-    public function getStatus(): int
+    public function getStatus()
     {
         $this->parseResponse();
 
@@ -54,7 +54,7 @@ class Result extends BaseResult
      *
      * @return int
      */
-    public function getQueryTime(): int
+    public function getQueryTime()
     {
         $this->parseResponse();
 

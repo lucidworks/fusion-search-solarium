@@ -67,7 +67,7 @@ class Result implements \IteratorAggregate, \Countable
      * @param DocumentSet $explainOther
      * @param Timing      $timing
      */
-    public function __construct(string $queryString, string $parsedQuery, string $queryParser, string $otherQuery, DocumentSet $explain, ?DocumentSet $explainOther, ?Timing $timing)
+    public function __construct($queryString, $parsedQuery, $queryParser, $otherQuery, $explain, $explainOther, $timing)
     {
         $this->queryString = $queryString;
         $this->parsedQuery = $parsedQuery;
@@ -83,7 +83,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return string
      */
-    public function getQueryString(): string
+    public function getQueryString()
     {
         return $this->queryString;
     }
@@ -93,7 +93,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return string
      */
-    public function getParsedQuery(): string
+    public function getParsedQuery()
     {
         return $this->parsedQuery;
     }
@@ -103,7 +103,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return string
      */
-    public function getQueryParser(): string
+    public function getQueryParser()
     {
         return $this->queryParser;
     }
@@ -113,7 +113,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return string
      */
-    public function getOtherQuery(): string
+    public function getOtherQuery()
     {
         return $this->otherQuery;
     }
@@ -123,7 +123,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return DocumentSet
      */
-    public function getExplain(): DocumentSet
+    public function getExplain()
     {
         return $this->explain;
     }
@@ -131,9 +131,9 @@ class Result implements \IteratorAggregate, \Countable
     /**
      * Get explain other document set (only available if otherquery was set in query).
      *
-     * @return DocumentSet|null
+     * @return DocumentSet
      */
-    public function getExplainOther(): ?DocumentSet
+    public function getExplainOther()
     {
         return $this->explainOther;
     }
@@ -141,9 +141,9 @@ class Result implements \IteratorAggregate, \Countable
     /**
      * Get timing object.
      *
-     * @return Timing|null
+     * @return Timing
      */
-    public function getTiming(): ?Timing
+    public function getTiming()
     {
         return $this->timing;
     }
@@ -155,7 +155,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return DocumentSet
      */
-    public function getIterator(): DocumentSet
+    public function getIterator()
     {
         return $this->explain;
     }
@@ -165,7 +165,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->explain);
     }

@@ -43,7 +43,7 @@ class Endpoint extends Configurable
      */
     public function __toString()
     {
-        $output = __CLASS__.'::__toString'."\n".'host: '.$this->getHost()."\n".'port: '.$this->getPort()."\n".'path: '.$this->getPath()."\n".'collection: '.$this->getCollection()."\n".'core: '.$this->getCore()."\n".'timeout: '.$this->getTimeout()."\n".'authentication: '.print_r($this->getAuthentication(), 1);
+        $output = __CLASS__.'::__toString'."\n".'base uri: '.$this->getBaseUri()."\n".'host: '.$this->getHost()."\n".'port: '.$this->getPort()."\n".'path: '.$this->getPath()."\n".'collection: '.$this->getCollection()."\n".'core: '.$this->getCore()."\n".'timeout: '.$this->getTimeout()."\n".'authentication: '.print_r($this->getAuthentication(), 1);
 
         return $output;
     }
@@ -65,7 +65,7 @@ class Endpoint extends Configurable
      *
      * @return self Provides fluent interface
      */
-    public function setKey(string $value): self
+    public function setKey($value): self
     {
         $this->setOption('key', $value);
         return $this;
@@ -78,7 +78,7 @@ class Endpoint extends Configurable
      *
      * @return self Provides fluent interface
      */
-    public function setHost(string $host): self
+    public function setHost($host): self
     {
         $this->setOption('host', $host);
         return $this;
@@ -87,9 +87,9 @@ class Endpoint extends Configurable
     /**
      * Get host option.
      *
-     * @return string|null
+     * @return string
      */
-    public function getHost(): ?string
+    public function getHost(): string
     {
         return $this->getOption('host');
     }
@@ -101,7 +101,7 @@ class Endpoint extends Configurable
      *
      * @return self Provides fluent interface
      */
-    public function setPort(int $port): self
+    public function setPort($port): self
     {
         $this->setOption('port', $port);
         return $this;
@@ -110,9 +110,9 @@ class Endpoint extends Configurable
     /**
      * Get port option.
      *
-     * @return int|null
+     * @return int
      */
-    public function getPort(): ?int
+    public function getPort(): int
     {
         return $this->getOption('port');
     }
@@ -126,7 +126,7 @@ class Endpoint extends Configurable
      *
      * @return self Provides fluent interface
      */
-    public function setPath(string $path): self
+    public function setPath($path): self
     {
         if ('/' === substr($path, -1)) {
             $path = substr($path, 0, -1);
@@ -139,9 +139,9 @@ class Endpoint extends Configurable
     /**
      * Get path option.
      *
-     * @return string|null
+     * @return string
      */
-    public function getPath(): ?string
+    public function getPath(): string
     {
         return $this->getOption('path');
     }
@@ -153,7 +153,7 @@ class Endpoint extends Configurable
      *
      * @return self Provides fluent interface
      */
-    public function setCollection(string $collection): self
+    public function setCollection($collection): self
     {
         $this->setOption('collection', $collection);
         return $this;
@@ -176,7 +176,7 @@ class Endpoint extends Configurable
      *
      * @return self Provides fluent interface
      */
-    public function setCore(string $core): self
+    public function setCore($core): self
     {
         $this->setOption('core', $core);
         return $this;
@@ -198,13 +198,9 @@ class Endpoint extends Configurable
      * @param int $timeout
      *
      * @return self Provides fluent interface
-     *
-     * @deprecated Endpoint::setTimeout is deprecated since Solarium 5.2 and will be removed in Solarium 6. Configure the timeout on the HTTP Client used by the Adapter instead.
      */
-    public function setTimeout(int $timeout): self
+    public function setTimeout($timeout): self
     {
-        @trigger_error('Endpoint::setTimeout is deprecated since Solarium 5.2 and will be removed in Solarium 6. Configure the timeout on the HTTP Client used by the Adapter instead.', E_USER_DEPRECATED);
-
         $this->setOption('timeout', $timeout);
         return $this;
     }
@@ -212,14 +208,10 @@ class Endpoint extends Configurable
     /**
      * Get timeout option.
      *
-     * @return int|null
-     *
-     * @deprecated Endpoint::getTimeout is deprecated since Solarium 5.2 and will be removed in Solarium 6. Configure the timeout on the HTTP Client used by the Adapter instead.
+     * @return int
      */
-    public function getTimeout(): ?int
+    public function getTimeout(): int
     {
-        @trigger_error('Endpoint::getTimeout is deprecated since Solarium 5.2 and will be removed in Solarium 6. Configure the timeout on the HTTP Client used by the Adapter instead.', E_USER_DEPRECATED);
-
         return $this->getOption('timeout');
     }
 
@@ -230,7 +222,7 @@ class Endpoint extends Configurable
      *
      * @return self Provides fluent interface
      */
-    public function setScheme(string $scheme): self
+    public function setScheme($scheme): self
     {
         $this->setOption('scheme', $scheme);
         return $this;
@@ -239,9 +231,9 @@ class Endpoint extends Configurable
     /**
      * Get scheme option.
      *
-     * @return string|null
+     * @return string
      */
-    public function getScheme(): ?string
+    public function getScheme(): string
     {
         return $this->getOption('scheme');
     }
@@ -393,7 +385,7 @@ class Endpoint extends Configurable
             } else {
               $uri .= 'solr/'.$core.'/';
             }
-           
+
         } else {
             throw new UnexpectedValueException('No core set.');
         }
@@ -465,7 +457,7 @@ class Endpoint extends Configurable
      *
      * @return self Provides fluent interface
      */
-    public function setAuthentication(string $username, string $password): self
+    public function setAuthentication($username, $password): self
     {
         $this->setOption('username', $username);
         $this->setOption('password', $password);
@@ -536,7 +528,7 @@ class Endpoint extends Configurable
      *
      * @param bool $leader
      *
-     * @return self Provides fluent interface
+     * @return $this
      */
     public function setLeader(bool $leader): self
     {
@@ -547,9 +539,9 @@ class Endpoint extends Configurable
     /**
      * If the shard is a leader or not. Only in SolrCloud.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function isLeader(): ?bool
+    public function isLeader(): bool
     {
         return $this->getOption('leader');
     }

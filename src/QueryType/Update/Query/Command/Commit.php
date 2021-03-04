@@ -24,9 +24,9 @@ class Commit extends AbstractCommand
     /**
      * Get softCommit option.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getSoftCommit(): ?bool
+    public function getSoftCommit()
     {
         return $this->getOption('softcommit');
     }
@@ -38,18 +38,17 @@ class Commit extends AbstractCommand
      *
      * @return self Provides fluent interface
      */
-    public function setSoftCommit(bool $softCommit): self
+    public function setSoftCommit($softCommit)
     {
-        $this->setOption('softcommit', $softCommit);
-        return $this;
+        return $this->setOption('softcommit', $softCommit);
     }
 
     /**
      * Get waitSearcher option.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getWaitSearcher(): ?bool
+    public function getWaitSearcher()
     {
         return $this->getOption('waitsearcher');
     }
@@ -61,18 +60,17 @@ class Commit extends AbstractCommand
      *
      * @return self Provides fluent interface
      */
-    public function setWaitSearcher(bool $waitSearcher): self
+    public function setWaitSearcher($waitSearcher)
     {
-        $this->setOption('waitsearcher', $waitSearcher);
-        return $this;
+        return $this->setOption('waitsearcher', $waitSearcher);
     }
 
     /**
      * Get expungeDeletes option.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getExpungeDeletes(): ?bool
+    public function getExpungeDeletes()
     {
         return $this->getOption('expungedeletes');
     }
@@ -84,9 +82,8 @@ class Commit extends AbstractCommand
      *
      * @return self Provides fluent interface
      */
-    public function setExpungeDeletes(bool $expungeDeletes): self
+    public function setExpungeDeletes($expungeDeletes)
     {
-        $this->setOption('expungedeletes', $expungeDeletes);
-        return $this;
+        return $this->setOption('expungedeletes', $expungeDeletes);
     }
 }

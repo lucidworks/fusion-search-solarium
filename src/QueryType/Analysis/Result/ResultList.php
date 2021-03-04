@@ -27,7 +27,7 @@ class ResultList implements \IteratorAggregate, \Countable
      * @param string $name
      * @param array  $items
      */
-    public function __construct(string $name, array $items)
+    public function __construct($name, $items)
     {
         $this->name = $name;
         $this->items = $items;
@@ -38,7 +38,7 @@ class ResultList implements \IteratorAggregate, \Countable
      *
      * @return string
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -48,7 +48,7 @@ class ResultList implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getItems(): array
+    public function getItems()
     {
         return $this->items;
     }
@@ -58,7 +58,7 @@ class ResultList implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->items);
     }
@@ -68,7 +68,7 @@ class ResultList implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->items);
     }

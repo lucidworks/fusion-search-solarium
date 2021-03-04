@@ -24,7 +24,7 @@ trait RequestParamsTrait
      *
      * @return string|array
      */
-    public function getParam(string $key)
+    public function getParam($key)
     {
         if (isset($this->params[$key])) {
             return $this->params[$key];
@@ -36,7 +36,7 @@ trait RequestParamsTrait
      *
      * @return array
      */
-    public function getParams(): array
+    public function getParams()
     {
         return $this->params;
     }
@@ -48,7 +48,7 @@ trait RequestParamsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setParams(array $params): RequestParamsInterface
+    public function setParams($params)
     {
         $this->clearParams();
         $this->addParams($params);
@@ -71,9 +71,9 @@ trait RequestParamsTrait
      *
      * @return self Provides fluent interface
      */
-    public function addParam(string $key, $value, bool $overwrite = false): RequestParamsInterface
+    public function addParam($key, $value, $overwrite = false)
     {
-        if (null !== $value && [] !== $value) {
+        if (null !== $value) {
             if (!$overwrite && isset($this->params[$key])) {
                 if (!is_array($this->params[$key])) {
                     $this->params[$key] = [$this->params[$key]];
@@ -102,7 +102,7 @@ trait RequestParamsTrait
      *
      * @return self Provides fluent interface
      */
-    public function addParams(array $params, bool $overwrite = false): RequestParamsInterface
+    public function addParams($params, $overwrite = false)
     {
         foreach ($params as $key => $value) {
             $this->addParam($key, $value, $overwrite);
@@ -118,7 +118,7 @@ trait RequestParamsTrait
      *
      * @return self Provides fluent interface
      */
-    public function removeParam(string $key): RequestParamsInterface
+    public function removeParam($key)
     {
         if (isset($this->params[$key])) {
             unset($this->params[$key]);
@@ -132,7 +132,7 @@ trait RequestParamsTrait
      *
      * @return self Provides fluent interface
      */
-    public function clearParams(): RequestParamsInterface
+    public function clearParams()
     {
         $this->params = [];
 
@@ -146,13 +146,13 @@ trait RequestParamsTrait
      *
      * @return string
      */
-    public function getQueryString(string $separator = '&'): string
+    public function getQueryString(string $separator = '&')
     {
         $queryString = '';
         if (count($this->params) > 0) {
             $queryString = http_build_query($this->params, null, $separator);
             $queryString = preg_replace(
-                '/%5B(?:\d|[1-9]\d+)%5D=/',
+                '/%5B(?:[0-9]|[1-9][0-9]+)%5D=/',
                 '=',
                 $queryString
             );

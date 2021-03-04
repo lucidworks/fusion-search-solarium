@@ -68,7 +68,7 @@ class Item
      *
      * @param array $analysis
      */
-    public function __construct(array $analysis)
+    public function __construct($analysis)
     {
         $this->text = $analysis['text'];
         $this->start = $analysis['start'];
@@ -91,7 +91,7 @@ class Item
      *
      * @return string
      */
-    public function getText(): string
+    public function getText()
     {
         return $this->text;
     }
@@ -101,9 +101,9 @@ class Item
      *
      * This values is not available in all cases
      *
-     * @return string|null
+     * @return string
      */
-    public function getRawText(): ?string
+    public function getRawText()
     {
         return $this->rawText;
     }
@@ -113,7 +113,7 @@ class Item
      *
      * @return int
      */
-    public function getStart(): int
+    public function getStart()
     {
         return $this->start;
     }
@@ -123,7 +123,7 @@ class Item
      *
      * @return int
      */
-    public function getEnd(): int
+    public function getEnd()
     {
         return $this->end;
     }
@@ -133,7 +133,7 @@ class Item
      *
      * @return int
      */
-    public function getPosition(): int
+    public function getPosition()
     {
         return $this->position;
     }
@@ -143,7 +143,7 @@ class Item
      *
      * @return array
      */
-    public function getPositionHistory(): array
+    public function getPositionHistory()
     {
         if (is_array($this->positionHistory)) {
             return $this->positionHistory;
@@ -165,9 +165,9 @@ class Item
     /**
      * Get match value.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getMatch(): ?bool
+    public function getMatch()
     {
         return $this->match;
     }

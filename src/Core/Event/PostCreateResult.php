@@ -5,7 +5,7 @@ namespace Solarium\Core\Event;
 use Solarium\Core\Client\Response;
 use Solarium\Core\Query\QueryInterface;
 use Solarium\Core\Query\Result\ResultInterface;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * PostCreateResult event, see Events for details.
@@ -46,7 +46,7 @@ class PostCreateResult extends Event
      *
      * @return QueryInterface
      */
-    public function getQuery(): QueryInterface
+    public function getQuery()
     {
         return $this->query;
     }
@@ -56,7 +56,7 @@ class PostCreateResult extends Event
      *
      * @return Response
      */
-    public function getResponse(): Response
+    public function getResponse()
     {
         return $this->response;
     }
@@ -66,7 +66,7 @@ class PostCreateResult extends Event
      *
      * @return ResultInterface
      */
-    public function getResult(): ResultInterface
+    public function getResult()
     {
         return $this->result;
     }

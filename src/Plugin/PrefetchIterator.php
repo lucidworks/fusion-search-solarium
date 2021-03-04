@@ -5,7 +5,7 @@ namespace Solarium\Plugin;
 use Solarium\Core\Client\Endpoint;
 use Solarium\Core\Plugin\AbstractPlugin;
 use Solarium\QueryType\Select\Query\Query as SelectQuery;
-use Solarium\Core\Query\DocumentInterface;
+use Solarium\QueryType\Select\Result\DocumentInterface;
 use Solarium\QueryType\Select\Result\Result as SelectResult;
 
 /**
@@ -74,20 +74,19 @@ class PrefetchIterator extends AbstractPlugin implements \Iterator, \Countable
      *
      * @return self Provides fluent interface
      */
-    public function setPrefetch(int $value): self
+    public function setPrefetch($value)
     {
         $this->resetData();
 
-        $this->setOption('prefetch', $value);
-        return $this;
+        return $this->setOption('prefetch', $value);
     }
 
     /**
      * Get prefetch option.
      *
-     * @return int|null
+     * @return int
      */
-    public function getPrefetch(): ?int
+    public function getPrefetch()
     {
         return $this->getOption('prefetch');
     }
@@ -99,7 +98,7 @@ class PrefetchIterator extends AbstractPlugin implements \Iterator, \Countable
      *
      * @return self Provides fluent interface
      */
-    public function setQuery(SelectQuery $query): self
+    public function setQuery($query)
     {
         $this->query = $query;
         $this->resetData();
@@ -112,7 +111,7 @@ class PrefetchIterator extends AbstractPlugin implements \Iterator, \Countable
      *
      * @return SelectQuery
      */
-    public function getQuery(): SelectQuery
+    public function getQuery()
     {
         return $this->query;
     }
@@ -126,10 +125,9 @@ class PrefetchIterator extends AbstractPlugin implements \Iterator, \Countable
      *
      * @return self Provides fluent interface
      */
-    public function setEndpoint($endpoint): self
+    public function setEndpoint($endpoint)
     {
-        $this->setOption('endpoint', $endpoint);
-        return $this;
+        return $this->setOption('endpoint', $endpoint);
     }
 
     /**
@@ -147,7 +145,7 @@ class PrefetchIterator extends AbstractPlugin implements \Iterator, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         // if no results are available yet, get them now
         if (null === $this->result) {
@@ -179,7 +177,7 @@ class PrefetchIterator extends AbstractPlugin implements \Iterator, \Countable
      *
      * @return DocumentInterface
      */
-    public function current(): DocumentInterface
+    public function current()
     {
         $adjustedIndex = $this->position % $this->options['prefetch'];
 
@@ -191,7 +189,7 @@ class PrefetchIterator extends AbstractPlugin implements \Iterator, \Countable
      *
      * @return int
      */
-    public function key(): int
+    public function key()
     {
         return $this->position;
     }
@@ -209,7 +207,7 @@ class PrefetchIterator extends AbstractPlugin implements \Iterator, \Countable
      *
      * @return bool
      */
-    public function valid(): bool
+    public function valid()
     {
         $adjustedIndex = $this->position % $this->options['prefetch'];
 
@@ -223,10 +221,8 @@ class PrefetchIterator extends AbstractPlugin implements \Iterator, \Countable
 
     /**
      * Fetch the next set of results.
-     *
-     * @return self Provides fluent interface
      */
-    protected function fetchNext(): self
+    protected function fetchNext()
     {
         if (null === $this->cursormark && null !== $this->query->getCursormark()) {
             $this->cursormark = '*';
@@ -242,23 +238,17 @@ class PrefetchIterator extends AbstractPlugin implements \Iterator, \Countable
         $this->cursormark = $this->result->getNextCursorMark();
         $this->documents = $this->result->getDocuments();
         $this->start += $this->getPrefetch();
-
-        return $this;
     }
 
     /**
      * Reset any cached data / position.
-     *
-     * @return self Provides fluent interface
      */
-    protected function resetData(): self
+    protected function resetData()
     {
         $this->position = null;
         $this->result = null;
         $this->documents = null;
         $this->start = 0;
         $this->cursormark = null;
-
-        return $this;
     }
 }

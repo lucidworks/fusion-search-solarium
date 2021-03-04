@@ -18,5 +18,5 @@ interface ComponentRequestBuilderInterface
      *
      * @return Request
      */
-    public function buildComponent(ConfigurableInterface $component, Request $request): Request;
+    public function buildComponent($component, $request);
 }

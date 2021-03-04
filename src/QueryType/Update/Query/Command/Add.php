@@ -3,7 +3,7 @@
 namespace Solarium\QueryType\Update\Query\Command;
 
 use Solarium\Exception\RuntimeException;
-use Solarium\Core\Query\DocumentInterface;
+use Solarium\QueryType\Update\Query\Document\DocumentInterface;
 use Solarium\QueryType\Update\Query\Query as UpdateQuery;
 
 /**
@@ -16,7 +16,7 @@ class Add extends AbstractCommand
     /**
      * Documents to add.
      *
-     * @var DocumentInterface[]
+     * @var \Solarium\QueryType\Update\Query\Document\DocumentInterface[]
      */
     protected $documents = [];
 
@@ -40,7 +40,7 @@ class Add extends AbstractCommand
      *
      * @return self Provides fluent interface
      */
-    public function addDocument(DocumentInterface $document): self
+    public function addDocument(DocumentInterface $document)
     {
         $this->documents[] = $document;
 
@@ -56,20 +56,30 @@ class Add extends AbstractCommand
      *
      * @return self Provides fluent interface
      */
-    public function addDocuments($documents): self
+    public function addDocuments($documents)
     {
-        if ($documents instanceof \Traversable) {
-            $documents = iterator_to_array($documents);
-        }
-
-        foreach ($documents as $document) {
-            if (!($document instanceof DocumentInterface)) {
-                throw new RuntimeException('Documents must implement DocumentInterface.');
+        //only check documents for type if in an array (iterating a Traversable may do unnecessary work)
+        if (is_array($documents)) {
+            foreach ($documents as $document) {
+                if (!($document instanceof DocumentInterface)) {
+                    throw new RuntimeException('Documents must implement DocumentInterface.');
+                }
             }
         }
 
+        //if we don't have documents so far, accept arrays or Traversable objects as-is
         if (empty($this->documents)) {
             $this->documents = $documents;
+
+            return $this;
+        }
+
+        //if something Traversable is passed in, and there are existing documents, convert all to arrays before merging
+        if ($documents instanceof \Traversable) {
+            $documents = iterator_to_array($documents);
+        }
+        if ($this->documents instanceof \Traversable) {
+            $this->documents = array_merge(iterator_to_array($this->documents), $documents);
         } else {
             $this->documents = array_merge($this->documents, $documents);
         }
@@ -82,7 +92,7 @@ class Add extends AbstractCommand
      *
      * @return DocumentInterface[]
      */
-    public function getDocuments(): array
+    public function getDocuments()
     {
         return $this->documents;
     }
@@ -94,18 +104,17 @@ class Add extends AbstractCommand
      *
      * @return self Provides fluent interface
      */
-    public function setOverwrite(bool $overwrite): self
+    public function setOverwrite($overwrite)
     {
-        $this->setOption('overwrite', $overwrite);
-        return $this;
+        return $this->setOption('overwrite', $overwrite);
     }
 
     /**
      * Get overwrite option.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getOverwrite(): ?bool
+    public function getOverwrite()
     {
         return $this->getOption('overwrite');
     }
@@ -113,22 +122,21 @@ class Add extends AbstractCommand
     /**
      * Get commitWithin option.
      *
-     * @param int $commitWithin
+     * @param bool $commitWithin
      *
      * @return self Provides fluent interface
      */
-    public function setCommitWithin(int $commitWithin): self
+    public function setCommitWithin($commitWithin)
     {
-        $this->setOption('commitwithin', $commitWithin);
-        return $this;
+        return $this->setOption('commitwithin', $commitWithin);
     }
 
     /**
      * Set commitWithin option.
      *
-     * @return int|null
+     * @return bool
      */
-    public function getCommitWithin(): ?int
+    public function getCommitWithin()
     {
         return $this->getOption('commitwithin');
     }

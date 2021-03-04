@@ -5,7 +5,7 @@ namespace Solarium\Core\Event;
 use Solarium\Core\Client\Endpoint;
 use Solarium\Core\Client\Request;
 use Solarium\Core\Client\Response;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * PostExecuteRequest event, see Events for details.
@@ -46,7 +46,7 @@ class PostExecuteRequest extends Event
      *
      * @return Endpoint
      */
-    public function getEndpoint(): Endpoint
+    public function getEndpoint()
     {
         return $this->endpoint;
     }
@@ -56,7 +56,7 @@ class PostExecuteRequest extends Event
      *
      * @return Response
      */
-    public function getResponse(): Response
+    public function getResponse()
     {
         return $this->response;
     }
@@ -66,7 +66,7 @@ class PostExecuteRequest extends Event
      *
      * @return Request
      */
-    public function getRequest(): Request
+    public function getRequest()
     {
         return $this->request;
     }

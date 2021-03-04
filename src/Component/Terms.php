@@ -3,9 +3,7 @@
 namespace Solarium\Component;
 
 use Solarium\Component\ComponentTraits\TermsTrait;
-use Solarium\Component\RequestBuilder\ComponentRequestBuilderInterface;
 use Solarium\Component\RequestBuilder\Terms as RequestBuilder;
-use Solarium\Component\ResponseParser\ComponentParserInterface;
 use Solarium\Component\ResponseParser\Terms as ResponseParser;
 
 /**
@@ -35,7 +33,7 @@ class Terms extends AbstractComponent implements TermsInterface
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): ComponentRequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
@@ -45,7 +43,7 @@ class Terms extends AbstractComponent implements TermsInterface
      *
      * @return ResponseParser
      */
-    public function getResponseParser(): ?ComponentParserInterface
+    public function getResponseParser()
     {
         return new ResponseParser();
     }

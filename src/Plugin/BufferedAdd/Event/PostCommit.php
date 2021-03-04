@@ -2,8 +2,9 @@
 
 namespace Solarium\Plugin\BufferedAdd\Event;
 
+use Solarium\QueryType\Select\Result\DocumentInterface;
 use Solarium\QueryType\Update\Result;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * PostCommit event, see Events for details.
@@ -20,7 +21,7 @@ class PostCommit extends Event
      *
      * @param Result $result
      */
-    public function __construct(Result $result)
+    public function __construct($result)
     {
         $this->result = $result;
     }
@@ -28,9 +29,9 @@ class PostCommit extends Event
     /**
      * Get the result for this event.
      *
-     * @return Result
+     * @return DocumentInterface[]
      */
-    public function getResult(): Result
+    public function getResult()
     {
         return $this->result;
     }

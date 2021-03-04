@@ -2,8 +2,6 @@
 
 namespace Solarium\Component\ComponentTraits;
 
-use Solarium\Component\TermsInterface;
-
 /**
  * Terms component.
  *
@@ -23,7 +21,7 @@ trait TermsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setFields($value): TermsInterface
+    public function setFields($value)
     {
         if (is_string($value)) {
             $value = explode(',', $value);
@@ -38,7 +36,7 @@ trait TermsTrait
      *
      * @return array
      */
-    public function getFields(): array
+    public function getFields()
     {
         $value = $this->getOption('fields');
         if (null === $value) {
@@ -55,7 +53,7 @@ trait TermsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setLowerbound(string $value): TermsInterface
+    public function setLowerbound($value)
     {
         return $this->setOption('lowerbound', $value);
     }
@@ -63,9 +61,9 @@ trait TermsTrait
     /**
      * Get the lowerbound term to start at.
      *
-     * @return string|null
+     * @return string
      */
-    public function getLowerbound(): ?string
+    public function getLowerbound()
     {
         return $this->getOption('lowerbound');
     }
@@ -77,7 +75,7 @@ trait TermsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setLowerboundInclude(bool $value): TermsInterface
+    public function setLowerboundInclude($value)
     {
         return $this->setOption('lowerboundinclude', $value);
     }
@@ -85,9 +83,9 @@ trait TermsTrait
     /**
      * Get lowerboundinclude.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getLowerboundInclude(): ?bool
+    public function getLowerboundInclude()
     {
         return $this->getOption('lowerboundinclude');
     }
@@ -99,7 +97,7 @@ trait TermsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setMinCount(int $value): TermsInterface
+    public function setMinCount($value)
     {
         return $this->setOption('mincount', $value);
     }
@@ -107,9 +105,9 @@ trait TermsTrait
     /**
      * Get mincount.
      *
-     * @return int|null
+     * @return int
      */
-    public function getMinCount(): ?int
+    public function getMinCount()
     {
         return $this->getOption('mincount');
     }
@@ -121,7 +119,7 @@ trait TermsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setMaxCount(int $value): TermsInterface
+    public function setMaxCount($value)
     {
         return $this->setOption('maxcount', $value);
     }
@@ -129,9 +127,9 @@ trait TermsTrait
     /**
      * Get maxcount.
      *
-     * @return int|null
+     * @return int
      */
-    public function getMaxCount(): ?int
+    public function getMaxCount()
     {
         return $this->getOption('maxcount');
     }
@@ -143,17 +141,17 @@ trait TermsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setPrefix(string $value): TermsInterface
+    public function setPrefix($value)
     {
         return $this->setOption('prefix', $value);
     }
 
     /**
-     * Get prefix for terms.
+     * Get maxcount.
      *
-     * @return string|null
+     * @return string
      */
-    public function getPrefix(): ?string
+    public function getPrefix()
     {
         return $this->getOption('prefix');
     }
@@ -165,7 +163,7 @@ trait TermsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setRegex(string $value): TermsInterface
+    public function setRegex($value)
     {
         return $this->setOption('regex', $value);
     }
@@ -173,9 +171,9 @@ trait TermsTrait
     /**
      * Get regex.
      *
-     * @return string|null
+     * @return string
      */
-    public function getRegex(): ?string
+    public function getRegex()
     {
         return $this->getOption('regex');
     }
@@ -189,7 +187,7 @@ trait TermsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setRegexFlags($value): TermsInterface
+    public function setRegexFlags($value)
     {
         if (is_string($value)) {
             $value = explode(',', $value);
@@ -204,7 +202,7 @@ trait TermsTrait
      *
      * @return array
      */
-    public function getRegexFlags(): array
+    public function getRegexFlags()
     {
         $value = $this->getOption('regexflags');
         if (null === $value) {
@@ -223,7 +221,7 @@ trait TermsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setLimit(int $value): TermsInterface
+    public function setLimit($value)
     {
         return $this->setOption('limit', $value);
     }
@@ -231,9 +229,9 @@ trait TermsTrait
     /**
      * Get limit.
      *
-     * @return int|null
+     * @return int
      */
-    public function getLimit(): ?int
+    public function getLimit()
     {
         return $this->getOption('limit');
     }
@@ -245,7 +243,7 @@ trait TermsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setUpperbound(string $value): TermsInterface
+    public function setUpperbound($value)
     {
         return $this->setOption('upperbound', $value);
     }
@@ -253,9 +251,9 @@ trait TermsTrait
     /**
      * Get the upperbound term to start at.
      *
-     * @return string|null
+     * @return string
      */
-    public function getUpperbound(): ?string
+    public function getUpperbound()
     {
         return $this->getOption('upperbound');
     }
@@ -267,7 +265,7 @@ trait TermsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setUpperboundInclude(bool $value): TermsInterface
+    public function setUpperboundInclude($value)
     {
         return $this->setOption('upperboundinclude', $value);
     }
@@ -275,9 +273,9 @@ trait TermsTrait
     /**
      * Get upperboundinclude.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getUpperboundInclude(): ?bool
+    public function getUpperboundInclude()
     {
         return $this->getOption('upperboundinclude');
     }
@@ -289,7 +287,7 @@ trait TermsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setRaw(bool $value): TermsInterface
+    public function setRaw($value)
     {
         return $this->setOption('raw', $value);
     }
@@ -297,9 +295,9 @@ trait TermsTrait
     /**
      * Get raw option.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getRaw(): ?bool
+    public function getRaw()
     {
         return $this->getOption('raw');
     }
@@ -311,7 +309,7 @@ trait TermsTrait
      *
      * @return self Provides fluent interface
      */
-    public function setSort(string $value): TermsInterface
+    public function setSort($value)
     {
         return $this->setOption('sort', $value);
     }
@@ -319,9 +317,9 @@ trait TermsTrait
     /**
      * Get sort option.
      *
-     * @return string|null
+     * @return string
      */
-    public function getSort(): ?string
+    public function getSort()
     {
         return $this->getOption('sort');
     }

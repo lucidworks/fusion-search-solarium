@@ -3,8 +3,6 @@
 namespace Solarium\Core\Client\Adapter;
 
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
 use Solarium\Core\Client\Endpoint;
 use Solarium\Core\Client\Request;
@@ -14,8 +12,6 @@ use Solarium\Exception\HttpException;
 
 /**
  * Guzzle HTTP adapter.
- *
- * @deprecated Deprecated since Solarium 5.2 and will be removed in Solarium 6. Use Psr18Adapter instead.
  */
 class Guzzle extends Configurable implements AdapterInterface
 {
@@ -33,13 +29,13 @@ class Guzzle extends Configurable implements AdapterInterface
      * @param Endpoint $endpoint the configured Solr endpoint
      *
      * @throws HttpException thrown if solr request connot be made
-     * @throws
      *
      * @return Response
      *
+     *
      * @codingStandardsIgnoreStart AdapterInterface does not declare type-hints
      */
-    public function execute(Request $request, Endpoint $endpoint): Response
+    public function execute($request, $endpoint)
     {
         //@codingStandardsIgnoreEnd
         $requestOptions = [
@@ -78,16 +74,8 @@ class Guzzle extends Configurable implements AdapterInterface
             }
 
             return new Response((string) $guzzleResponse->getBody(), $responseHeaders);
-        } catch (GuzzleException $e) {
-            // Guzzle truncates the error message, therefore we try to get the full message from Solr below
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
             $error = $e->getMessage();
-            if ($e instanceof BadResponseException) {
-                try {
-                    $error = $e->getResponse()->getBody()->getContents();
-                } catch (\Exception $e) {
-                    // Fall back to the short message
-                }
-            }
             throw new HttpException("HTTP request failed, {$error}");
         }
     }

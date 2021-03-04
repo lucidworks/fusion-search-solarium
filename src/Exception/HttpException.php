@@ -47,7 +47,7 @@ class HttpException extends \RuntimeException implements ExceptionInterface
      * @param int|null    $code
      * @param string|null $body
      */
-    public function __construct(string $statusMessage, int $code = null, string $body = null)
+    public function __construct($statusMessage, $code = null, $body = null)
     {
         $this->statusMessage = $statusMessage;
         $this->body = $body;
@@ -68,7 +68,7 @@ class HttpException extends \RuntimeException implements ExceptionInterface
      *
      * @return string
      */
-    public function getStatusMessage(): string
+    public function getStatusMessage()
     {
         return $this->statusMessage;
     }
@@ -78,7 +78,7 @@ class HttpException extends \RuntimeException implements ExceptionInterface
      *
      * @return string
      */
-    public function getBody(): ?string
+    public function getBody()
     {
         return $this->body;
     }

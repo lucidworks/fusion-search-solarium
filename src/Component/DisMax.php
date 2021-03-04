@@ -3,7 +3,6 @@
 namespace Solarium\Component;
 
 use Solarium\Component\DisMax\BoostQuery;
-use Solarium\Component\RequestBuilder\ComponentRequestBuilderInterface;
 use Solarium\Component\RequestBuilder\DisMax as RequestBuilder;
 use Solarium\Exception\InvalidArgumentException;
 
@@ -45,7 +44,7 @@ class DisMax extends AbstractComponent
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): ComponentRequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
@@ -61,10 +60,9 @@ class DisMax extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setQueryAlternative($queryAlternative): self
+    public function setQueryAlternative($queryAlternative)
     {
-        $this->setOption('queryalternative', $queryAlternative);
-        return $this;
+        return $this->setOption('queryalternative', $queryAlternative);
     }
 
     /**
@@ -72,7 +70,7 @@ class DisMax extends AbstractComponent
      *
      * @return string|null
      */
-    public function getQueryAlternative(): ?string
+    public function getQueryAlternative()
     {
         return $this->getOption('queryalternative');
     }
@@ -89,10 +87,9 @@ class DisMax extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setQueryFields(string $queryFields): self
+    public function setQueryFields($queryFields)
     {
-        $this->setOption('queryfields', $queryFields);
-        return $this;
+        return $this->setOption('queryfields', $queryFields);
     }
 
     /**
@@ -100,7 +97,7 @@ class DisMax extends AbstractComponent
      *
      * @return string|null
      */
-    public function getQueryFields(): ?string
+    public function getQueryFields()
     {
         return $this->getOption('queryfields');
     }
@@ -115,10 +112,9 @@ class DisMax extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setMinimumMatch(string $minimumMatch): self
+    public function setMinimumMatch($minimumMatch)
     {
-        $this->setOption('minimummatch', $minimumMatch);
-        return $this;
+        return $this->setOption('minimummatch', $minimumMatch);
     }
 
     /**
@@ -126,7 +122,7 @@ class DisMax extends AbstractComponent
      *
      * @return string|null
      */
-    public function getMinimumMatch(): ?string
+    public function getMinimumMatch()
     {
         return $this->getOption('minimummatch');
     }
@@ -143,10 +139,9 @@ class DisMax extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setPhraseFields(string $phraseFields): self
+    public function setPhraseFields($phraseFields)
     {
-        $this->setOption('phrasefields', $phraseFields);
-        return $this;
+        return $this->setOption('phrasefields', $phraseFields);
     }
 
     /**
@@ -154,7 +149,7 @@ class DisMax extends AbstractComponent
      *
      * @return string|null
      */
-    public function getPhraseFields(): ?string
+    public function getPhraseFields()
     {
         return $this->getOption('phrasefields');
     }
@@ -165,22 +160,21 @@ class DisMax extends AbstractComponent
      * Amount of slop on phrase queries built for "pf" fields
      * (affects boosting)
      *
-     * @param int $phraseSlop
+     * @param string $phraseSlop
      *
      * @return self Provides fluent interface
      */
-    public function setPhraseSlop(int $phraseSlop): self
+    public function setPhraseSlop($phraseSlop)
     {
-        $this->setOption('phraseslop', $phraseSlop);
-        return $this;
+        return $this->setOption('phraseslop', $phraseSlop);
     }
 
     /**
      * Get PhraseSlop option.
      *
-     * @return int|null
+     * @return string|null
      */
-    public function getPhraseSlop(): ?int
+    public function getPhraseSlop()
     {
         return $this->getOption('phraseslop');
     }
@@ -191,22 +185,21 @@ class DisMax extends AbstractComponent
      * Amount of slop on phrase queries explicitly included in the user's
      * query string (in qf fields; affects matching)
      *
-     * @param int $queryPhraseSlop
+     * @param string $queryPhraseSlop
      *
      * @return self Provides fluent interface
      */
-    public function setQueryPhraseSlop(int $queryPhraseSlop): self
+    public function setQueryPhraseSlop($queryPhraseSlop)
     {
-        $this->setOption('queryphraseslop', $queryPhraseSlop);
-        return $this;
+        return $this->setOption('queryphraseslop', $queryPhraseSlop);
     }
 
     /**
      * Get QueryPhraseSlop option.
      *
-     * @return int|null
+     * @return string|null
      */
-    public function getQueryPhraseSlop(): ?int
+    public function getQueryPhraseSlop()
     {
         return $this->getOption('queryphraseslop');
     }
@@ -220,10 +213,9 @@ class DisMax extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setTie(float $tie): self
+    public function setTie($tie)
     {
-        $this->setOption('tie', $tie);
-        return  $this;
+        return $this->setOption('tie', $tie);
     }
 
     /**
@@ -231,7 +223,7 @@ class DisMax extends AbstractComponent
      *
      * @return float|null
      */
-    public function getTie(): ?float
+    public function getTie()
     {
         return $this->getOption('tie');
     }
@@ -246,7 +238,7 @@ class DisMax extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setBoostQuery(string $boostQuery): self
+    public function setBoostQuery($boostQuery)
     {
         $this->clearBoostQueries();
         $this->addBoostQuery(['key' => 0, 'query' => $boostQuery]);
@@ -261,7 +253,7 @@ class DisMax extends AbstractComponent
      *
      * @return string|null
      */
-    public function getBoostQuery(string $key = null): ?string
+    public function getBoostQuery($key = null)
     {
         if (null !== $key) {
             if (array_key_exists($key, $this->boostQueries)) {
@@ -292,7 +284,7 @@ class DisMax extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function addBoostQuery($boostQuery): self
+    public function addBoostQuery($boostQuery)
     {
         if (is_array($boostQuery)) {
             $boostQuery = new BoostQuery($boostQuery);
@@ -321,7 +313,7 @@ class DisMax extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function addBoostQueries(array $boostQueries): self
+    public function addBoostQueries(array $boostQueries)
     {
         foreach ($boostQueries as $key => $boostQuery) {
             // in case of a config array: add key to config
@@ -340,7 +332,7 @@ class DisMax extends AbstractComponent
      *
      * @return BoostQuery[]
      */
-    public function getBoostQueries(): array
+    public function getBoostQueries()
     {
         return $this->boostQueries;
     }
@@ -354,13 +346,13 @@ class DisMax extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function removeBoostQuery($boostQuery): self
+    public function removeBoostQuery($boostQuery)
     {
         if (is_object($boostQuery)) {
             $boostQuery = $boostQuery->getKey();
         }
 
-        if ($boostQuery && isset($this->boostQueries[$boostQuery])) {
+        if (isset($this->boostQueries[$boostQuery])) {
             unset($this->boostQueries[$boostQuery]);
         }
 
@@ -372,7 +364,7 @@ class DisMax extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function clearBoostQueries(): self
+    public function clearBoostQueries()
     {
         $this->boostQueries = [];
 
@@ -385,15 +377,11 @@ class DisMax extends AbstractComponent
      * This overwrites any existing boostqueries
      *
      * @param array $boostQueries
-     *
-     * @return self Provides fluent interface
      */
-    public function setBoostQueries(array $boostQueries): self
+    public function setBoostQueries($boostQueries)
     {
         $this->clearBoostQueries();
         $this->addBoostQueries($boostQueries);
-
-        return $this;
     }
 
     /**
@@ -408,10 +396,9 @@ class DisMax extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setBoostFunctions(string $boostFunctions): self
+    public function setBoostFunctions($boostFunctions)
     {
-        $this->setOption('boostfunctions', $boostFunctions);
-        return $this;
+        return $this->setOption('boostfunctions', $boostFunctions);
     }
 
     /**
@@ -419,7 +406,7 @@ class DisMax extends AbstractComponent
      *
      * @return string|null
      */
-    public function getBoostFunctions(): ?string
+    public function getBoostFunctions()
     {
         return $this->getOption('boostfunctions');
     }
@@ -435,10 +422,9 @@ class DisMax extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setQueryParser(string $parser): self
+    public function setQueryParser($parser)
     {
-        $this->setOption('queryparser', $parser);
-        return $this;
+        return $this->setOption('queryparser', $parser);
     }
 
     /**
@@ -448,7 +434,7 @@ class DisMax extends AbstractComponent
      *
      * @return string
      */
-    public function getQueryParser(): string
+    public function getQueryParser()
     {
         return $this->getOption('queryparser');
     }

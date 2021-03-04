@@ -3,18 +3,15 @@
 namespace Solarium\Core\Query;
 
 use Solarium\Core\Configurable;
-use Solarium\Core\Query\LocalParameters\LocalParametersTrait;
 
 /**
  * Base class for all query types, not intended for direct usage.
  */
 abstract class AbstractQuery extends Configurable implements QueryInterface
 {
-    use LocalParametersTrait;
+    const WT_JSON = 'json';
 
-    public const WT_JSON = 'json';
-
-    public const WT_PHPS = 'phps';
+    const WT_PHPS = 'phps';
 
     /**
      * Helper instance.
@@ -37,19 +34,17 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function setHandler(string $handler): QueryInterface
+    public function setHandler($handler)
     {
-        $this->setOption('handler', $handler);
-
-        return $this;
+        return $this->setOption('handler', $handler);
     }
 
     /**
      * Get handler option.
      *
-     * @return string|null
+     * @return string
      */
-    public function getHandler(): ?string
+    public function getHandler()
     {
         return $this->getOption('handler');
     }
@@ -68,19 +63,17 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function setResultClass(string $classname): QueryInterface
+    public function setResultClass($classname)
     {
-        $this->setOption('resultclass', $classname);
-
-        return  $this;
+        return $this->setOption('resultclass', $classname);
     }
 
     /**
      * Get resultclass option.
      *
-     * @return string|null
+     * @return string
      */
-    public function getResultClass(): ?string
+    public function getResultClass()
     {
         return $this->getOption('resultclass');
     }
@@ -92,11 +85,9 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function setTimeAllowed(int $value): QueryInterface
+    public function setTimeAllowed($value)
     {
-        $this->setOption('timeallowed', $value);
-
-        return $this;
+        return $this->setOption('timeallowed', $value);
     }
 
     /**
@@ -104,7 +95,7 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      *
      * @return int|null
      */
-    public function getTimeAllowed(): ?int
+    public function getTimeAllowed()
     {
         return $this->getOption('timeallowed');
     }
@@ -116,19 +107,17 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function setOmitHeader(bool $value): QueryInterface
+    public function setOmitHeader($value)
     {
-        $this->setOption('omitheader', $value);
-
-        return $this;
+        return $this->setOption('omitheader', $value);
     }
 
     /**
      * Get omitHeader option.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getOmitHeader(): ?bool
+    public function getOmitHeader()
     {
         return $this->getOption('omitheader');
     }
@@ -140,7 +129,7 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      *
      * @return Helper
      */
-    public function getHelper(): Helper
+    public function getHelper()
     {
         if (null === $this->helper) {
             $this->helper = new Helper($this);
@@ -156,11 +145,11 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      * Therefore the params are limited in functionality. Only add and get
      *
      * @param string $name
-     * @param mixed  $value
+     * @param string $value
      *
      * @return self Provides fluent interface
      */
-    public function addParam(string $name, $value): QueryInterface
+    public function addParam($name, $value)
     {
         $this->params[$name] = $value;
 
@@ -176,7 +165,7 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function removeParam(string $name): QueryInterface
+    public function removeParam($name)
     {
         if (isset($this->params[$name])) {
             unset($this->params[$name]);
@@ -190,7 +179,7 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      *
      * @return array
      */
-    public function getParams(): array
+    public function getParams()
     {
         return $this->params;
     }
@@ -202,11 +191,9 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function setResponseWriter(string $value): QueryInterface
+    public function setResponseWriter($value)
     {
-        $this->setOption('responsewriter', $value);
-
-        return $this;
+        return $this->setOption('responsewriter', $value);
     }
 
     /**
@@ -220,7 +207,7 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      *
      * @return string
      */
-    public function getResponseWriter(): string
+    public function getResponseWriter()
     {
         $responseWriter = $this->getOption('responsewriter');
         if (null === $responseWriter) {
@@ -237,23 +224,21 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      *
      * Make sure to pass a string instead of an int if the code has to run on a 32-bit PHP installation.
      *
-     * @param int $timestamp Milliseconds since epoch
+     * @param string $timestamp Milliseconds since epoch
      *
      * @return self Provides fluent interface
      */
-    public function setNow(int $timestamp): self
+    public function setNow($timestamp)
     {
-        $this->setOption('now', $timestamp);
-
-        return $this;
+        return $this->setOption('now', $timestamp);
     }
 
     /**
      * Get now option.
      *
-     * @return int|null Milliseconds since epoch
+     * @return string Milliseconds since epoch
      */
-    public function getNow(): ?int
+    public function getNow()
     {
         return $this->getOption('now');
     }
@@ -263,27 +248,21 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      *
      * Forces all date based addition and rounding to be relative to the specified time zone instead of UTC.
      *
-     * @param string|\DateTimeZone $timezone Java TimeZone ID as string or PHP \DateTimeZone object
+     * @param string $timezone Java TimeZone ID
      *
      * @return self Provides fluent interface
      */
-    public function setTimeZone($timezone): self
+    public function setTimeZone($timezone)
     {
-        if ($timezone instanceof \DateTimeZone) {
-            $this->setOption('timezone', $timezone->getName());
-        } else {
-            $this->setOption('timezone', $timezone);
-        }
-
-        return $this;
+        return $this->setOption('timezone', $timezone);
     }
 
     /**
      * Get timezone option.
      *
-     * @return string|null Java TimeZone ID as string or PHP DateTimeZone object
+     * @return string Java TimeZone ID
      */
-    public function getTimeZone(): ?string
+    public function getTimeZone()
     {
         return $this->getOption('timezone');
     }
@@ -295,10 +274,9 @@ abstract class AbstractQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function setDistrib(bool $value): self
+    public function setDistrib($value): self
     {
         $this->setOption('distrib', $value);
-
         return $this;
     }
 

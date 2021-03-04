@@ -37,7 +37,7 @@ class CustomizeRequest extends AbstractPlugin
      *
      * @return Customization
      */
-    public function createCustomization($options = null): Customization
+    public function createCustomization($options = null)
     {
         if (is_string($options)) {
             $fq = new Customization();
@@ -66,7 +66,7 @@ class CustomizeRequest extends AbstractPlugin
      *
      * @return self Provides fluent interface
      */
-    public function addCustomization($customization): self
+    public function addCustomization($customization)
     {
         if (is_array($customization)) {
             $customization = new Customization($customization);
@@ -97,9 +97,9 @@ class CustomizeRequest extends AbstractPlugin
      *
      * @param array $customizations
      *
-     * @return self Provides fluent interface
+     * @return CustomizeRequest Provides fluent interface
      */
-    public function addCustomizations(array $customizations): self
+    public function addCustomizations(array $customizations)
     {
         foreach ($customizations as $key => $customization) {
             // in case of a config array: add key to config
@@ -118,11 +118,13 @@ class CustomizeRequest extends AbstractPlugin
      *
      * @param string $key
      *
-     * @return Customization|null
+     * @return string
      */
-    public function getCustomization(string $key): ?Customization
+    public function getCustomization($key)
     {
-        return $this->customizations[$key] ?? null;
+        if (isset($this->customizations[$key])) {
+            return $this->customizations[$key];
+        }
     }
 
     /**
@@ -130,7 +132,7 @@ class CustomizeRequest extends AbstractPlugin
      *
      * @return Customization[]
      */
-    public function getCustomizations(): array
+    public function getCustomizations()
     {
         return $this->customizations;
     }
@@ -142,9 +144,9 @@ class CustomizeRequest extends AbstractPlugin
      *
      * @param string|Customization $customization
      *
-     * @return self Provides fluent interface
+     * @return CustomizeRequest Provides fluent interface
      */
-    public function removeCustomization($customization): self
+    public function removeCustomization($customization)
     {
         if (is_object($customization)) {
             $customization = $customization->getKey();
@@ -160,9 +162,9 @@ class CustomizeRequest extends AbstractPlugin
     /**
      * Remove all Customizations.
      *
-     * @return self Provides fluent interface
+     * @return CustomizeRequest Provides fluent interface
      */
-    public function clearCustomizations(): self
+    public function clearCustomizations()
     {
         $this->customizations = [];
 
@@ -175,14 +177,11 @@ class CustomizeRequest extends AbstractPlugin
      * This overwrites any existing Customizations
      *
      * @param array $customizations
-     *
-     * @return self Provides fluent interface
      */
-    public function setCustomizations(array $customizations): self
+    public function setCustomizations($customizations)
     {
         $this->clearCustomizations();
         $this->addCustomizations($customizations);
-        return $this;
     }
 
     /**
@@ -192,10 +191,8 @@ class CustomizeRequest extends AbstractPlugin
      * @param preExecuteRequestEvent $event
      *
      * @throws RuntimeException
-     *
-     * @return self Provides fluent interface
      */
-    public function preExecuteRequest(preExecuteRequestEvent $event): self
+    public function preExecuteRequest(preExecuteRequestEvent $event)
     {
         $request = $event->getRequest();
         foreach ($this->getCustomizations() as $key => $customization) {
@@ -225,8 +222,6 @@ class CustomizeRequest extends AbstractPlugin
         }
 
         $event->setRequest($request);
-
-        return $this;
     }
 
     /**
