@@ -11,10 +11,8 @@ use Solarium\Exception\HttpException;
 /**
  * Basic HTTP adapter using a stream.
  */
-class Http extends Configurable implements AdapterInterface, TimeoutAwareInterface
+class Http extends Configurable implements AdapterInterface
 {
-    use TimeoutAwareTrait;
-
     /**
      * Handle Solr communication.
      *
@@ -26,12 +24,12 @@ class Http extends Configurable implements AdapterInterface, TimeoutAwareInterfa
      *
      * @return Response
      */
-    public function execute(Request $request, Endpoint $endpoint): Response
+    public function execute($request, $endpoint)
     {
         $context = $this->createContext($request, $endpoint);
         $uri = AdapterHelper::buildUri($request, $endpoint);
 
-        [$data, $headers] = $this->getData($uri, $context);
+        list($data, $headers) = $this->getData($uri, $context);
 
         $this->check($data, $headers);
 
@@ -70,9 +68,7 @@ class Http extends Configurable implements AdapterInterface, TimeoutAwareInterfa
         $context = stream_context_create(
             ['http' => [
                     'method' => $method,
-                    'timeout' => $this->timeout ?? $endpoint->getTimeout(),
-                    'protocol_version' => 1.0,
-                    'user_agent' => 'Solarium Http Adapter',
+                    'timeout' => $endpoint->getTimeout(),
                 ],
             ]
         );
@@ -111,7 +107,7 @@ class Http extends Configurable implements AdapterInterface, TimeoutAwareInterfa
                         $data
                     );
 
-                    $request->addHeader('Content-Type: text/xml; charset=utf-8');
+                    $request->addHeader('Content-Type: text/xml; charset=UTF-8');
                 }
             }
         } elseif (Request::METHOD_PUT == $method) {
@@ -123,9 +119,7 @@ class Http extends Configurable implements AdapterInterface, TimeoutAwareInterfa
                     'content',
                     $data
                 );
-                $request->addHeader('Content-Type: application/json; charset=utf-8');
-                // The stream context automatically adds a "Connection: close" header which fails on Solr 8.5.0
-                $request->addHeader('Connection: Keep-Alive');
+                $request->addHeader('Content-Type: application/json; charset=UTF-8');
             }
         }
 
@@ -154,7 +148,12 @@ class Http extends Configurable implements AdapterInterface, TimeoutAwareInterfa
     {
         $data = @file_get_contents($uri, false, $context);
 
-        // @ see https://www.php.net/manual/en/reserved.variables.httpresponseheader.php
-        return [$data, $http_response_header];
+        $headers = [];
+
+        if (isset($http_response_header)) {
+            $headers = $http_response_header;
+        }
+
+        return [$data, $headers];
     }
 }

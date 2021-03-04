@@ -3,7 +3,6 @@
 namespace Solarium\Component\QueryTraits;
 
 use Solarium\Component\ComponentAwareQueryInterface;
-use Solarium\Component\Stats\Stats;
 
 /**
  * Trait query types supporting components.
@@ -17,7 +16,7 @@ trait StatsTrait
      *
      * @return \Solarium\Component\Stats\Stats
      */
-    public function getStats(): Stats
+    public function getStats()
     {
         return $this->getComponent(ComponentAwareQueryInterface::COMPONENT_STATS, true);
     }

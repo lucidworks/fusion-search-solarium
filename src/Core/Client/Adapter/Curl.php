@@ -15,10 +15,8 @@ use Solarium\Exception\RuntimeException;
  *
  * @author Intervals <info@myintervals.com>
  */
-class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterface
+class Curl extends Configurable implements AdapterInterface
 {
-    use TimeoutAwareTrait;
-
     /**
      * Execute a Solr request using the cURL Http.
      *
@@ -27,7 +25,7 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
      *
      * @return Response
      */
-    public function execute(Request $request, Endpoint $endpoint): Response
+    public function execute($request, $endpoint)
     {
         return $this->getData($request, $endpoint);
     }
@@ -40,12 +38,13 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
      *
      * @return Response
      */
-    public function getResponse($handle, $httpResponse): Response
+    public function getResponse($handle, $httpResponse)
     {
         if (false !== $httpResponse && null !== $httpResponse) {
             $data = $httpResponse;
             $info = curl_getinfo($handle);
-            $headers = $info;
+            $headers = [];
+            $headers[] = 'HTTP/1.1 '.$info['http_code'].' OK';
         } else {
             $headers = [];
             $data = '';
@@ -53,6 +52,7 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
 
         $this->check($data, $headers, $handle);
         curl_close($handle);
+
         return new Response($data, $headers);
     }
 
@@ -70,13 +70,10 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
     public function createHandle($request, $endpoint)
     {
         $uri = AdapterHelper::buildUri($request, $endpoint);
-        $reqHandler = $request->getHandler();
-        $queryProfile = $endpoint->getQueryProfile();
-        if ($reqHandler === 'query' && isset($queryProfile)) {
-           $uri = str_replace("query", "query/".$queryProfile, $uri); 
-        }
+
         $method = $request->getMethod();
         $options = $this->createOptions($request, $endpoint);
+
         $handler = curl_init();
         curl_setopt($handler, CURLOPT_URL, $uri);
         curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
@@ -91,7 +88,7 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
         }
 
         if (!isset($options['headers']['Content-Type'])) {
-            if (Request::METHOD_GET == $method || (Request::METHOD_POST == $method && strpos($uri, '/select') == true)) {
+            if (Request::METHOD_GET == $method) {
                 $options['headers']['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
             } else {
                 $options['headers']['Content-Type'] = 'application/xml; charset=utf-8';
@@ -175,10 +172,11 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
      *
      * @return Response
      */
-    protected function getData($request, $endpoint): Response
+    protected function getData($request, $endpoint)
     {
         $handle = $this->createHandle($request, $endpoint);
         $httpResponse = curl_exec($handle);
+
         return $this->getResponse($handle, $httpResponse);
     }
 
@@ -209,10 +207,10 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
     protected function createOptions($request, $endpoint)
     {
         $options = [
-            'timeout' => $this->timeout ?? $endpoint->getTimeout(),
+            'timeout' => $endpoint->getTimeout(),
         ];
         foreach ($request->getHeaders() as $headerLine) {
-            [$header, $value] = explode(':', $headerLine);
+            list($header, $value) = explode(':', $headerLine);
             if ($header = trim($header)) {
                 $options['headers'][$header] = trim($value);
             }

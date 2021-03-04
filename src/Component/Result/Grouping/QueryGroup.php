@@ -2,7 +2,7 @@
 
 namespace Solarium\Component\Result\Grouping;
 
-use Solarium\Core\Query\AbstractQuery;
+use Solarium\QueryType\Select\Query\Query;
 
 /**
  * Select component grouping query group result.
@@ -28,7 +28,7 @@ class QueryGroup implements \IteratorAggregate, \Countable
     /**
      * Start offset.
      *
-     * @var int|null
+     * @var int
      */
     protected $start;
 
@@ -47,21 +47,21 @@ class QueryGroup implements \IteratorAggregate, \Countable
     protected $documents;
 
     /**
-     * @var AbstractQuery
+     * @var Query
      */
     protected $query;
 
     /**
      * Constructor.
      *
-     * @param int|null      $matches
-     * @param int|null      $numFound
-     * @param int|null      $start
-     * @param float|null    $maximumScore
-     * @param array         $documents
-     * @param AbstractQuery $query
+     * @param int   $matches
+     * @param int   $numFound
+     * @param int   $start
+     * @param float $maximumScore
+     * @param array $documents
+     * @param Query $query
      */
-    public function __construct(?int $matches, ?int $numFound, ?int $start, ?float $maximumScore, array $documents, ?AbstractQuery $query = null)
+    public function __construct($matches, $numFound, $start, $maximumScore, $documents, $query = null)
     {
         $this->matches = $matches;
         $this->numFound = $numFound;
@@ -76,7 +76,7 @@ class QueryGroup implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function getMatches(): int
+    public function getMatches()
     {
         return $this->matches;
     }
@@ -86,7 +86,7 @@ class QueryGroup implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function getNumFound(): int
+    public function getNumFound()
     {
         return $this->numFound;
     }
@@ -94,9 +94,9 @@ class QueryGroup implements \IteratorAggregate, \Countable
     /**
      * Get start value.
      *
-     * @return int|null
+     * @return int
      */
-    public function getStart(): ?int
+    public function getStart()
     {
         return $this->start;
     }
@@ -104,9 +104,9 @@ class QueryGroup implements \IteratorAggregate, \Countable
     /**
      * Get maximumScore value.
      *
-     * @return float
+     * @return int
      */
-    public function getMaximumScore(): float
+    public function getMaximumScore()
     {
         return $this->maximumScore;
     }
@@ -116,7 +116,7 @@ class QueryGroup implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getDocuments(): array
+    public function getDocuments()
     {
         return $this->documents;
     }
@@ -126,7 +126,7 @@ class QueryGroup implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->getDocuments());
     }
@@ -136,7 +136,7 @@ class QueryGroup implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->getDocuments());
     }

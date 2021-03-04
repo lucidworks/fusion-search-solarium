@@ -19,7 +19,7 @@ class ResourceList extends BaseResult implements \IteratorAggregate, \Countable
     /**
      * List items.
      *
-     * @var \Solarium\QueryType\ManagedResources\Result\Resources\Resource[]
+     * @var Resoure[]
      */
     protected $items = [];
 
@@ -47,7 +47,7 @@ class ResourceList extends BaseResult implements \IteratorAggregate, \Countable
     /**
      * Get all items.
      *
-     * @return \Solarium\QueryType\ManagedResources\Result\Resources\Resource[]
+     * @return resource[]
      */
     public function getItems(): array
     {

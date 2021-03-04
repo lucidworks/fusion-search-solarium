@@ -2,8 +2,6 @@
 
 namespace Solarium\Component\ResponseParser;
 
-use Solarium\Component\AbstractComponent;
-use Solarium\Component\ComponentAwareQueryInterface;
 use Solarium\Component\Result\Spellcheck\Collation;
 use Solarium\Component\Result\Spellcheck\Result;
 use Solarium\Component\Result\Spellcheck\Suggestion;
@@ -25,39 +23,37 @@ class Spellcheck extends ResponseParserAbstract implements ComponentParserInterf
      *
      * @return Result|null
      */
-    public function parse(?ComponentAwareQueryInterface $query, ?AbstractComponent $spellcheck, array $data): ?Result
+    public function parse($query, $spellcheck, $data)
     {
-        if (isset($data['spellcheck'])) {
+        if (isset($data['spellcheck']['suggestions']) &&
+            is_array($data['spellcheck']['suggestions']) &&
+            count($data['spellcheck']['suggestions']) > 0
+        ) {
+            $spellcheckResults = $data['spellcheck']['suggestions'];
+            if ($query->getResponseWriter() == $query::WT_JSON) {
+                $spellcheckResults = $this->convertToKeyValueArray($spellcheckResults);
+            }
+
             $suggestions = [];
             $collations = [];
             $correctlySpelled = false;
 
-            if (isset($data['spellcheck']['suggestions']) &&
-                is_array($data['spellcheck']['suggestions']) &&
-                count($data['spellcheck']['suggestions']) > 0
-            ) {
-                $spellcheckResults = $data['spellcheck']['suggestions'];
-                if ($query && $query->getResponseWriter() == $query::WT_JSON) {
-                    $spellcheckResults = $this->convertToKeyValueArray($spellcheckResults);
-                }
-
-                foreach ($spellcheckResults as $key => $value) {
-                    switch ($key) {
-                        case 'correctlySpelled':
-                            $correctlySpelled = $value;
-                            break;
-                        case 'collation':
-                            $collations = $this->parseCollation($query, $value);
-                            break;
-                        default:
-                            if (array_key_exists(0, $value)) {
-                                foreach ($value as $currentValue) {
-                                    $suggestions[] = $this->parseSuggestion($currentValue, $key);
-                                }
-                            } else {
-                                $suggestions[] = $this->parseSuggestion($value, $key);
+            foreach ($spellcheckResults as $key => $value) {
+                switch ($key) {
+                    case 'correctlySpelled':
+                        $correctlySpelled = $value;
+                        break;
+                    case 'collation':
+                        $collations = $this->parseCollation($query, $value);
+                        break;
+                    default:
+                        if (array_key_exists(0, $value)) {
+                            foreach ($value as $currentValue) {
+                                $suggestions[] = $this->parseSuggestion($key, $currentValue);
                             }
-                    }
+                        } else {
+                            $suggestions[] = $this->parseSuggestion($key, $value);
+                        }
                 }
             }
 
@@ -69,11 +65,9 @@ class Spellcheck extends ResponseParserAbstract implements ComponentParserInterf
             if (isset($data['spellcheck']['collations']) &&
                 is_array($data['spellcheck']['collations'])
             ) {
-                $collations = [$collations];
                 foreach ($this->convertToKeyValueArray($data['spellcheck']['collations']) as $collationResult) {
-                    $collations[] = $this->parseCollation($query, $collationResult);
+                    $collations = array_merge($collations, $this->parseCollation($query, $collationResult));
                 }
-                $collations = array_merge(...$collations);
             }
 
             if (isset($data['spellcheck']['correctlySpelled'])
@@ -83,6 +77,7 @@ class Spellcheck extends ResponseParserAbstract implements ComponentParserInterf
 
             return new Result($suggestions, $collations, $correctlySpelled);
         }
+
         return null;
     }
 
@@ -90,11 +85,11 @@ class Spellcheck extends ResponseParserAbstract implements ComponentParserInterf
      * Parse collation data into a result object.
      *
      * @param AbstractQuery $queryObject
-     * @param array|string  $values
+     * @param array         $values
      *
      * @return Collation[]
      */
-    protected function parseCollation(?AbstractQuery $queryObject, $values): array
+    protected function parseCollation($queryObject, $values)
     {
         $collations = [];
         if (is_string($values)) {
@@ -104,7 +99,7 @@ class Spellcheck extends ResponseParserAbstract implements ComponentParserInterf
                 $collations[] = new Collation($value, null, []);
             }
         } else {
-            if ($queryObject && $queryObject->getResponseWriter() === $queryObject::WT_JSON) {
+            if ($queryObject->getResponseWriter() == $queryObject::WT_JSON) {
                 if (is_array(current($values))) {
                     foreach ($values as $key => $value) {
                         if (array_key_exists('collationQuery', $value)) {
@@ -143,7 +138,7 @@ class Spellcheck extends ResponseParserAbstract implements ComponentParserInterf
 
                 $corrections = [];
                 if (null !== $correctionResult) {
-                    if ($queryObject && $queryObject->getResponseWriter() === $queryObject::WT_JSON) {
+                    if ($queryObject->getResponseWriter() == $queryObject::WT_JSON) {
                         $correctionResult = $this->convertToKeyValueArray($correctionResult);
                     }
 
@@ -162,12 +157,12 @@ class Spellcheck extends ResponseParserAbstract implements ComponentParserInterf
     /**
      * Parse suggestion data into a result object.
      *
+     * @param string $key
      * @param array  $value
-     * @param string $originalTerm
      *
      * @return Suggestion
      */
-    protected function parseSuggestion(array $value, string $originalTerm): Suggestion
+    protected function parseSuggestion($key, $value)
     {
         $numFound = (isset($value['numFound'])) ? $value['numFound'] : null;
         $startOffset = (isset($value['startOffset'])) ? $value['startOffset'] : null;
@@ -187,6 +182,6 @@ class Spellcheck extends ResponseParserAbstract implements ComponentParserInterf
             }
         }
 
-        return new Suggestion($numFound, $startOffset, $endOffset, $originalFrequency, $words, $originalTerm);
+        return new Suggestion($numFound, $startOffset, $endOffset, $originalFrequency, $words);
     }
 }

@@ -29,20 +29,16 @@ class Loader
 
     /**
      * @param FixtureInterface $fixture
-     *
-     * @return self
      */
-    public function addFixture(FixtureInterface $fixture): self
+    public function addFixture(FixtureInterface $fixture)
     {
         $this->fixtures[] = $fixture;
-
-        return $this;
     }
 
     /**
      * @return FixtureInterface[]
      */
-    public function getFixtures(): array
+    public function getFixtures()
     {
         return $this->fixtures;
     }
@@ -50,12 +46,9 @@ class Loader
     /**
      * @param string $dir
      *
-     * @return self
-     *
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      */
-    public function loadFromDirectory(string $dir): self
+    public function loadFromDirectory($dir)
     {
         if (!is_dir($dir)) {
             throw new \InvalidArgumentException(sprintf('"%s" does not exist', $dir));
@@ -70,7 +63,7 @@ class Loader
 
         /** @var $file \DirectoryIterator */
         foreach ($iterator as $file) {
-            if ($file->getBasename($this->fileExtension) == $file->getBasename()) {
+            if (($fileName = $file->getBasename($this->fileExtension)) == $file->getBasename()) {
                 continue;
             }
             $sourceFile = realpath($file->getPathname());
@@ -90,7 +83,5 @@ class Loader
                 $this->addFixture($fixture);
             }
         }
-
-        return $this;
     }
 }

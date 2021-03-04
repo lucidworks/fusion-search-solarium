@@ -4,18 +4,18 @@ namespace Solarium\QueryType\ManagedResources\ResponseParser;
 
 use Solarium\Core\Query\AbstractResponseParser as ResponseParserAbstract;
 use Solarium\Core\Query\ResponseParserInterface;
-use Solarium\Core\Query\Result\ResultInterface;
+use Solarium\Core\Query\Result\Result;
 
 class Stopwords extends ResponseParserAbstract implements ResponseParserInterface
 {
     /**
      * Parse response data.
      *
-     * @param ResultInterface $result
+     * @param Result $result
      *
      * @return array
      */
-    public function parse(ResultInterface $result): array
+    public function parse($result)
     {
         $data = $result->getData();
         $wordSet = null;
@@ -29,10 +29,6 @@ class Stopwords extends ResponseParserAbstract implements ResponseParserInterfac
             $parsed['items'] = $wordSet['managedList'];
             $parsed['ignoreCase'] = $wordSet['initArgs']['ignoreCase'];
             $parsed['initializedOn'] = $wordSet['initializedOn'];
-
-            if (isset($wordSet['updatedSinceInit'])) {
-                $parsed['updatedSinceInit'] = $wordSet['updatedSinceInit'];
-            }
         }
 
         $this->addHeaderInfo($data, $parsed);

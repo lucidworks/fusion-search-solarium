@@ -2,7 +2,6 @@
 
 namespace Solarium\Component;
 
-use Solarium\Component\RequestBuilder\ComponentRequestBuilderInterface;
 use Solarium\Component\RequestBuilder\DistributedSearch as RequestBuilder;
 
 /**
@@ -49,7 +48,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): ComponentRequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
@@ -64,7 +63,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @see http://wiki.apache.org/solr/DistributedSearch
      */
-    public function addShard(string $key, string $shard): self
+    public function addShard($key, $shard)
     {
         $this->shards[$key] = $shard;
 
@@ -90,7 +89,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function addShards(array $shards): self
+    public function addShards(array $shards)
     {
         foreach ($shards as $key => $shard) {
             $this->addShard($key, $shard);
@@ -106,7 +105,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function removeShard(string $key): self
+    public function removeShard($key)
     {
         if (isset($this->shards[$key])) {
             unset($this->shards[$key]);
@@ -120,7 +119,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function clearShards(): self
+    public function clearShards()
     {
         $this->shards = [];
 
@@ -148,7 +147,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setShards(array $shards): self
+    public function setShards(array $shards)
     {
         $this->clearShards();
         $this->addShards($shards);
@@ -161,7 +160,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return array
      */
-    public function getShards(): array
+    public function getShards()
     {
         return $this->shards;
     }
@@ -174,7 +173,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setShardRequestHandler(string $handler): self
+    public function setShardRequestHandler($handler)
     {
         $this->setOption('shardhandler', $handler);
 
@@ -184,9 +183,9 @@ class DistributedSearch extends AbstractComponent
     /**
      * Get a shard request handler (shards.qt).
      *
-     * @return ?string
+     * @return self Provides fluent interface
      */
-    public function getShardRequestHandler(): ?string
+    public function getShardRequestHandler()
     {
         return $this->getOption('shardhandler');
     }
@@ -201,7 +200,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @see http://wiki.apache.org/solr/SolrCloud/
      */
-    public function addCollection(string $key, string $collection): self
+    public function addCollection($key, $collection)
     {
         $this->collections[$key] = $collection;
 
@@ -231,7 +230,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function removeCollection(string $key): self
+    public function removeCollection($key)
     {
         if (isset($this->collections[$key])) {
             unset($this->collections[$key]);
@@ -245,7 +244,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function clearCollections(): self
+    public function clearCollections()
     {
         $this->collections = [];
 
@@ -261,7 +260,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setCollections(array $collections): self
+    public function setCollections(array $collections)
     {
         $this->clearCollections();
         $this->addCollections($collections);
@@ -274,7 +273,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return array
      */
-    public function getCollections(): array
+    public function getCollections()
     {
         return $this->collections;
     }
@@ -289,7 +288,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @see https://cwiki.apache.org/confluence/display/solr/Distributed+Requests
      */
-    public function addReplica(string $key, string $replica): self
+    public function addReplica($key, $replica)
     {
         $this->replicas[$key] = $replica;
 
@@ -303,7 +302,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function addReplicas(array $replicas): self
+    public function addReplicas(array $replicas)
     {
         foreach ($replicas as $key => $replica) {
             $this->addReplica($key, $replica);
@@ -319,7 +318,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function removeReplica(string $key): self
+    public function removeReplica($key)
     {
         if (isset($this->replicas[$key])) {
             unset($this->replicas[$key]);
@@ -333,7 +332,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function clearReplicas(): self
+    public function clearReplicas()
     {
         $this->replicas = [];
 
@@ -349,7 +348,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setReplicas(array $replicas): self
+    public function setReplicas(array $replicas)
     {
         $this->clearReplicas();
         $this->addReplicas($replicas);
@@ -362,7 +361,7 @@ class DistributedSearch extends AbstractComponent
      *
      * @return array
      */
-    public function getReplicas(): array
+    public function getReplicas()
     {
         return $this->replicas;
     }

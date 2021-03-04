@@ -34,7 +34,7 @@ class Client extends CoreClient
      *
      * @var string
      */
-    const VERSION = '5.2.0';
+    const VERSION = '4.0.0';
 
     /**
      * Check for an exact version.
@@ -64,7 +64,7 @@ class Client extends CoreClient
      *
      * @return bool
      */
-    public static function checkExact(string $version): bool
+    public static function checkExact($version)
     {
         return substr(self::VERSION, 0, strlen($version)) == $version;
     }
@@ -92,7 +92,7 @@ class Client extends CoreClient
      *
      * @return bool
      */
-    public static function checkMinimal(string $version): bool
+    public static function checkMinimal($version)
     {
         return version_compare(self::VERSION, $version, '>=');
     }

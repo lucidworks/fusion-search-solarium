@@ -126,7 +126,7 @@ class ShardState extends AbstractState
     {
         $uris = [];
         foreach ($this->getReplicas() as $replica) {
-            if (!isset($uris[$replica->getNodeName()]) && ReplicaState::ACTIVE === $replica->getState()) {
+            if (ReplicaState::ACTIVE === $replica->getState()) {
                 $uris[$replica->getNodeName()] = $replica->getServerUri();
             }
         }

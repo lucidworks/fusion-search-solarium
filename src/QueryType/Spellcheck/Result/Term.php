@@ -43,7 +43,7 @@ class Term implements \IteratorAggregate, \Countable
      * @param int   $endOffset
      * @param array $suggestions
      */
-    public function __construct(int $numFound, int $startOffset, int $endOffset, array $suggestions)
+    public function __construct($numFound, $startOffset, $endOffset, $suggestions)
     {
         $this->numFound = $numFound;
         $this->startOffset = $startOffset;
@@ -56,7 +56,7 @@ class Term implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function getNumFound(): int
+    public function getNumFound()
     {
         return $this->numFound;
     }
@@ -66,7 +66,7 @@ class Term implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function getStartOffset(): int
+    public function getStartOffset()
     {
         return $this->startOffset;
     }
@@ -76,7 +76,7 @@ class Term implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function getEndOffset(): int
+    public function getEndOffset()
     {
         return $this->endOffset;
     }
@@ -86,7 +86,7 @@ class Term implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getSuggestions(): array
+    public function getSuggestions()
     {
         return $this->suggestions;
     }
@@ -96,7 +96,7 @@ class Term implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->suggestions);
     }
@@ -106,7 +106,7 @@ class Term implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->suggestions);
     }

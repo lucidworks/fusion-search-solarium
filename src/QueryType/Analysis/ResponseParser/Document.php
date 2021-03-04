@@ -2,7 +2,6 @@
 
 namespace Solarium\QueryType\Analysis\ResponseParser;
 
-use Solarium\Core\Query\Result\ResultInterface;
 use Solarium\QueryType\Analysis\Result\ResultList;
 
 /**
@@ -13,12 +12,12 @@ class Document extends Field
     /**
      * Parse implementation.
      *
-     * @param ResultInterface $result
-     * @param array           $data
+     * @param array $result
+     * @param array $data
      *
      * @return ResultList[]
      */
-    protected function parseAnalysis(ResultInterface $result, array $data): array
+    protected function parseAnalysis($result, $data)
     {
         $documents = [];
         foreach ($data as $documentKey => $documentData) {

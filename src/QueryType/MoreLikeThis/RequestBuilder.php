@@ -3,7 +3,6 @@
 namespace Solarium\QueryType\MoreLikeThis;
 
 use Solarium\Core\Client\Request;
-use Solarium\Core\Query\AbstractQuery;
 use Solarium\Core\Query\QueryInterface;
 use Solarium\QueryType\Select\RequestBuilder as SelectRequestBuilder;
 
@@ -19,7 +18,7 @@ class RequestBuilder extends SelectRequestBuilder
      *
      * @return Request
      */
-    public function build(AbstractQuery $query): Request
+    public function build(QueryInterface $query)
     {
         $request = parent::build($query);
 

@@ -19,7 +19,7 @@ class DocumentSet implements \IteratorAggregate, \Countable
      *
      * @param array $docs
      */
-    public function __construct(array $docs)
+    public function __construct($docs)
     {
         $this->docs = $docs;
     }
@@ -31,9 +31,11 @@ class DocumentSet implements \IteratorAggregate, \Countable
      *
      * @return Document|null
      */
-    public function getDocument($key): ?Document
+    public function getDocument($key)
     {
-        return $this->docs[$key] ?? null;
+        if (isset($this->docs[$key])) {
+            return $this->docs[$key];
+        }
     }
 
     /**
@@ -41,7 +43,7 @@ class DocumentSet implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getDocuments(): array
+    public function getDocuments()
     {
         return $this->docs;
     }
@@ -51,7 +53,7 @@ class DocumentSet implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->docs);
     }
@@ -61,7 +63,7 @@ class DocumentSet implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->docs);
     }

@@ -48,14 +48,19 @@ class Result implements ResultInterface
      *
      * @throws HttpException
      */
-    public function __construct(AbstractQuery $query, Response $response)
+    public function __construct($query, $response)
     {
         $this->query = $query;
         $this->response = $response;
 
         // check status for error (range of 400 and 500)
-        if ($response->getStatusCode() >= 400) {
-            throw new HttpException($response->getStatusMessage(), $response->getStatusCode(), $response->getBody());
+        $statusNum = floor($response->getStatusCode() / 100);
+        if (4 == $statusNum || 5 == $statusNum) {
+            throw new HttpException(
+                $response->getStatusMessage(),
+                $response->getStatusCode(),
+                $response->getBody()
+            );
         }
     }
 
@@ -66,7 +71,7 @@ class Result implements ResultInterface
      *
      * @return Response
      */
-    public function getResponse(): Response
+    public function getResponse()
     {
         return $this->response;
     }
@@ -76,7 +81,7 @@ class Result implements ResultInterface
      *
      * @return AbstractQuery
      */
-    public function getQuery(): AbstractQuery
+    public function getQuery()
     {
         return $this->query;
     }
@@ -91,12 +96,12 @@ class Result implements ResultInterface
      *
      * @return array
      */
-    public function getData(): array
+    public function getData()
     {
         if (null === $this->data) {
             switch ($this->query->getResponseWriter()) {
                 case AbstractQuery::WT_PHPS:
-                    $this->data = unserialize($this->response->getBody(), [false]);
+                    $this->data = unserialize($this->response->getBody());
                     break;
                 case AbstractQuery::WT_JSON:
                     $this->data = json_decode($this->response->getBody(), true);
@@ -106,7 +111,9 @@ class Result implements ResultInterface
             }
 
             if (null === $this->data) {
-                throw new UnexpectedValueException('Solr JSON response could not be decoded');
+                throw new UnexpectedValueException(
+                    'Solr JSON response could not be decoded'
+                );
             }
         }
 

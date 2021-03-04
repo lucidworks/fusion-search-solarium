@@ -24,9 +24,9 @@ class Optimize extends AbstractCommand
     /**
      * Get softCommit option.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getSoftCommit(): ?bool
+    public function getSoftCommit()
     {
         return $this->getOption('softcommit');
     }
@@ -38,18 +38,17 @@ class Optimize extends AbstractCommand
      *
      * @return self Provides fluent interface
      */
-    public function setSoftCommit(bool $softCommit): self
+    public function setSoftCommit($softCommit)
     {
-        $this->setOption('softcommit', $softCommit);
-        return $this;
+        return $this->setOption('softcommit', $softCommit);
     }
 
     /**
      * Get waitSearcher option.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getWaitSearcher(): ?bool
+    public function getWaitSearcher()
     {
         return $this->getOption('waitsearcher');
     }
@@ -61,18 +60,17 @@ class Optimize extends AbstractCommand
      *
      * @return self Provides fluent interface
      */
-    public function setWaitSearcher(bool $waitSearcher): self
+    public function setWaitSearcher($waitSearcher)
     {
-        $this->setOption('waitsearcher', $waitSearcher);
-        return $this;
+        return $this->setOption('waitsearcher', $waitSearcher);
     }
 
     /**
      * Get maxSegments option.
      *
-     * @return int|null
+     * @return bool
      */
-    public function getMaxSegments(): ?int
+    public function getMaxSegments()
     {
         return $this->getOption('maxsegments');
     }
@@ -80,13 +78,12 @@ class Optimize extends AbstractCommand
     /**
      * Set maxSegments option.
      *
-     * @param int $maxSegments
+     * @param bool $maxSegments
      *
      * @return self Provides fluent interface
      */
-    public function setMaxSegments(int $maxSegments): self
+    public function setMaxSegments($maxSegments)
     {
-        $this->setOption('maxsegments', $maxSegments);
-        return $this;
+        return $this->setOption('maxsegments', $maxSegments);
     }
 }

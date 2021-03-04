@@ -21,16 +21,16 @@ class Synonyms
      * Synonyms constructor.
      *
      * @param string $term
-     * @param array  $synonyms
+     * @param $synonyms
      */
-    public function __construct(string $term, array $synonyms)
+    public function __construct($term, $synonyms)
     {
         $this->term = $term;
         $this->synonyms = $synonyms;
     }
 
     /**
-     * Get the term.
+     * Set the term.
      *
      * @return string
      */
@@ -40,21 +40,14 @@ class Synonyms
     }
 
     /**
-     * Set the term.
-     *
      * @param string $term
-     *
-     * @return self
      */
-    public function setTerm(string $term): self
+    public function setTerm(string $term)
     {
         $this->term = $term;
-        return $this;
     }
 
     /**
-     * Get the synonyms.
-     *
      * @return array
      */
     public function getSynonyms(): array
@@ -66,12 +59,9 @@ class Synonyms
      * Sets the synonyms. To set a list of symmetric synonyms leave the term empty.
      *
      * @param array $synonyms
-     *
-     * @return self
      */
-    public function setSynonyms(array $synonyms): self
+    public function setSynonyms(array $synonyms)
     {
         $this->synonyms = $synonyms;
-        return $this;
     }
 }

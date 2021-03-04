@@ -29,18 +29,17 @@ class Split extends AbstractAsyncAction implements CoreActionInterface
      *
      * @return self Provides fluent interface
      */
-    public function setPath(array $path): self
+    public function setPath(array $path)
     {
-        $this->setOption('path', $path);
-        return $this;
+        return $this->setOption('path', $path);
     }
 
     /**
      * Get the pathes that should be used to split into.
      *
-     * @return array|null
+     * @return array
      */
-    public function getPath(): ?array
+    public function getPath(): array
     {
         return (array) $this->getOption('path');
     }
@@ -52,20 +51,19 @@ class Split extends AbstractAsyncAction implements CoreActionInterface
      *
      * @return self Provides fluent interface
      */
-    public function setTargetCore(array $targetCore): self
+    public function setTargetCore(array $targetCore)
     {
-        $this->setOption('targetCore', $targetCore);
-        return $this;
+        return $this->setOption('targetCore', $targetCore);
     }
 
     /**
      * Get the pathes that should be used to split into.
      *
-     * @return array|null
+     * @return array
      */
-    public function getTargetCore(): ?array
+    public function getTargetCore(): array
     {
-        return $this->getOption('targetCore');
+        return (array) $this->getOption('targetCore');
     }
 
     /**
@@ -75,18 +73,17 @@ class Split extends AbstractAsyncAction implements CoreActionInterface
      *
      * @return self Provides fluent interface
      */
-    public function setRanges(string $ranges): self
+    public function setRanges(string $ranges)
     {
-        $this->setOption('ranges', $ranges);
-        return $this;
+        return $this->setOption('ranges', $ranges);
     }
 
     /**
      * Get the pathes that should be used to split into.
      *
-     * @return string|null
+     * @return string
      */
-    public function getRanges(): ?string
+    public function getRanges(): string
     {
         return (string) $this->getOption('ranges');
     }
@@ -98,19 +95,18 @@ class Split extends AbstractAsyncAction implements CoreActionInterface
      *
      * @return self Provides fluent interface
      */
-    public function setSplitKey(string $splitKey): self
+    public function setSplitKey(string $splitKey)
     {
-        $this->setOption('split.key', $splitKey);
-        return $this;
+        return $this->setOption('split.key', $splitKey);
     }
 
     /**
      * Returns the key that should be used for splitting.
      *
-     * @return string|null
+     * @return string
      */
-    public function getSplitKey(): ?string
+    public function getSplitKey(): string
     {
-        return $this->getOption('split.key');
+        return (string) $this->getOption('split.key');
     }
 }

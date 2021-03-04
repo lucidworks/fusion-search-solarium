@@ -2,7 +2,6 @@
 
 namespace Solarium\Component;
 
-use Solarium\Component\RequestBuilder\ComponentRequestBuilderInterface;
 use Solarium\Component\RequestBuilder\EdisMax as RequestBuilder;
 
 /**
@@ -36,7 +35,7 @@ class EdisMax extends DisMax
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): ComponentRequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
@@ -53,10 +52,9 @@ class EdisMax extends DisMax
      *
      * @return self Provides fluent interface
      */
-    public function setBoostFunctionsMult(string $boostFunctionsMult): self
+    public function setBoostFunctionsMult($boostFunctionsMult)
     {
-        $this->setOption('boostfunctionsmult', $boostFunctionsMult);
-        return $this;
+        return $this->setOption('boostfunctionsmult', $boostFunctionsMult);
     }
 
     /**
@@ -64,7 +62,7 @@ class EdisMax extends DisMax
      *
      * @return string|null
      */
-    public function getBoostFunctionsMult(): ?string
+    public function getBoostFunctionsMult()
     {
         return $this->getOption('boostfunctionsmult');
     }
@@ -81,10 +79,9 @@ class EdisMax extends DisMax
      *
      * @return self Provides fluent interface
      */
-    public function setPhraseBigramFields(string $phraseBigramFields): self
+    public function setPhraseBigramFields($phraseBigramFields)
     {
-        $this->setOption('phrasebigramfields', $phraseBigramFields);
-        return $this;
+        return $this->setOption('phrasebigramfields', $phraseBigramFields);
     }
 
     /**
@@ -92,7 +89,7 @@ class EdisMax extends DisMax
      *
      * @return string|null
      */
-    public function getPhraseBigramFields(): ?string
+    public function getPhraseBigramFields()
     {
         return $this->getOption('phrasebigramfields');
     }
@@ -103,22 +100,21 @@ class EdisMax extends DisMax
      * As with 'ps' but sets default slop factor for 'pf2'.
      * If not specified, 'ps' will be used.
      *
-     * @param int $phraseBigramSlop
+     * @param string $phraseBigramSlop
      *
      * @return self Provides fluent interface
      */
-    public function setPhraseBigramSlop(int $phraseBigramSlop): self
+    public function setPhraseBigramSlop($phraseBigramSlop)
     {
-        $this->setOption('phrasebigramslop', $phraseBigramSlop);
-        return $this;
+        return $this->setOption('phrasebigramslop', $phraseBigramSlop);
     }
 
     /**
      * Get PhraseBigramSlop option.
      *
-     * @return int|null
+     * @return string|null
      */
-    public function getPhraseBigramSlop(): ?int
+    public function getPhraseBigramSlop()
     {
         return $this->getOption('phrasebigramslop');
     }
@@ -135,10 +131,9 @@ class EdisMax extends DisMax
      *
      * @return self Provides fluent interface
      */
-    public function setPhraseTrigramFields(string $phraseTrigramFields): self
+    public function setPhraseTrigramFields($phraseTrigramFields)
     {
-        $this->setOption('phrasetrigramfields', $phraseTrigramFields);
-        return $this;
+        return $this->setOption('phrasetrigramfields', $phraseTrigramFields);
     }
 
     /**
@@ -146,7 +141,7 @@ class EdisMax extends DisMax
      *
      * @return string|null
      */
-    public function getPhraseTrigramFields(): ?string
+    public function getPhraseTrigramFields()
     {
         return $this->getOption('phrasetrigramfields');
     }
@@ -157,22 +152,21 @@ class EdisMax extends DisMax
      * As with 'ps' but sets default slop factor for 'pf3'.
      * If not specified, 'ps' will be used.
      *
-     * @param int $phraseTrigramSlop
+     * @param string $phraseTrigramSlop
      *
      * @return self Provides fluent interface
      */
-    public function setPhraseTrigramSlop(int $phraseTrigramSlop): self
+    public function setPhraseTrigramSlop($phraseTrigramSlop)
     {
-        $this->setOption('phrasetrigramslop', $phraseTrigramSlop);
-        return $this;
+        return $this->setOption('phrasetrigramslop', $phraseTrigramSlop);
     }
 
     /**
      * Get PhraseTrigramSlop option.
      *
-     * @return int|null
+     * @return string|null
      */
-    public function getPhraseTrigramSlop(): ?int
+    public function getPhraseTrigramSlop()
     {
         return $this->getOption('phrasetrigramslop');
     }
@@ -192,10 +186,9 @@ class EdisMax extends DisMax
      *
      * @return self Provides fluent interface
      */
-    public function setUserFields(string $userFields): self
+    public function setUserFields($userFields)
     {
-        $this->setOption('userfields', $userFields);
-        return $this;
+        return $this->setOption('userfields', $userFields);
     }
 
     /**
@@ -203,7 +196,7 @@ class EdisMax extends DisMax
      *
      * @return string|null
      */
-    public function getUserFields(): ?string
+    public function getUserFields()
     {
         return $this->getOption('userfields');
     }

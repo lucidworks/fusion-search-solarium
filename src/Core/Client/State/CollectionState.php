@@ -151,7 +151,7 @@ class CollectionState extends AbstractState
 
         foreach ($this->getShards() as $shard) {
             if (ShardState::ACTIVE === $shard->getState()) {
-                $uris += $shard->getNodesBaseUris();
+                $uris = array_merge($shard->getNodesBaseUris(), $uris);
             }
         }
 

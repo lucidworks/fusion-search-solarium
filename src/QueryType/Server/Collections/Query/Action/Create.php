@@ -4,7 +4,6 @@ namespace Solarium\QueryType\Server\Collections\Query\Action;
 
 use Solarium\QueryType\Server\Collections\Query\Query as CollectionsQuery;
 use Solarium\QueryType\Server\Collections\Result\CreateResult;
-use Solarium\QueryType\Server\Query\Action\AsyncActionInterface;
 
 /**
  * Class Create.
@@ -24,6 +23,29 @@ class Create extends AbstractCDRAction
     }
 
     /**
+     * The name of the collection to be created. This parameter is required.
+     *
+     * @param string $collection
+     *
+     * @return self Create object
+     */
+    public function setName(string $collection): self
+    {
+        parent::setName($collection);
+        return $this;
+    }
+
+    /**
+     * Get the name of the collection to be created.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return parent::getName();
+    }
+
+    /**
      * The router name that will be used. The router defines how documents will be distributed among the shards.
      * Possible values are implicit or compositeId, which is the default.
      *
@@ -40,9 +62,9 @@ class Create extends AbstractCDRAction
     /**
      * Returns the router name.
      *
-     * @return string|null
+     * @return mixed
      */
-    public function getRouterName(): ?string
+    public function getRouterName()
     {
         return $this->getOption('router.name');
     }
@@ -64,9 +86,9 @@ class Create extends AbstractCDRAction
     /**
      * Returns the number of shards.
      *
-     * @return int|null
+     * @return mixed
      */
-    public function getNumShards(): ?int
+    public function getNumShards()
     {
         return $this->getOption('numShards');
     }
@@ -88,9 +110,9 @@ class Create extends AbstractCDRAction
     /**
      * Returns the shards.
      *
-     * @return string|null
+     * @return mixed
      */
-    public function getShards(): ?string
+    public function getShards()
     {
         return $this->getOption('shards');
     }
@@ -206,9 +228,9 @@ class Create extends AbstractCDRAction
     /**
      * Get the collection config name.
      *
-     * @return string|null
+     * @return string
      */
-    public function getCollectionConfigName(): ?string
+    public function getCollectionConfigName(): string
     {
         return $this->getOption('collection.configName');
     }
@@ -247,11 +269,11 @@ class Create extends AbstractCDRAction
      *
      * @param string $name property name
      *
-     * @return string|null
+     * @return string
      */
-    public function getProperty(string $name): ?string
+    public function getProperty(string $name): string
     {
-        return $this->getOption('property.'.$name);
+        return (string) $this->getOption('property.'.$name);
     }
 
     /**
@@ -276,7 +298,7 @@ class Create extends AbstractCDRAction
      *
      * @return self Provides fluent interface
      */
-    public function setAsync(string $id): AsyncActionInterface
+    public function setAsync(string $id): self
     {
         $this->setOption('async', $id);
         return $this;

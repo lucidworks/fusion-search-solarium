@@ -2,8 +2,7 @@
 
 namespace Solarium\Component\ResponseParser;
 
-use Solarium\Component\AbstractComponent;
-use Solarium\Component\ComponentAwareQueryInterface;
+use Solarium\Core\Query\AbstractQuery;
 
 /**
  * ComponentParserInterface.
@@ -13,11 +12,11 @@ interface ComponentParserInterface
     /**
      * Parse result data into result objects.
      *
-     * @param ComponentAwareQueryInterface $query
-     * @param AbstractComponent            $component
-     * @param array                        $data
+     * @param AbstractQuery $query
+     * @param object        $component
+     * @param array         $data
      *
      * @return object|null
      */
-    public function parse(?ComponentAwareQueryInterface $query, ?AbstractComponent $component, array $data);
+    public function parse($query, $component, $data);
 }

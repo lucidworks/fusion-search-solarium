@@ -17,12 +17,12 @@ interface QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function setQuery(string $query, array $bind = null): self;
+    public function setQuery($query, $bind = null);
 
     /**
      * Get query option.
      *
      * @return string|null
      */
-    public function getQuery(): ?string;
+    public function getQuery();
 }

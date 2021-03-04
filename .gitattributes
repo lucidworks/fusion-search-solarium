@@ -1,0 +1,13 @@
+/.coveralls export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.styleci.yml export-ignore
+/.php_cs.dist export-ignore
+
+/phpunit.xml.dist export-ignore
+/phpunit.xml.travis export-ignore
+/build.xml export-ignore
+
+/docs export-ignore
+/examples export-ignore
+/tests export-ignore

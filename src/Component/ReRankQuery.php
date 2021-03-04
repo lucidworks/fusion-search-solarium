@@ -2,7 +2,6 @@
 
 namespace Solarium\Component;
 
-use Solarium\Component\RequestBuilder\ComponentRequestBuilderInterface;
 use Solarium\Component\RequestBuilder\ReRankQuery as RequestBuilder;
 
 /**
@@ -29,7 +28,7 @@ class ReRankQuery extends AbstractComponent implements QueryInterface
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): ComponentRequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
@@ -37,9 +36,9 @@ class ReRankQuery extends AbstractComponent implements QueryInterface
     /**
      * Get reRankDocs value.
      *
-     * @return int|null
+     * @return int
      */
-    public function getDocs(): ?int
+    public function getDocs()
     {
         return $this->getOption('docs');
     }
@@ -49,20 +48,19 @@ class ReRankQuery extends AbstractComponent implements QueryInterface
      *
      * @param int $value
      *
-     * @return self
+     * @return self Provides fluent interface
      */
-    public function setDocs(int $value): self
+    public function setDocs(int $value)
     {
-        $this->setOption('docs', $value);
-        return $this;
+        return $this->setOption('docs', $value);
     }
 
     /**
      * Get reRankWeight value.
      *
-     * @return float|null
+     * @return float
      */
-    public function getWeight(): ?float
+    public function getWeight()
     {
         return $this->getOption('weight');
     }
@@ -74,9 +72,8 @@ class ReRankQuery extends AbstractComponent implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function setWeight(float $value): self
+    public function setWeight(float $value)
     {
-        $this->setOption('weight', $value);
-        return $this;
+        return $this->setOption('weight', $value);
     }
 }

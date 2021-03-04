@@ -41,7 +41,7 @@ trait ComponentAwareQueryTrait
      *
      * @return self Provides fluent interface
      */
-    public function registerComponentType(string $key, string $component): ComponentAwareQueryInterface
+    public function registerComponentType($key, $component)
     {
         $this->componentTypes[$key] = $component;
 
@@ -53,7 +53,7 @@ trait ComponentAwareQueryTrait
      *
      * @return AbstractComponent[]
      */
-    public function getComponents(): array
+    public function getComponents()
     {
         return $this->components;
     }
@@ -73,13 +73,11 @@ trait ComponentAwareQueryTrait
      *
      * @return object|null
      */
-    public function getComponent(string $key, $autoload = false, array $config = null)
+    public function getComponent($key, $autoload = false, $config = null)
     {
         if (isset($this->components[$key])) {
             return $this->components[$key];
-        }
-
-        if (true === $autoload) {
+        } elseif (true === $autoload) {
             if (!isset($this->componentTypes[$key])) {
                 throw new OutOfBoundsException('Cannot autoload unknown component: '.$key);
             }
@@ -105,7 +103,7 @@ trait ComponentAwareQueryTrait
      *
      * @return self Provides fluent interface
      */
-    public function setComponent(string $key, AbstractComponent $component): ComponentAwareQueryInterface
+    public function setComponent($key, $component)
     {
         $component->setQueryInstance($this);
         $this->components[$key] = $component;
@@ -122,7 +120,7 @@ trait ComponentAwareQueryTrait
      *
      * @return self Provides fluent interface
      */
-    public function removeComponent($component): ComponentAwareQueryInterface
+    public function removeComponent($component)
     {
         if (is_object($component)) {
             foreach ($this->components as $key => $instance) {
@@ -144,15 +142,11 @@ trait ComponentAwareQueryTrait
      * Build component instances based on config.
      *
      * @param array $configs
-     *
-     * @return self Provides fluent interface
      */
-    protected function createComponents(array $configs): ComponentAwareQueryInterface
+    protected function createComponents($configs)
     {
         foreach ($configs as $type => $config) {
             $this->getComponent($type, true, $config);
         }
-
-        return $this;
     }
 }

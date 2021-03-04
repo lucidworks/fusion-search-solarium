@@ -2,8 +2,6 @@
 
 namespace Solarium\Component\ResponseParser;
 
-use Solarium\Component\AbstractComponent;
-use Solarium\Component\ComponentAwareQueryInterface;
 use Solarium\Component\Debug as DebugComponent;
 use Solarium\Component\Result\Debug\Detail;
 use Solarium\Component\Result\Debug\Document;
@@ -11,6 +9,7 @@ use Solarium\Component\Result\Debug\DocumentSet;
 use Solarium\Component\Result\Debug\Result;
 use Solarium\Component\Result\Debug\Timing;
 use Solarium\Component\Result\Debug\TimingPhase;
+use Solarium\QueryType\Select\Query\Query;
 
 /**
  * Parse select component Debug result from the data.
@@ -20,13 +19,13 @@ class Debug implements ComponentParserInterface
     /**
      * Parse result data into result objects.
      *
-     * @param ComponentAwareQueryInterface     $query
-     * @param DebugComponent|AbstractComponent $component
-     * @param array                            $data
+     * @param Query          $query
+     * @param DebugComponent $component
+     * @param array          $data
      *
      * @return Result|null
      */
-    public function parse(?ComponentAwareQueryInterface $query, ?AbstractComponent $component, array $data): ?Result
+    public function parse($query, $component, $data)
     {
         $result = null;
 
@@ -34,10 +33,10 @@ class Debug implements ComponentParserInterface
             $debug = $data['debug'];
 
             // get basic values from data
-            $queryString = $debug['querystring'] ?? '';
-            $parsedQuery = $debug['parsedquery'] ?? '';
-            $queryParser = $debug['QParser'] ?? '';
-            $otherQuery = $debug['otherQuery'] ?? '';
+            $queryString = (isset($debug['querystring'])) ? $debug['querystring'] : '';
+            $parsedQuery = (isset($debug['parsedquery'])) ? $debug['parsedquery'] : '';
+            $queryParser = (isset($debug['QParser'])) ? $debug['QParser'] : '';
+            $otherQuery = (isset($debug['otherQuery'])) ? $debug['otherQuery'] : '';
 
             // parse explain data
             if (isset($debug['explain']) && is_array($debug['explain'])) {
@@ -63,9 +62,8 @@ class Debug implements ComponentParserInterface
                         case 'time':
                             $time = $timingData;
                             break;
-                        case is_array($timingData):
+                        default:
                             $timingPhases[$key] = $this->parseTimingPhase($key, $timingData);
-                            break;
                     }
                 }
                 $timing = new Timing($time, $timingPhases);
@@ -95,7 +93,7 @@ class Debug implements ComponentParserInterface
      *
      * @return DocumentSet
      */
-    protected function parseDocumentSet(array $data): DocumentSet
+    protected function parseDocumentSet($data)
     {
         $docs = [];
         foreach ($data as $key => $documentData) {
@@ -135,7 +133,7 @@ class Debug implements ComponentParserInterface
      *
      * @return TimingPhase
      */
-    protected function parseTimingPhase(string $name, array $data): TimingPhase
+    protected function parseTimingPhase($name, $data)
     {
         $time = 0.0;
         $classes = [];

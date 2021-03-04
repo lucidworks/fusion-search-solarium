@@ -40,7 +40,7 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function getStatus(): int
+    public function getStatus()
     {
         $this->parseResponse();
 
@@ -55,7 +55,7 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function getQueryTime(): int
+    public function getQueryTime()
     {
         $this->parseResponse();
 
@@ -67,7 +67,7 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getResults(): array
+    public function getResults()
     {
         $this->parseResponse();
 
@@ -81,7 +81,7 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getTerms(string $field): array
+    public function getTerms($field)
     {
         $this->parseResponse();
 
@@ -97,7 +97,7 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         $this->parseResponse();
 
@@ -109,7 +109,7 @@ class Result extends BaseResult implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         $this->parseResponse();
 

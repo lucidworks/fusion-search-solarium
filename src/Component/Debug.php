@@ -2,9 +2,7 @@
 
 namespace Solarium\Component;
 
-use Solarium\Component\RequestBuilder\ComponentRequestBuilderInterface;
 use Solarium\Component\RequestBuilder\Debug as RequestBuilder;
-use Solarium\Component\ResponseParser\ComponentParserInterface;
 use Solarium\Component\ResponseParser\Debug as ResponseParser;
 
 /**
@@ -29,7 +27,7 @@ class Debug extends AbstractComponent
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): ComponentRequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
@@ -39,7 +37,7 @@ class Debug extends AbstractComponent
      *
      * @return ResponseParser
      */
-    public function getResponseParser(): ?ComponentParserInterface
+    public function getResponseParser()
     {
         return new ResponseParser();
     }
@@ -49,7 +47,7 @@ class Debug extends AbstractComponent
      *
      * @return string|null
      */
-    public function getExplainOther(): ?string
+    public function getExplainOther()
     {
         return $this->getOption('explainother');
     }
@@ -61,9 +59,8 @@ class Debug extends AbstractComponent
      *
      * @return self Provides fluent interface
      */
-    public function setExplainOther(string $query): self
+    public function setExplainOther($query)
     {
-        $this->setOption('explainother', $query);
-        return $this;
+        return $this->setOption('explainother', $query);
     }
 }

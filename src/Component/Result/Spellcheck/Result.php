@@ -45,15 +45,15 @@ class Result implements \IteratorAggregate, \Countable
     /**
      * Get the collation result.
      *
-     * @param int|null $key
+     * @param int $key
      *
-     * @return Collation|null
+     * @return Collation
      */
-    public function getCollation(?int $key = null): ?Collation
+    public function getCollation($key = null)
     {
         $nrOfCollations = count($this->collations);
         if (0 == $nrOfCollations) {
-            return null;
+            return;
         }
 
         if (null === $key) {
@@ -68,7 +68,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return Collation[]
      */
-    public function getCollations(): array
+    public function getCollations()
     {
         return $this->collations;
     }
@@ -80,21 +80,23 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return bool
      */
-    public function getCorrectlySpelled(): bool
+    public function getCorrectlySpelled()
     {
         return $this->correctlySpelled;
     }
 
     /**
-     * Get a suggestion by key.
+     * Get a result by key.
      *
      * @param mixed $key
      *
      * @return Suggestion|null
      */
-    public function getSuggestion($key): ?Suggestion
+    public function getSuggestion($key)
     {
-        return $this->suggestions[$key] ?? null;
+        if (isset($this->suggestions[$key])) {
+            return $this->suggestions[$key];
+        }
     }
 
     /**
@@ -102,7 +104,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return Suggestion[]
      */
-    public function getSuggestions(): array
+    public function getSuggestions()
     {
         return $this->suggestions;
     }
@@ -112,7 +114,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->suggestions);
     }
@@ -122,7 +124,7 @@ class Result implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->suggestions);
     }

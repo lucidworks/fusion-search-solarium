@@ -3,7 +3,6 @@
 namespace Solarium\Component\Facet;
 
 use Solarium\Core\Configurable;
-use Solarium\Core\Query\LocalParameters\LocalParametersTrait;
 
 /**
  * Facet base class.
@@ -12,8 +11,6 @@ use Solarium\Core\Query\LocalParameters\LocalParametersTrait;
  */
 abstract class AbstractFacet extends Configurable implements FacetInterface
 {
-    use LocalParametersTrait;
-
     /**
      * Must be implemented by the facet types and return one of the constants.
      *
@@ -24,26 +21,24 @@ abstract class AbstractFacet extends Configurable implements FacetInterface
     abstract public function getType(): string;
 
     /**
-     * Get key.
+     * Get key value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getKey(): ?string
+    public function getKey()
     {
-        return $this->getLocalParameters()->getKeys()[0] ?? null;
+        return $this->getOption('key');
     }
 
     /**
-     * Set key.
+     * Set key value.
      *
-     * @param string $key
+     * @param string $value
      *
      * @return self Provides fluent interface
      */
-    public function setKey(string $key): FacetInterface
+    public function setKey($value)
     {
-        $this->getLocalParameters()->setKey($key);
-
-        return $this;
+        return $this->setOption('key', $value);
     }
 }

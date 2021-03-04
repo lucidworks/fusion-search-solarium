@@ -35,18 +35,17 @@ class PostBigRequest extends AbstractPlugin
      *
      * @return self Provides fluent interface
      */
-    public function setMaxQueryStringLength(int $value): self
+    public function setMaxQueryStringLength($value)
     {
-        $this->setOption('maxquerystringlength', $value);
-        return $this;
+        return $this->setOption('maxquerystringlength', $value);
     }
 
     /**
      * Get maxquerystringlength option.
      *
-     * @return int|null
+     * @return int
      */
-    public function getMaxQueryStringLength(): ?int
+    public function getMaxQueryStringLength()
     {
         return $this->getOption('maxquerystringlength');
     }
@@ -55,10 +54,8 @@ class PostBigRequest extends AbstractPlugin
      * Event hook to adjust client settings just before query execution.
      *
      * @param PostCreateRequestEvent $event
-     *
-     * @return self Provides fluent interface
      */
-    public function postCreateRequest(PostCreateRequestEvent $event): self
+    public function postCreateRequest($event)
     {
         $request = $event->getRequest();
         $queryString = $request->getQueryString();
@@ -69,7 +66,6 @@ class PostBigRequest extends AbstractPlugin
             $request->clearParams();
             $request->addHeader('Content-Type: application/x-www-form-urlencoded');
         }
-        return $this;
     }
 
     /**

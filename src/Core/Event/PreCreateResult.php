@@ -5,7 +5,7 @@ namespace Solarium\Core\Event;
 use Solarium\Core\Client\Response;
 use Solarium\Core\Query\QueryInterface;
 use Solarium\Core\Query\Result\ResultInterface;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * PreCreateResult event, see Events for details.
@@ -44,7 +44,7 @@ class PreCreateResult extends Event
      *
      * @return QueryInterface
      */
-    public function getQuery(): QueryInterface
+    public function getQuery()
     {
         return $this->query;
     }
@@ -54,7 +54,7 @@ class PreCreateResult extends Event
      *
      * @return Response
      */
-    public function getResponse(): Response
+    public function getResponse()
     {
         return $this->response;
     }
@@ -62,9 +62,9 @@ class PreCreateResult extends Event
     /**
      * Get the result object for this event.
      *
-     * @return ResultInterface|null
+     * @return ResultInterface
      */
-    public function getResult(): ?ResultInterface
+    public function getResult()
     {
         return $this->result;
     }
@@ -73,12 +73,9 @@ class PreCreateResult extends Event
      * Set the result object for this event, overrides default execution.
      *
      * @param ResultInterface $result
-     *
-     * @return self Provides fluent interface
      */
-    public function setResult(ResultInterface $result): self
+    public function setResult($result)
     {
         $this->result = $result;
-        return $this;
     }
 }

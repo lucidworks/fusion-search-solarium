@@ -27,7 +27,7 @@ class FacetValue
      * @param string $value
      * @param array  $stats
      */
-    public function __construct(string $value, array $stats)
+    public function __construct($value, $stats)
     {
         $this->value = $value;
         $this->stats = $stats;
@@ -38,7 +38,7 @@ class FacetValue
      *
      * @return string
      */
-    public function getValue(): ?string
+    public function getValue()
     {
         return $this->value;
     }
@@ -46,9 +46,9 @@ class FacetValue
     /**
      * Get min value.
      *
-     * @return float|null
+     * @return string
      */
-    public function getMin(): ?float
+    public function getMin()
     {
         return $this->stats['min'];
     }
@@ -56,9 +56,9 @@ class FacetValue
     /**
      * Get max value.
      *
-     * @return float|null
+     * @return string
      */
-    public function getMax(): ?float
+    public function getMax()
     {
         return $this->stats['max'];
     }
@@ -66,9 +66,9 @@ class FacetValue
     /**
      * Get sum value.
      *
-     * @return float
+     * @return string
      */
-    public function getSum(): float
+    public function getSum()
     {
         return $this->stats['sum'];
     }
@@ -76,11 +76,11 @@ class FacetValue
     /**
      * Get count value.
      *
-     * @return int
+     * @return string
      */
-    public function getCount(): int
+    public function getCount()
     {
-        return (int) $this->stats['count'];
+        return $this->stats['count'];
     }
 
     /**
@@ -88,7 +88,7 @@ class FacetValue
      *
      * @return string
      */
-    public function getMissing(): string
+    public function getMissing()
     {
         return $this->stats['missing'];
     }
@@ -96,9 +96,9 @@ class FacetValue
     /**
      * Get sumOfSquares value.
      *
-     * @return float
+     * @return string
      */
-    public function getSumOfSquares(): float
+    public function getSumOfSquares()
     {
         return $this->stats['sumOfSquares'];
     }
@@ -106,7 +106,7 @@ class FacetValue
     /**
      * Get mean value.
      *
-     * @return string|float
+     * @return string
      */
     public function getMean()
     {
@@ -116,9 +116,9 @@ class FacetValue
     /**
      * Get stddev value.
      *
-     * @return float
+     * @return string
      */
-    public function getStddev(): float
+    public function getStddev()
     {
         return $this->stats['stddev'];
     }
@@ -128,7 +128,7 @@ class FacetValue
      *
      * @return array
      */
-    public function getFacets(): array
+    public function getFacets()
     {
         return $this->stats['facets'];
     }

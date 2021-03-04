@@ -31,11 +31,11 @@ class Collation implements \IteratorAggregate, \Countable
     /**
      * Constructor.
      *
-     * @param string $query
-     * @param int    $hits
-     * @param array  $corrections
+     * @param string   $query
+     * @param int|null $hits
+     * @param array    $corrections
      */
-    public function __construct(string $query, ?int $hits, array $corrections)
+    public function __construct($query, $hits, $corrections)
     {
         $this->query = $query;
         $this->hits = $hits;
@@ -47,7 +47,7 @@ class Collation implements \IteratorAggregate, \Countable
      *
      * @return string
      */
-    public function getQuery(): string
+    public function getQuery()
     {
         return $this->query;
     }
@@ -59,7 +59,7 @@ class Collation implements \IteratorAggregate, \Countable
      *
      * @return int|null
      */
-    public function getHits(): ?int
+    public function getHits()
     {
         return $this->hits;
     }
@@ -71,7 +71,7 @@ class Collation implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getCorrections(): ?array
+    public function getCorrections()
     {
         return $this->corrections;
     }
@@ -83,7 +83,7 @@ class Collation implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->corrections);
     }
@@ -95,7 +95,7 @@ class Collation implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->corrections);
     }

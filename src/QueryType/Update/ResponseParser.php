@@ -4,7 +4,6 @@ namespace Solarium\QueryType\Update;
 
 use Solarium\Core\Query\AbstractResponseParser as ResponseParserAbstract;
 use Solarium\Core\Query\ResponseParserInterface;
-use Solarium\Core\Query\Result\ResultInterface;
 
 /**
  * Parse update response data.
@@ -14,11 +13,11 @@ class ResponseParser extends ResponseParserAbstract implements ResponseParserInt
     /**
      * Parse response data.
      *
-     * @param Result| ResultInterface $result
+     * @param Result $result
      *
      * @return array
      */
-    public function parse(ResultInterface $result): array
+    public function parse($result)
     {
         $data = $result->getData();
 

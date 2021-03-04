@@ -27,19 +27,18 @@ class Status extends AbstractAction implements CoreActionInterface
      *
      * @return self Provides fluent interface
      */
-    public function setIndexInfo(bool $indexInfo): self
+    public function setIndexInfo(bool $indexInfo)
     {
-        $this->setOption('indexInfo', $indexInfo);
-        return $this;
+        return $this->setOption('indexInfo', $indexInfo);
     }
 
     /**
      * Get if information about the index should be retrieved.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getIndexInfo(): ?bool
+    public function getIndexInfo(): bool
     {
-        return $this->getOption('indexInfo');
+        return (string) $this->getOption('indexInfo');
     }
 }

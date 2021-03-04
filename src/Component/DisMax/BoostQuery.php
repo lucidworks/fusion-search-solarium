@@ -17,9 +17,9 @@ class BoostQuery extends Configurable implements QueryInterface
     /**
      * Get key value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getKey(): ?string
+    public function getKey()
     {
         return $this->getOption('key');
     }
@@ -31,10 +31,9 @@ class BoostQuery extends Configurable implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function setKey(string $value): self
+    public function setKey($value)
     {
-        $this->setOption('key', $value);
-        return $this;
+        return $this->setOption('key', $value);
     }
 
     /**
@@ -42,7 +41,7 @@ class BoostQuery extends Configurable implements QueryInterface
      *
      * @return \Solarium\Core\Query\Helper
      */
-    public function getHelper(): Helper
+    public function getHelper()
     {
         return new Helper();
     }

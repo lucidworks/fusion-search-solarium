@@ -2,8 +2,6 @@
 
 namespace Solarium\Core\Query;
 
-use Solarium\Core\Query\Result\ResultInterface;
-
 /**
  * Interface for response parsers.
  *
@@ -20,9 +18,9 @@ interface ResponseParserInterface
      *
      * When this method is called the actual response parsing is started.
      *
-     * @param ResultInterface $result
+     * @param \Solarium\Core\Query\Result\Result $result
      *
-     * @return array
+     * @return mixed
      */
-    public function parse(ResultInterface $result): array;
+    public function parse($result);
 }

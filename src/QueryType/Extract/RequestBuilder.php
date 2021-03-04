@@ -3,7 +3,6 @@
 namespace Solarium\QueryType\Extract;
 
 use Solarium\Core\Client\Request;
-use Solarium\Core\Query\AbstractQuery;
 use Solarium\Core\Query\AbstractRequestBuilder as BaseRequestBuilder;
 use Solarium\Core\Query\QueryInterface;
 use Solarium\Exception\RuntimeException;
@@ -23,7 +22,7 @@ class RequestBuilder extends BaseRequestBuilder
      *
      * @return Request
      */
-    public function build(AbstractQuery $query): Request
+    public function build(QueryInterface $query)
     {
         $request = parent::build($query);
         $request->setMethod(Request::METHOD_POST);
@@ -42,7 +41,6 @@ class RequestBuilder extends BaseRequestBuilder
         }
 
         // add document settings to request
-        /** @var \Solarium\QueryType\Update\Query\Document $doc */
         if (null !== ($doc = $query->getDocument())) {
             if (null !== $doc->getBoost()) {
                 throw new RuntimeException('Extract does not support document-level boosts, use field boosts instead.');
@@ -50,7 +48,7 @@ class RequestBuilder extends BaseRequestBuilder
 
             // literal.*
             foreach ($doc->getFields() as $name => $value) {
-                if ($value instanceof \DateTimeInterface) {
+                if ($value instanceof \DateTime) {
                     $value = $query->getHelper()->formatDate($value);
                 }
                 $value = (array) $value;

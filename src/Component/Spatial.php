@@ -2,7 +2,6 @@
 
 namespace Solarium\Component;
 
-use Solarium\Component\RequestBuilder\ComponentRequestBuilderInterface;
 use Solarium\Component\RequestBuilder\Spatial as RequestBuilder;
 
 /**
@@ -27,43 +26,33 @@ class Spatial extends AbstractComponent
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): ComponentRequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
 
     /**
      * @param string $sfield
-     *
-     * @return self Provides fluent interface
      */
-    public function setField(string $sfield): self
+    public function setField($sfield)
     {
         $this->setOption('sfield', $sfield);
-        return $this;
     }
 
     /**
      * @param int $distance
-     *
-     * @return self Provides fluent interface
      */
-    public function setDistance(int $distance): self
+    public function setDistance($distance)
     {
         $this->setOption('d', $distance);
-        return $this;
     }
 
     /**
-     * @param string $point The center point using the format "lat,lon" if latitude & longitude. Otherwise, "x,y" for
-     *                      PointType or "x y" for RPT field types.
-     *
-     * @return self Provides fluent interface
+     * @param string $point
      */
-    public function setPoint(string $point)
+    public function setPoint($point)
     {
         $this->setOption('pt', $point);
-        return $this;
     }
 
     /**
@@ -71,7 +60,7 @@ class Spatial extends AbstractComponent
      *
      * @return string|null
      */
-    public function getField(): ?string
+    public function getField()
     {
         return $this->getOption('sfield');
     }
@@ -81,7 +70,7 @@ class Spatial extends AbstractComponent
      *
      * @return int|null
      */
-    public function getDistance(): ?int
+    public function getDistance()
     {
         return $this->getOption('d');
     }
@@ -89,9 +78,9 @@ class Spatial extends AbstractComponent
     /**
      * Get pt option.
      *
-     * @return string|null
+     * @return int|null
      */
-    public function getPoint(): ?string
+    public function getPoint()
     {
         return $this->getOption('pt');
     }

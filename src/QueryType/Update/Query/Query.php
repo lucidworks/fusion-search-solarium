@@ -4,9 +4,6 @@ namespace Solarium\QueryType\Update\Query;
 
 use Solarium\Core\Client\Client;
 use Solarium\Core\Query\AbstractQuery as BaseQuery;
-use Solarium\Core\Query\DocumentInterface;
-use Solarium\Core\Query\RequestBuilderInterface;
-use Solarium\Core\Query\ResponseParserInterface;
 use Solarium\Exception\InvalidArgumentException;
 use Solarium\Exception\RuntimeException;
 use Solarium\QueryType\Update\Query\Command\AbstractCommand;
@@ -15,9 +12,9 @@ use Solarium\QueryType\Update\Query\Command\Commit as CommitCommand;
 use Solarium\QueryType\Update\Query\Command\Delete as DeleteCommand;
 use Solarium\QueryType\Update\Query\Command\Optimize as OptimizeCommand;
 use Solarium\QueryType\Update\Query\Command\Rollback as RollbackCommand;
+use Solarium\QueryType\Update\Query\Document\DocumentInterface;
 use Solarium\QueryType\Update\RequestBuilder;
 use Solarium\QueryType\Update\ResponseParser;
-use Solarium\QueryType\Update\Result;
 
 /**
  * Update query.
@@ -59,11 +56,11 @@ class Query extends BaseQuery
      * @var array
      */
     protected $commandTypes = [
-        self::COMMAND_ADD => AddCommand::class,
-        self::COMMAND_DELETE => DeleteCommand::class,
-        self::COMMAND_COMMIT => CommitCommand::class,
-        self::COMMAND_OPTIMIZE => OptimizeCommand::class,
-        self::COMMAND_ROLLBACK => RollbackCommand::class,
+        self::COMMAND_ADD => 'Solarium\QueryType\Update\Query\Command\Add',
+        self::COMMAND_DELETE => 'Solarium\QueryType\Update\Query\Command\Delete',
+        self::COMMAND_COMMIT => 'Solarium\QueryType\Update\Query\Command\Commit',
+        self::COMMAND_OPTIMIZE => 'Solarium\QueryType\Update\Query\Command\Optimize',
+        self::COMMAND_ROLLBACK => 'Solarium\QueryType\Update\Query\Command\Rollback',
     ];
 
     /**
@@ -73,8 +70,8 @@ class Query extends BaseQuery
      */
     protected $options = [
         'handler' => 'update',
-        'resultclass' => Result::class,
-        'documentclass' => Document::class,
+        'resultclass' => 'Solarium\QueryType\Update\Result',
+        'documentclass' => 'Solarium\QueryType\Update\Query\Document\Document',
         'omitheader' => false,
     ];
 
@@ -103,7 +100,7 @@ class Query extends BaseQuery
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): RequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
@@ -113,7 +110,7 @@ class Query extends BaseQuery
      *
      * @return ResponseParser
      */
-    public function getResponseParser(): ResponseParserInterface
+    public function getResponseParser()
     {
         return new ResponseParser();
     }
@@ -121,14 +118,15 @@ class Query extends BaseQuery
     /**
      * Create a command instance.
      *
+     *
      * @param string $type
-     * @param array  $options
+     * @param mixed  $options
      *
      * @throws InvalidArgumentException
      *
      * @return AbstractCommand
      */
-    public function createCommand(string $type, array $options = null): AbstractCommand
+    public function createCommand($type, $options = null)
     {
         $type = strtolower($type);
 
@@ -146,7 +144,7 @@ class Query extends BaseQuery
      *
      * @return AbstractCommand[]
      */
-    public function getCommands(): array
+    public function getCommands()
     {
         return $this->commands;
     }
@@ -157,14 +155,14 @@ class Query extends BaseQuery
      * The command must be an instance of one of the Solarium\QueryType\Update_*
      * classes.
      *
-     * @param string|null     $key
-     * @param AbstractCommand $command
+     * @param string $key
+     * @param object $command
      *
      * @return self Provides fluent interface
      */
-    public function add(?string $key, AbstractCommand $command): self
+    public function add($key, $command)
     {
-        if ($key) {
+        if (0 !== strlen($key)) {
             $this->commands[$key] = $command;
         } else {
             $this->commands[] = $command;
@@ -178,22 +176,22 @@ class Query extends BaseQuery
      *
      * You can remove a command by passing its key or by passing the command instance.
      *
-     * @param string|AbstractCommand $keyOrCommand
+     * @param string|\Solarium\QueryType\Update\Query\Command\AbstractCommand $command
      *
      * @return self Provides fluent interface
      */
-    public function remove($keyOrCommand): self
+    public function remove($command)
     {
-        if (\is_object($keyOrCommand)) {
+        if (is_object($command)) {
             foreach ($this->commands as $key => $instance) {
-                if ($instance === $keyOrCommand) {
+                if ($instance === $command) {
                     unset($this->commands[$key]);
                     break;
                 }
             }
         } else {
-            if (isset($this->commands[$keyOrCommand])) {
-                unset($this->commands[$keyOrCommand]);
+            if (isset($this->commands[$command])) {
+                unset($this->commands[$command]);
             }
         }
 
@@ -208,7 +206,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function addRollback(): self
+    public function addRollback()
     {
         return $this->add(null, new RollbackCommand());
     }
@@ -224,7 +222,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function addDeleteQuery(string $query, array $bind = null): self
+    public function addDeleteQuery($query, $bind = null)
     {
         if (null !== $bind) {
             $query = $this->getHelper()->assemble($query, $bind);
@@ -246,7 +244,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function addDeleteQueries(array $queries): self
+    public function addDeleteQueries($queries)
     {
         $delete = new DeleteCommand();
         $delete->addQueries($queries);
@@ -264,7 +262,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function addDeleteById($id): self
+    public function addDeleteById($id)
     {
         $delete = new DeleteCommand();
         $delete->addId($id);
@@ -282,7 +280,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function addDeleteByIds(array $ids): self
+    public function addDeleteByIds($ids)
     {
         $delete = new DeleteCommand();
         $delete->addIds($ids);
@@ -302,7 +300,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function addDocument(DocumentInterface $document, bool $overwrite = null, int $commitWithin = null): self
+    public function addDocument(DocumentInterface $document, $overwrite = null, $commitWithin = null)
     {
         return $this->addDocuments([$document], $overwrite, $commitWithin);
     }
@@ -319,7 +317,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function addDocuments(array $documents, bool $overwrite = null, int $commitWithin = null): self
+    public function addDocuments($documents, $overwrite = null, $commitWithin = null)
     {
         $add = new AddCommand();
 
@@ -348,7 +346,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function addCommit(bool $softCommit = null, bool $waitSearcher = null, bool $expungeDeletes = null): self
+    public function addCommit($softCommit = null, $waitSearcher = null, $expungeDeletes = null)
     {
         $commit = new CommitCommand();
 
@@ -379,7 +377,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function addOptimize(bool $softCommit = null, bool $waitSearcher = null, int $maxSegments = null): self
+    public function addOptimize($softCommit = null, $waitSearcher = null, $maxSegments = null)
     {
         $optimize = new OptimizeCommand();
 
@@ -407,11 +405,9 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function setDocumentClass(string $value): self
+    public function setDocumentClass($value)
     {
-        $this->setOption('documentclass', $value);
-
-        return $this;
+        return $this->setOption('documentclass', $value);
     }
 
     /**
@@ -421,7 +417,7 @@ class Query extends BaseQuery
      *
      * @return string
      */
-    public function getDocumentClass(): string
+    public function getDocumentClass()
     {
         return $this->getOption('documentclass');
     }
@@ -440,7 +436,7 @@ class Query extends BaseQuery
      *
      * @return DocumentInterface
      */
-    public function createDocument(array $fields = [], array $boosts = [], array $modifiers = []): DocumentInterface
+    public function createDocument($fields = [], $boosts = [], $modifiers = [])
     {
         $class = $this->getDocumentClass();
 
@@ -457,14 +453,14 @@ class Query extends BaseQuery
      */
     protected function init()
     {
-        parent::init();
-
         if (isset($this->options['command'])) {
             foreach ($this->options['command'] as $key => $value) {
                 $type = $value['type'];
 
                 if (self::COMMAND_ADD == $type) {
-                    throw new RuntimeException('Adding documents is not supported in configuration, use the API for this');
+                    throw new RuntimeException(
+                        'Adding documents is not supported in configuration, use the API for this'
+                    );
                 }
 
                 $this->add($key, $this->createCommand($type, $value));

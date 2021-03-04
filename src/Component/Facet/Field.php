@@ -9,8 +9,10 @@ use Solarium\Component\FacetSetInterface;
  *
  * @see http://wiki.apache.org/solr/SimpleFacetParameters#Field_Value_Faceting_Parameters
  */
-class Field extends AbstractField
+class Field extends AbstractField implements ExcludeTagsInterface
 {
+    use ExcludeTagsTrait;
+
     /**
      * Facet method enum.
      */
@@ -38,19 +40,17 @@ class Field extends AbstractField
      *
      * @return self Provides fluent interface
      */
-    public function setContains(string $contains): self
+    public function setContains($contains)
     {
-        $this->setOption('contains', $contains);
-
-        return $this;
+        return $this->setOption('contains', $contains);
     }
 
     /**
      * Get the facet contains.
      *
-     * @return string|null
+     * @return string
      */
-    public function getContains(): ?string
+    public function getContains()
     {
         return $this->getOption('contains');
     }
@@ -62,19 +62,17 @@ class Field extends AbstractField
      *
      * @return self Provides fluent interface
      */
-    public function setContainsIgnoreCase($containsIgnoreCase): self
+    public function setContainsIgnoreCase($containsIgnoreCase)
     {
-        $this->setOption('containsignorecase', $containsIgnoreCase);
-
-        return $this;
+        return $this->setOption('containsignorecase', $containsIgnoreCase);
     }
 
     /**
      * Get the case sensitivity of facet contains.
      *
-     * @return bool|null
+     * @return bool
      */
-    public function getContainsIgnoreCase(): ?bool
+    public function getContainsIgnoreCase()
     {
         return $this->getOption('containsignorecase');
     }

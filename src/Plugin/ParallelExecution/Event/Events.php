@@ -7,7 +7,7 @@ namespace Solarium\Plugin\ParallelExecution\Event;
  *
  * @codeCoverageIgnore
  */
-interface Events
+class Events
 {
     /**
      * This event is called just before parallel HTTP request execution, but after init work.

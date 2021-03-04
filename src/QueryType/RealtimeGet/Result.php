@@ -2,7 +2,7 @@
 
 namespace Solarium\QueryType\RealtimeGet;
 
-use Solarium\Core\Query\DocumentInterface;
+use Solarium\QueryType\Select\Result\DocumentInterface;
 use Solarium\QueryType\Select\Result\Result as BaseResult;
 
 /**
@@ -10,14 +10,14 @@ use Solarium\QueryType\Select\Result\Result as BaseResult;
  *
  * Extends the standard select result with a accessor method for the first document
  */
-class Result extends BaseResult
+class Result extends BaseResult implements \IteratorAggregate, \Countable
 {
     /**
      * Get first document in set.
      *
      * @return DocumentInterface
      */
-    public function getDocument(): DocumentInterface
+    public function getDocument()
     {
         $docs = $this->getDocuments();
 

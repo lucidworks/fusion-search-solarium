@@ -27,7 +27,7 @@ class Term implements \IteratorAggregate, \Countable
      * @param int   $numFound
      * @param array $suggestions
      */
-    public function __construct(int $numFound, array $suggestions)
+    public function __construct($numFound, $suggestions)
     {
         $this->numFound = $numFound;
         $this->suggestions = $suggestions;
@@ -38,7 +38,7 @@ class Term implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function getNumFound(): int
+    public function getNumFound()
     {
         return $this->numFound;
     }
@@ -48,7 +48,7 @@ class Term implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getSuggestions(): array
+    public function getSuggestions()
     {
         return $this->suggestions;
     }
@@ -58,7 +58,7 @@ class Term implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->suggestions);
     }
@@ -68,7 +68,7 @@ class Term implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->suggestions);
     }

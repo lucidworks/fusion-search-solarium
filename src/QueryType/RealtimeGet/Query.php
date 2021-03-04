@@ -4,10 +4,7 @@ namespace Solarium\QueryType\RealtimeGet;
 
 use Solarium\Core\Client\Client;
 use Solarium\Core\Query\AbstractQuery as BaseQuery;
-use Solarium\Core\Query\RequestBuilderInterface;
-use Solarium\Core\Query\ResponseParserInterface;
 use Solarium\QueryType\Select\ResponseParser;
-use Solarium\QueryType\Select\Result\Document;
 
 /**
  * Get query.
@@ -24,8 +21,8 @@ class Query extends BaseQuery
      * @var array
      */
     protected $options = [
-        'resultclass' => Result::class,
-        'documentclass' => Document::class,
+        'resultclass' => 'Solarium\QueryType\RealtimeGet\Result',
+        'documentclass' => 'Solarium\QueryType\Select\Result\Document',
         'handler' => 'get',
         'omitheader' => true,
     ];
@@ -52,7 +49,7 @@ class Query extends BaseQuery
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): RequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
@@ -62,7 +59,7 @@ class Query extends BaseQuery
      *
      * @return ResponseParser
      */
-    public function getResponseParser(): ResponseParserInterface
+    public function getResponseParser()
     {
         return new ResponseParser();
     }
@@ -74,7 +71,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function addId(string $id): self
+    public function addId($id)
     {
         $this->ids[$id] = true;
 
@@ -88,7 +85,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function addIds($ids): self
+    public function addIds($ids)
     {
         if (is_string($ids)) {
             $ids = explode(',', $ids);
@@ -109,7 +106,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function removeId(string $id): self
+    public function removeId($id)
     {
         if (isset($this->ids[$id])) {
             unset($this->ids[$id]);
@@ -123,7 +120,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function clearIds(): self
+    public function clearIds()
     {
         $this->ids = [];
 
@@ -135,7 +132,7 @@ class Query extends BaseQuery
      *
      * @return array
      */
-    public function getIds(): array
+    public function getIds()
     {
         return array_keys($this->ids);
     }
@@ -149,7 +146,7 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function setIds(array $ids): self
+    public function setIds($ids)
     {
         $this->clearIds();
         $this->addIds($ids);
@@ -166,10 +163,9 @@ class Query extends BaseQuery
      *
      * @return self Provides fluent interface
      */
-    public function setDocumentClass(string $value): self
+    public function setDocumentClass($value)
     {
-        $this->setOption('documentclass', $value);
-        return $this;
+        return $this->setOption('documentclass', $value);
     }
 
     /**
@@ -179,7 +175,7 @@ class Query extends BaseQuery
      *
      * @return string
      */
-    public function getDocumentClass(): string
+    public function getDocumentClass()
     {
         return $this->getOption('documentclass');
     }
@@ -189,7 +185,7 @@ class Query extends BaseQuery
      *
      * @return array
      */
-    public function getComponents(): array
+    public function getComponents()
     {
         return [];
     }

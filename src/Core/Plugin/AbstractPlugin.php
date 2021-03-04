@@ -2,7 +2,7 @@
 
 namespace Solarium\Core\Plugin;
 
-use Solarium\Core\Client\ClientInterface;
+use Solarium\Core\Client\Client;
 use Solarium\Core\Configurable;
 
 /**
@@ -13,7 +13,7 @@ abstract class AbstractPlugin extends Configurable implements PluginInterface
     /**
      * Client instance.
      *
-     * @var ClientInterface
+     * @var Client
      */
     protected $client;
 
@@ -22,10 +22,10 @@ abstract class AbstractPlugin extends Configurable implements PluginInterface
      *
      * This method is called when the plugin is registered to a client instance
      *
-     * @param ClientInterface $client
-     * @param array           $options
+     * @param Client $client
+     * @param array  $options
      */
-    public function initPlugin(ClientInterface $client, array $options)
+    public function initPlugin($client, $options)
     {
         $this->client = $client;
         parent::__construct($options);

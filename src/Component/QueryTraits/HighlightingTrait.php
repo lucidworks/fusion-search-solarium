@@ -3,7 +3,6 @@
 namespace Solarium\Component\QueryTraits;
 
 use Solarium\Component\ComponentAwareQueryInterface;
-use Solarium\Component\Highlighting\Highlighting;
 
 /**
  * Trait query types supporting components.
@@ -17,7 +16,7 @@ trait HighlightingTrait
      *
      * @return \Solarium\Component\Highlighting\Highlighting
      */
-    public function getHighlighting(): Highlighting
+    public function getHighlighting()
     {
         return $this->getComponent(ComponentAwareQueryInterface::COMPONENT_HIGHLIGHTING, true);
     }

@@ -3,7 +3,6 @@
 namespace Solarium\QueryType\Server\Api;
 
 use Solarium\Core\Client\Request;
-use Solarium\Core\Query\AbstractQuery;
 use Solarium\Core\Query\AbstractRequestBuilder as BaseRequestBuilder;
 use Solarium\Core\Query\QueryInterface;
 use Solarium\QueryType\Server\Api\Query as ApiQuery;
@@ -20,7 +19,7 @@ class RequestBuilder extends BaseRequestBuilder
      *
      * @return Request
      */
-    public function build(AbstractQuery $query): Request
+    public function build(QueryInterface $query)
     {
         $request = parent::build($query);
 

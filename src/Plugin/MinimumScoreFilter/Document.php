@@ -2,21 +2,20 @@
 
 namespace Solarium\Plugin\MinimumScoreFilter;
 
-use Solarium\Core\Query\DocumentInterface;
 use Solarium\Exception\RuntimeException;
-use Solarium\QueryType\Select\Result\Document as SelectDocument;
+use Solarium\QueryType\Select\Result\DocumentInterface;
 
 /**
  * Minimum score filter query result document.
  *
  * Decorates the original document with a filter indicator
  */
-class Document implements DocumentInterface, \IteratorAggregate, \Countable, \ArrayAccess
+class Document implements \IteratorAggregate, \Countable, \ArrayAccess
 {
     /**
      * Original document.
      *
-     * @var SelectDocument
+     * @var array
      */
     protected $document;
 
@@ -30,13 +29,13 @@ class Document implements DocumentInterface, \IteratorAggregate, \Countable, \Ar
     /**
      * Constructor.
      *
-     * @param SelectDocument $document
-     * @param float          $threshold
+     * @param DocumentInterface $document
+     * @param int               $threshold
      */
-    public function __construct(SelectDocument $document, float $threshold)
+    public function __construct(DocumentInterface $document, $threshold)
     {
         $this->document = $document;
-        $this->marked = ($threshold > ($document->score ?? 0.0));
+        $this->marked = $threshold > $document->score;
     }
 
     /**
@@ -47,7 +46,7 @@ class Document implements DocumentInterface, \IteratorAggregate, \Countable, \Ar
      *
      * @return mixed
      */
-    public function __call(string $name, array $arguments)
+    public function __call($name, $arguments)
     {
         return $this->document->$name($arguments);
     }
@@ -71,7 +70,7 @@ class Document implements DocumentInterface, \IteratorAggregate, \Countable, \Ar
      *
      * @return bool
      */
-    public function __isset($name): bool
+    public function __isset($name)
     {
         return $this->document->__isset($name);
     }
@@ -82,14 +81,13 @@ class Document implements DocumentInterface, \IteratorAggregate, \Countable, \Ar
      * Magic method for setting a field as property of this object. Since this
      * is a readonly document an exception will be thrown to prevent this.
      *
+     *
      * @param string $name
      * @param string $value
      *
-     * @return self
-     *
      * @throws RuntimeException
      */
-    public function __set($name, $value): self
+    public function __set($name, $value)
     {
         throw new RuntimeException('A readonly document cannot be altered');
     }
@@ -99,7 +97,7 @@ class Document implements DocumentInterface, \IteratorAggregate, \Countable, \Ar
      *
      * @return bool
      */
-    public function markedAsLowScore(): bool
+    public function markedAsLowScore()
     {
         return $this->marked;
     }
@@ -109,7 +107,7 @@ class Document implements DocumentInterface, \IteratorAggregate, \Countable, \Ar
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return $this->document->getIterator();
     }
@@ -119,7 +117,7 @@ class Document implements DocumentInterface, \IteratorAggregate, \Countable, \Ar
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return $this->document->count();
     }
@@ -131,7 +129,7 @@ class Document implements DocumentInterface, \IteratorAggregate, \Countable, \Ar
      *
      * @return bool
      */
-    public function offsetExists($offset): bool
+    public function offsetExists($offset)
     {
         return $this->document->offsetExists($offset);
     }
@@ -167,15 +165,5 @@ class Document implements DocumentInterface, \IteratorAggregate, \Countable, \Ar
     public function offsetSet($offset, $value)
     {
         $this->__set($offset, $value);
-    }
-
-    /**
-     * Get all fields.
-     *
-     * @return array
-     */
-    public function getFields(): array
-    {
-        return $this->document->getFields();
     }
 }

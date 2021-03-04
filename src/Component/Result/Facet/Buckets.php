@@ -9,7 +9,7 @@ namespace Solarium\Component\Result\Facet;
  * value and its count. You can access the values as an array using
  * {@link getValues()} or iterate this object.
  */
-class Buckets implements FacetResultInterface, \IteratorAggregate, \Countable
+class Buckets implements \IteratorAggregate, \Countable
 {
     /**
      * Value array.
@@ -21,7 +21,7 @@ class Buckets implements FacetResultInterface, \IteratorAggregate, \Countable
     /**
      * Constructor.
      *
-     * @param Bucket[] $buckets
+     * @param Bucket[] $values
      */
     public function __construct(array $buckets)
     {
@@ -33,7 +33,7 @@ class Buckets implements FacetResultInterface, \IteratorAggregate, \Countable
      *
      * @return Bucket[]
      */
-    public function getBuckets(): array
+    public function getBuckets()
     {
         return $this->buckets;
     }
@@ -43,7 +43,7 @@ class Buckets implements FacetResultInterface, \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->buckets);
     }
@@ -53,7 +53,7 @@ class Buckets implements FacetResultInterface, \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->buckets);
     }

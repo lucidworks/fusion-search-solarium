@@ -4,7 +4,6 @@ namespace Solarium\Component\RequestBuilder;
 
 use Solarium\Component\TermsInterface;
 use Solarium\Core\Client\Request;
-use Solarium\Core\ConfigurableInterface;
 
 /**
  * Build a Terms query request.
@@ -19,7 +18,7 @@ class Terms implements ComponentRequestBuilderInterface
      *
      * @return Request
      */
-    public function buildComponent(ConfigurableInterface $component, Request $request): Request
+    public function buildComponent($component, $request)
     {
         $request->addParam('terms', true);
         $request->addParam('terms.lower', $component->getLowerbound());

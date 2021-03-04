@@ -3,7 +3,6 @@
 namespace Solarium\QueryType\Analysis\RequestBuilder;
 
 use Solarium\Core\Client\Request;
-use Solarium\Core\Query\AbstractQuery;
 use Solarium\Core\Query\AbstractRequestBuilder as BaseRequestBuilder;
 use Solarium\Core\Query\QueryInterface;
 use Solarium\QueryType\Analysis\Query\Document as QueryDocument;
@@ -16,11 +15,11 @@ class Document extends BaseRequestBuilder
     /**
      * Build request for an analysis document query.
      *
-     * @param AbstractQuery|QueryInterface|QueryDocument $query
+     * @param QueryInterface|QueryDocument $query
      *
      * @return Request
      */
-    public function build(AbstractQuery $query): Request
+    public function build(QueryInterface $query)
     {
         $request = parent::build($query);
         $request->setRawData($this->getRawData($query));
@@ -36,7 +35,7 @@ class Document extends BaseRequestBuilder
      *
      * @return string
      */
-    public function getRawData(QueryDocument $query): string
+    public function getRawData($query)
     {
         $xml = '<docs>';
 
@@ -65,12 +64,12 @@ class Document extends BaseRequestBuilder
      * Build XML for a field.
      *
      * @param string $name
-     * @param string $value
+     * @param mixed  $value
      *
      * @return string
      */
-    protected function buildFieldXml(string $name, string $value): string
+    protected function buildFieldXml($name, $value)
     {
-        return '<field name="'.$name.'">'.htmlspecialchars($value, ENT_NOQUOTES).'</field>';
+        return '<field name="'.$name.'">'.htmlspecialchars($value, ENT_NOQUOTES, 'UTF-8').'</field>';
     }
 }

@@ -11,8 +11,6 @@ use Solarium\Exception\HttpException;
 
 /**
  * Guzzle3 HTTP adapter.
- *
- * @deprecated Deprecated since Solarium 5.2 and will be removed in Solarium 6. Use Psr18Adapter instead.
  */
 class Guzzle3 extends Configurable implements AdapterInterface
 {
@@ -31,7 +29,7 @@ class Guzzle3 extends Configurable implements AdapterInterface
      *
      * @return Response
      */
-    public function execute(Request $request, Endpoint $endpoint): Response
+    public function execute($request, $endpoint)
     {
         // @codeCoverageIgnoreStart
         $uri = AdapterHelper::buildUri($request, $endpoint);
@@ -113,7 +111,8 @@ class Guzzle3 extends Configurable implements AdapterInterface
         }
 
         if ($request->getFileUpload()) {
-            return AdapterHelper::buildUploadBodyFromRequest($request);
+            $body = AdapterHelper::buildUploadBodyFromRequest($request);
+            return $body;
         }
 
         return $request->getRawData();

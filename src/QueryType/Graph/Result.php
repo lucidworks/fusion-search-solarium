@@ -14,7 +14,7 @@ class Result extends BaseResult
      *
      * @return int
      */
-    public function getStatusCode(): int
+    public function getStatusCode()
     {
         return $this->response->getStatusCode();
     }
@@ -22,11 +22,11 @@ class Result extends BaseResult
     /**
      * Get Solr response body.
      *
-     * @return array The response body
+     * @return string The response body
      */
-    public function getData(): array
+    public function getData()
     {
-        return ['body' => $this->response->getBody()];
+        return $this->response->getBody();
     }
 
     /**
@@ -36,8 +36,8 @@ class Result extends BaseResult
      *
      * @return string GraphML XML document
      */
-    public function getGraphML(): string
+    public function getGraphML()
     {
-        return $this->response->getBody();
+        return $this->getData();
     }
 }

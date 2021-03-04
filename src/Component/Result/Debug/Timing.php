@@ -27,7 +27,7 @@ class Timing implements \IteratorAggregate, \Countable
      * @param float $time
      * @param array $phases
      */
-    public function __construct(float $time, array $phases)
+    public function __construct($time, $phases)
     {
         $this->time = $time;
         $this->phases = $phases;
@@ -38,7 +38,7 @@ class Timing implements \IteratorAggregate, \Countable
      *
      * @return float
      */
-    public function getTime(): float
+    public function getTime()
     {
         return $this->time;
     }
@@ -50,9 +50,11 @@ class Timing implements \IteratorAggregate, \Countable
      *
      * @return TimingPhase|null
      */
-    public function getPhase($key): ?TimingPhase
+    public function getPhase($key)
     {
-        return $this->phases[$key] ?? null;
+        if (isset($this->phases[$key])) {
+            return $this->phases[$key];
+        }
     }
 
     /**
@@ -60,7 +62,7 @@ class Timing implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getPhases(): array
+    public function getPhases()
     {
         return $this->phases;
     }
@@ -70,7 +72,7 @@ class Timing implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->phases);
     }
@@ -80,7 +82,7 @@ class Timing implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->phases);
     }

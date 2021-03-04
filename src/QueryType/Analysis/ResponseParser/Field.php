@@ -4,7 +4,7 @@ namespace Solarium\QueryType\Analysis\ResponseParser;
 
 use Solarium\Core\Query\AbstractResponseParser as ResponseParserAbstract;
 use Solarium\Core\Query\ResponseParserInterface as ResponseParserInterface;
-use Solarium\Core\Query\Result\ResultInterface;
+use Solarium\Core\Query\Result\Result;
 use Solarium\QueryType\Analysis\Result as AnalysisResult;
 use Solarium\QueryType\Analysis\Result\Item;
 use Solarium\QueryType\Analysis\Result\ResultList;
@@ -18,11 +18,11 @@ class Field extends ResponseParserAbstract implements ResponseParserInterface
     /**
      * Parse response data.
      *
-     * @param ResultInterface $result
+     * @param Result $result
      *
      * @return array
      */
-    public function parse(ResultInterface $result): array
+    public function parse($result)
     {
         $data = $result->getData();
 
@@ -38,12 +38,12 @@ class Field extends ResponseParserAbstract implements ResponseParserInterface
     /**
      * Parser.
      *
-     * @param ResultInterface $result
-     * @param array           $data
+     * @param Result $result
+     * @param array  $data
      *
      * @return Types[]
      */
-    protected function parseAnalysis(ResultInterface $result, array $data): array
+    protected function parseAnalysis($result, $data)
     {
         $types = [];
         foreach ($data as $documentKey => $documentData) {
@@ -57,17 +57,17 @@ class Field extends ResponseParserAbstract implements ResponseParserInterface
     /**
      * Parse analysis types and items.
      *
-     * @param ResultInterface $result
-     * @param array           $data
+     * @param Result $result
+     * @param array  $typeData
      *
      * @return Types[]
      */
-    protected function parseTypes(ResultInterface $result, array $data): array
+    protected function parseTypes($result, $typeData)
     {
         $query = $result->getQuery();
 
         $results = [];
-        foreach ($data as $fieldKey => $fieldData) {
+        foreach ($typeData as $fieldKey => $fieldData) {
             $types = [];
             foreach ($fieldData as $typeKey => $typeData) {
                 if ($query->getResponseWriter() == $query::WT_JSON) {

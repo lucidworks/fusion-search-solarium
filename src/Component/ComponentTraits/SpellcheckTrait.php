@@ -2,8 +2,6 @@
 
 namespace Solarium\Component\ComponentTraits;
 
-use Solarium\Component\SpellcheckInterface;
-
 /**
  * Spellcheck Component Trait.
  */
@@ -25,7 +23,7 @@ trait SpellcheckTrait
      *
      * @return self Provides fluent interface
      */
-    public function setBuild(bool $build): SpellcheckInterface
+    public function setBuild($build)
     {
         return $this->setOption('build', $build);
     }
@@ -35,7 +33,7 @@ trait SpellcheckTrait
      *
      * @return bool|null
      */
-    public function getBuild(): ?bool
+    public function getBuild()
     {
         return $this->getOption('build');
     }
@@ -49,7 +47,7 @@ trait SpellcheckTrait
      *
      * @return self Provides fluent interface
      */
-    public function setReload(bool $reload): SpellcheckInterface
+    public function setReload($reload)
     {
         return $this->setOption('reload', $reload);
     }
@@ -59,7 +57,7 @@ trait SpellcheckTrait
      *
      * @return bool|null
      */
-    public function getReload(): ?bool
+    public function getReload()
     {
         return $this->getOption('reload');
     }
@@ -67,26 +65,23 @@ trait SpellcheckTrait
     /**
      * Set dictionary option.
      *
-     * The name of the dictionary or dictionaries to use
+     * The name of the dictionary to use
      *
-     * @param string|array $dictionary
+     * @param string $dictionary
      *
-     * @return SpellcheckInterface Provides fluent interface
+     * @return self Provides fluent interface
      */
-    public function setDictionary($dictionary): SpellcheckInterface
+    public function setDictionary($dictionary)
     {
-        if (is_string($dictionary)) {
-            $dictionary = [$dictionary];
-        }
         return $this->setOption('dictionary', $dictionary);
     }
 
     /**
      * Get dictionary option.
      *
-     * @return array|null
+     * @return string|null
      */
-    public function getDictionary(): ?array
+    public function getDictionary()
     {
         return $this->getOption('dictionary');
     }
@@ -98,9 +93,9 @@ trait SpellcheckTrait
      *
      * @param int $count
      *
-     * @return SpellcheckInterface Provides fluent interface
+     * @return self Provides fluent interface
      */
-    public function setCount(int $count): SpellcheckInterface
+    public function setCount($count)
     {
         return $this->setOption('count', $count);
     }
@@ -110,7 +105,7 @@ trait SpellcheckTrait
      *
      * @return int|null
      */
-    public function getCount(): ?int
+    public function getCount()
     {
         return $this->getOption('count');
     }
@@ -122,9 +117,9 @@ trait SpellcheckTrait
      *
      * @param bool $onlyMorePopular
      *
-     * @return SpellcheckInterface Provides fluent interface
+     * @return self Provides fluent interface
      */
-    public function setOnlyMorePopular(bool $onlyMorePopular): SpellcheckInterface
+    public function setOnlyMorePopular($onlyMorePopular)
     {
         return $this->setOption('onlymorepopular', $onlyMorePopular);
     }
@@ -134,7 +129,7 @@ trait SpellcheckTrait
      *
      * @return bool|null
      */
-    public function getOnlyMorePopular(): ?bool
+    public function getOnlyMorePopular()
     {
         return $this->getOption('onlymorepopular');
     }
@@ -144,9 +139,9 @@ trait SpellcheckTrait
      *
      * @param bool $extendedResults
      *
-     * @return SpellcheckInterface Provides fluent interface
+     * @return self Provides fluent interface
      */
-    public function setExtendedResults(bool $extendedResults): SpellcheckInterface
+    public function setExtendedResults($extendedResults)
     {
         return $this->setOption('extendedresults', $extendedResults);
     }
@@ -156,7 +151,7 @@ trait SpellcheckTrait
      *
      * @return bool|null
      */
-    public function getExtendedResults(): ?bool
+    public function getExtendedResults()
     {
         return $this->getOption('extendedresults');
     }
@@ -166,9 +161,9 @@ trait SpellcheckTrait
      *
      * @param bool $collate
      *
-     * @return SpellcheckInterface Provides fluent interface
+     * @return self Provides fluent interface
      */
-    public function setCollate(bool $collate): SpellcheckInterface
+    public function setCollate($collate)
     {
         return $this->setOption('collate', $collate);
     }
@@ -178,7 +173,7 @@ trait SpellcheckTrait
      *
      * @return bool|null
      */
-    public function getCollate(): ?bool
+    public function getCollate()
     {
         return $this->getOption('collate');
     }
@@ -188,9 +183,9 @@ trait SpellcheckTrait
      *
      * @param int $maxCollations
      *
-     * @return SpellcheckInterface Provides fluent interface
+     * @return self Provides fluent interface
      */
-    public function setMaxCollations(int $maxCollations): SpellcheckInterface
+    public function setMaxCollations($maxCollations)
     {
         return $this->setOption('maxcollations', $maxCollations);
     }
@@ -200,7 +195,7 @@ trait SpellcheckTrait
      *
      * @return int|null
      */
-    public function getMaxCollations(): ?int
+    public function getMaxCollations()
     {
         return $this->getOption('maxcollations');
     }
@@ -208,11 +203,11 @@ trait SpellcheckTrait
     /**
      * Set maxCollationTries option.
      *
-     * @param int $maxCollationTries
+     * @param string $maxCollationTries
      *
-     * @return SpellcheckInterface Provides fluent interface
+     * @return self Provides fluent interface
      */
-    public function setMaxCollationTries(int $maxCollationTries): SpellcheckInterface
+    public function setMaxCollationTries($maxCollationTries)
     {
         return $this->setOption('maxcollationtries', $maxCollationTries);
     }
@@ -220,9 +215,9 @@ trait SpellcheckTrait
     /**
      * Get maxCollationTries option.
      *
-     * @return int|null
+     * @return string|null
      */
-    public function getMaxCollationTries(): ?int
+    public function getMaxCollationTries()
     {
         return $this->getOption('maxcollationtries');
     }
@@ -234,7 +229,7 @@ trait SpellcheckTrait
      *
      * @return self Provides fluent interface
      */
-    public function setMaxCollationEvaluations(int $maxCollationEvaluations): SpellcheckInterface
+    public function setMaxCollationEvaluations($maxCollationEvaluations)
     {
         return $this->setOption('maxcollationevaluations', $maxCollationEvaluations);
     }
@@ -244,7 +239,7 @@ trait SpellcheckTrait
      *
      * @return int|null
      */
-    public function getMaxCollationEvaluations(): ?int
+    public function getMaxCollationEvaluations()
     {
         return $this->getOption('maxcollationevaluations');
     }
@@ -252,11 +247,11 @@ trait SpellcheckTrait
     /**
      * Set collateExtendedResults option.
      *
-     * @param bool $collateExtendedResults
+     * @param string $collateExtendedResults
      *
-     * @return SpellcheckInterface Provides fluent interface
+     * @return self Provides fluent interface
      */
-    public function setCollateExtendedResults(bool $collateExtendedResults): SpellcheckInterface
+    public function setCollateExtendedResults($collateExtendedResults)
     {
         return $this->setOption('collateextendedresults', $collateExtendedResults);
     }
@@ -264,9 +259,9 @@ trait SpellcheckTrait
     /**
      * Get collateExtendedResults option.
      *
-     * @return bool|null
+     * @return string|null
      */
-    public function getCollateExtendedResults(): ?bool
+    public function getCollateExtendedResults()
     {
         return $this->getOption('collateextendedresults');
     }
@@ -276,9 +271,9 @@ trait SpellcheckTrait
      *
      * @param float $accuracy
      *
-     * @return SpellcheckInterface Provides fluent interface
+     * @return self Provides fluent interface
      */
-    public function setAccuracy(float $accuracy): SpellcheckInterface
+    public function setAccuracy($accuracy)
     {
         return $this->setOption('accuracy', $accuracy);
     }
@@ -288,7 +283,7 @@ trait SpellcheckTrait
      *
      * @return float|null
      */
-    public function getAccuracy(): ?float
+    public function getAccuracy()
     {
         return $this->getOption('accuracy');
     }
@@ -299,9 +294,9 @@ trait SpellcheckTrait
      * @param string $param
      * @param mixed  $value
      *
-     * @return SpellcheckInterface Provides fluent interface
+     * @return self Provides fluent interface
      */
-    public function setCollateParam(string $param, $value): SpellcheckInterface
+    public function setCollateParam($param, $value)
     {
         $this->collateParams[$param] = $value;
 
@@ -313,7 +308,7 @@ trait SpellcheckTrait
      *
      * @return array
      */
-    public function getCollateParams(): array
+    public function getCollateParams()
     {
         return $this->collateParams;
     }

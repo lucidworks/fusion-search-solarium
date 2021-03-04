@@ -88,7 +88,7 @@ interface FacetSetInterface
      *
      * @return FacetInterface|null
      */
-    public function getFacet(string $key): ?FacetInterface;
+    public function getFacet($key): ?FacetInterface;
 
     /**
      * Get all facets.
@@ -124,7 +124,7 @@ interface FacetSetInterface
      *
      * @return \Solarium\Component\FacetSet
      */
-    public function setFacets(array $facets): self;
+    public function setFacets($facets): self;
 
     /**
      * Create a facet instance.

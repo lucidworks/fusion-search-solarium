@@ -2,12 +2,10 @@
 
 namespace Solarium\Component\Result\Facet\Pivot;
 
-use Solarium\Component\Result\Facet\FacetResultInterface;
-
 /**
  * Select field pivot result.
  */
-class Pivot implements FacetResultInterface, \IteratorAggregate, \Countable
+class Pivot implements \IteratorAggregate, \Countable
 {
     /**
      * Value array.
@@ -21,7 +19,7 @@ class Pivot implements FacetResultInterface, \IteratorAggregate, \Countable
      *
      * @param array $data
      */
-    public function __construct(array $data)
+    public function __construct($data)
     {
         foreach ($data as $pivotData) {
             $this->pivot[] = new PivotItem($pivotData);
@@ -33,7 +31,7 @@ class Pivot implements FacetResultInterface, \IteratorAggregate, \Countable
      *
      * @return Pivot[]
      */
-    public function getPivot(): array
+    public function getPivot()
     {
         return $this->pivot;
     }
@@ -43,7 +41,7 @@ class Pivot implements FacetResultInterface, \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->pivot);
     }
@@ -53,7 +51,7 @@ class Pivot implements FacetResultInterface, \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->pivot);
     }

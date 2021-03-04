@@ -14,25 +14,25 @@ interface SuggesterInterface extends ConfigurableInterface
      *
      * @return string|null
      */
-    public function getQuery(): ?string;
+    public function getQuery();
 
     /**
      * Set dictionary option.
      *
      * The name of the dictionary to use
      *
-     * @param string|array $dictionary
+     * @param string $dictionary
      *
      * @return self Provides fluent interface
      */
-    public function setDictionary($dictionary): self;
+    public function setDictionary($dictionary);
 
     /**
      * Get dictionary option.
      *
-     * @return array|null
+     * @return string|null
      */
-    public function getDictionary(): ?array;
+    public function getDictionary();
 
     /**
      * Set count option.
@@ -43,14 +43,14 @@ interface SuggesterInterface extends ConfigurableInterface
      *
      * @return self Provides fluent interface
      */
-    public function setCount(int $count): self;
+    public function setCount($count);
 
     /**
      * Get count option.
      *
      * @return int|null
      */
-    public function getCount(): ?int;
+    public function getCount();
 
     /**
      * Set cfq option.
@@ -61,14 +61,14 @@ interface SuggesterInterface extends ConfigurableInterface
      *
      * @return self Provides fluent interface
      */
-    public function setContextFilterQuery(string $cfq): self;
+    public function setContextFilterQuery($cfq);
 
     /**
      * Get cfq option.
      *
      * @return string|null
      */
-    public function getContextFilterQuery(): ?string;
+    public function getContextFilterQuery();
 
     /**
      * Set build option.
@@ -77,28 +77,29 @@ interface SuggesterInterface extends ConfigurableInterface
      *
      * @return self Provides fluent interface
      */
-    public function setBuild(bool $build): self;
+    public function setBuild($build);
 
     /**
      * Get build option.
      *
      * @return bool|null
      */
-    public function getBuild(): ?bool;
+    public function getBuild();
 
     /**
      * Set reload option.
      *
-     * @param bool $reload
+     * @param bool  $build
+     * @param mixed $reload
      *
      * @return self Provides fluent interface
      */
-    public function setReload(bool $reload): self;
+    public function setReload($reload);
 
     /**
      * Get reload option.
      *
      * @return bool|null
      */
-    public function getReload(): ?bool;
+    public function getReload();
 }

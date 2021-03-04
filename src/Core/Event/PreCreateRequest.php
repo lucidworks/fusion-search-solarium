@@ -4,7 +4,7 @@ namespace Solarium\Core\Event;
 
 use Solarium\Core\Client\Request;
 use Solarium\Core\Query\QueryInterface;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * PreCreateRequest event, see Events for details.
@@ -36,7 +36,7 @@ class PreCreateRequest extends Event
      *
      * @return QueryInterface
      */
-    public function getQuery(): QueryInterface
+    public function getQuery()
     {
         return $this->query;
     }
@@ -47,13 +47,10 @@ class PreCreateRequest extends Event
      * If you set this request value the default execution is skipped and this request is directly returned
      *
      * @param Request $request
-     *
-     * @return self
      */
-    public function setRequest(Request $request): self
+    public function setRequest(Request $request)
     {
         $this->request = $request;
-        return $this;
     }
 
     /**
@@ -61,7 +58,7 @@ class PreCreateRequest extends Event
      *
      * @return null|Request
      */
-    public function getRequest(): ?Request
+    public function getRequest()
     {
         return $this->request;
     }

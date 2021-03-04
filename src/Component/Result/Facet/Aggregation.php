@@ -5,7 +5,7 @@ namespace Solarium\Component\Result\Facet;
 /**
  * Aggregation.
  */
-class Aggregation implements FacetResultInterface
+class Aggregation
 {
     /**
      * Value.

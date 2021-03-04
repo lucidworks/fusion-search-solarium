@@ -33,11 +33,11 @@ class FieldGroup implements \IteratorAggregate, \Countable
     /**
      * Constructor.
      *
-     * @param int|null $matches
-     * @param int|null $numberOfGroups
-     * @param array    $groups
+     * @param int   $matches
+     * @param int   $numberOfGroups
+     * @param array $groups
      */
-    public function __construct(?int $matches, ?int $numberOfGroups, array $groups)
+    public function __construct($matches, $numberOfGroups, $groups)
     {
         $this->matches = $matches;
         $this->numberOfGroups = $numberOfGroups;
@@ -49,7 +49,7 @@ class FieldGroup implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function getMatches(): int
+    public function getMatches()
     {
         return $this->matches;
     }
@@ -61,7 +61,7 @@ class FieldGroup implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function getNumberOfGroups(): int
+    public function getNumberOfGroups()
     {
         return $this->numberOfGroups;
     }
@@ -71,7 +71,7 @@ class FieldGroup implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function getValueGroups(): array
+    public function getValueGroups()
     {
         return $this->valueGroups;
     }
@@ -81,7 +81,7 @@ class FieldGroup implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return new \ArrayIterator($this->valueGroups);
     }
@@ -91,7 +91,7 @@ class FieldGroup implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->valueGroups);
     }

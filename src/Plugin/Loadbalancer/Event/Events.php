@@ -5,7 +5,7 @@ namespace Solarium\Plugin\Loadbalancer\Event;
 /**
  * Event definitions.
  */
-interface Events
+class Events
 {
     /**
      * This event is called after and endpoint has failed.

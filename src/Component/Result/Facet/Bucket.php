@@ -54,7 +54,7 @@ class Bucket implements \IteratorAggregate, \Countable
      *
      * @return string
      */
-    public function getValue(): string
+    public function getValue()
     {
         return $this->value;
     }
@@ -64,7 +64,7 @@ class Bucket implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function getCount(): int
+    public function getCount()
     {
         return $this->count;
     }
@@ -74,19 +74,9 @@ class Bucket implements \IteratorAggregate, \Countable
      *
      * @return FacetInterface[]
      */
-    public function getFacets(): array
+    public function getFacets()
     {
         return $this->facetSet->getFacets();
-    }
-
-    /**
-     * Get nested facet set.
-     *
-     * @return FacetSet
-     */
-    public function getFacetSet(): FacetSet
-    {
-        return $this->facetSet;
     }
 
     /**
@@ -94,7 +84,7 @@ class Bucket implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator()
     {
         return $this->facetSet->getIterator();
     }
@@ -104,7 +94,7 @@ class Bucket implements \IteratorAggregate, \Countable
      *
      * @return int the amount of nested facets
      */
-    public function count(): int
+    public function count()
     {
         return count($this->facetSet->getFacets());
     }

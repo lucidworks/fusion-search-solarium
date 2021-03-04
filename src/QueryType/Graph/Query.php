@@ -4,8 +4,6 @@ namespace Solarium\QueryType\Graph;
 
 use Solarium\Core\Client\Client;
 use Solarium\Core\Query\AbstractQuery;
-use Solarium\Core\Query\RequestBuilderInterface;
-use Solarium\Core\Query\ResponseParserInterface;
 use Solarium\QueryType\Stream\RequestBuilder;
 
 /**
@@ -20,7 +18,7 @@ class Query extends AbstractQuery
      */
     protected $options = [
         'handler' => 'graph',
-        'resultclass' => Result::class,
+        'resultclass' => 'Solarium\QueryType\Graph\Result',
     ];
 
     /**
@@ -38,7 +36,7 @@ class Query extends AbstractQuery
      *
      * @return RequestBuilder
      */
-    public function getRequestBuilder(): RequestBuilderInterface
+    public function getRequestBuilder()
     {
         return new RequestBuilder();
     }
@@ -46,9 +44,8 @@ class Query extends AbstractQuery
     /**
      * No response parser required since we pass through GraphML.
      */
-    public function getResponseParser(): ?ResponseParserInterface
+    public function getResponseParser()
     {
-        return null;
     }
 
     /**
@@ -58,18 +55,17 @@ class Query extends AbstractQuery
      *
      * @return self Provides fluent interface
      */
-    public function setExpression(string $expr): self
+    public function setExpression($expr)
     {
-        $this->setOption('expr', $expr);
-        return $this;
+        return $this->setOption('expr', $expr);
     }
 
     /**
      * Get the expression.
      *
-     * @return string|null
+     * @return string
      */
-    public function getExpression(): ?string
+    public function getExpression()
     {
         return $this->getOption('expr');
     }

@@ -3,7 +3,7 @@
 namespace Solarium\Core\Event;
 
 use Solarium\Core\Query\QueryInterface;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * PreCreateQuery event, see Events for details.
@@ -31,7 +31,7 @@ class PreCreateQuery extends Event
      * @param string     $type
      * @param array|null $options
      */
-    public function __construct(string $type, array $options = null)
+    public function __construct($type, $options)
     {
         $this->type = $type;
         $this->options = $options;
@@ -40,9 +40,9 @@ class PreCreateQuery extends Event
     /**
      * Get the query object for this event.
      *
-     * @return QueryInterface|null
+     * @return QueryInterface
      */
-    public function getQuery(): ?QueryInterface
+    public function getQuery()
     {
         return $this->query;
     }
@@ -51,14 +51,10 @@ class PreCreateQuery extends Event
      * Set the query object for this event, this overrides default execution.
      *
      * @param QueryInterface $query
-     *
-     * @return self Provides fluent interface
      */
-    public function setQuery(QueryInterface $query): self
+    public function setQuery($query)
     {
         $this->query = $query;
-
-        return $this;
     }
 
     /**
@@ -66,7 +62,7 @@ class PreCreateQuery extends Event
      *
      * @return string
      */
-    public function getQueryType(): string
+    public function getQueryType()
     {
         return $this->type;
     }
@@ -76,7 +72,7 @@ class PreCreateQuery extends Event
      *
      * @return array|null
      */
-    public function getOptions(): ?array
+    public function getOptions()
     {
         return $this->options;
     }

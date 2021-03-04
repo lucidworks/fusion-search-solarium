@@ -20,18 +20,17 @@ abstract class AbstractQuery extends BaseQuery implements QueryInterface
      *
      * @return self Provides fluent interface
      */
-    public function setShowMatch(bool $show): self
+    public function setShowMatch($show)
     {
-        $this->setOption('showmatch', $show);
-        return $this;
+        return $this->setOption('showmatch', $show);
     }
 
     /**
      * Get the showmatch option.
      *
-     * @return bool
+     * @return mixed
      */
-    public function getShowMatch(): ?bool
+    public function getShowMatch()
     {
         return $this->getOption('showmatch');
     }

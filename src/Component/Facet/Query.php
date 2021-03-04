@@ -14,6 +14,7 @@ use Solarium\Core\Query\Helper;
  */
 class Query extends AbstractFacet implements QueryInterface
 {
+    use ExcludeTagsTrait;
     use QueryTrait;
 
     /**
@@ -40,7 +41,7 @@ class Query extends AbstractFacet implements QueryInterface
      *
      * @return \Solarium\Core\Query\Helper
      */
-    public function getHelper(): Helper
+    public function getHelper()
     {
         return new Helper();
     }

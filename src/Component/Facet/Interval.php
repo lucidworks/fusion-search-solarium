@@ -11,6 +11,10 @@ use Solarium\Component\FacetSetInterface;
  */
 class Interval extends AbstractFacet
 {
+    use ExcludeTagsTrait {
+        init as excludeTagsInit;
+    }
+
     /**
      * Get the facet type.
      *
@@ -28,19 +32,17 @@ class Interval extends AbstractFacet
      *
      * @return self Provides fluent interface
      */
-    public function setField(string $field): self
+    public function setField($field)
     {
-        $this->setOption('field', $field);
-
-        return $this;
+        return $this->setOption('field', $field);
     }
 
     /**
      * Get the field name.
      *
-     * @return string|null
+     * @return string
      */
-    public function getField(): ?string
+    public function getField()
     {
         return $this->getOption('field');
     }
@@ -55,16 +57,14 @@ class Interval extends AbstractFacet
      *
      * @return self Provides fluent interface
      */
-    public function setSet($set): self
+    public function setSet($set)
     {
-        if (\is_string($set)) {
+        if (is_string($set)) {
             $set = explode(',', $set);
             $set = array_map('trim', $set);
         }
 
-        $this->setOption('set', $set);
-
-        return $this;
+        return $this->setOption('set', $set);
     }
 
     /**
@@ -72,7 +72,7 @@ class Interval extends AbstractFacet
      *
      * @return array
      */
-    public function getSet(): array
+    public function getSet()
     {
         $set = $this->getOption('set');
         if (null === $set) {
@@ -90,6 +90,8 @@ class Interval extends AbstractFacet
      */
     protected function init()
     {
+        $this->excludeTagsInit();
+
         foreach ($this->options as $name => $value) {
             switch ($name) {
                 case 'set':

@@ -10,9 +10,12 @@ class SubRequest implements RequestParamsInterface
     use RequestParamsTrait;
 
     /**
-     * Query parser.
+     * Request params.
      *
-     * @var string
+     * Multivalue params are supported using a multidimensional array:
+     * 'fq' => array('cat:1','published:1')
+     *
+     * @var array
      */
     protected $queryParser = 'rerank';
 
@@ -21,7 +24,7 @@ class SubRequest implements RequestParamsInterface
      *
      * @return string
      */
-    public function getQueryParser(): string
+    public function getQueryParser()
     {
         return $this->queryParser;
     }
@@ -33,7 +36,7 @@ class SubRequest implements RequestParamsInterface
      *
      * @return self Provides fluent interface
      */
-    public function setQueryParser(string $value): self
+    public function setQueryParser(string $value)
     {
         $this->queryParser = $value;
 
@@ -47,7 +50,7 @@ class SubRequest implements RequestParamsInterface
      *
      * @return string
      */
-    public function getSubQuery(string $separator = ' '): string
+    public function getSubQuery($separator = ' ')
     {
         $queryString = '';
         foreach ($this->getParams() as $key => $value) {

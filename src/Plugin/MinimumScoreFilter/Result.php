@@ -16,18 +16,16 @@ class Result extends SelectResult
      *
      * @param array $mapData
      */
-    protected function mapData(array $mapData)
+    protected function mapData($mapData)
     {
         foreach ($mapData as $key => $data) {
-            if ('documents' === $key && $data) {
+            if ('documents' == $key) {
                 $filter = new Filter();
-                /** @var Query $query */
-                $query = $this->getQuery();
-                $mode = $query->getFilterMode();
-                $ratio = $query->getFilterRatio();
+                $mode = $this->getQuery()->getFilterMode();
+                $ratio = $this->getQuery()->getFilterRatio();
                 $data = $filter->filterDocuments($data, $mapData['maxscore'], $ratio, $mode);
             }
-            $this->{$key} = $data;
+            $this->$key = $data;
         }
     }
 }
