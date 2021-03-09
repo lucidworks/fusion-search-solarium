@@ -1,15 +1,12 @@
-# Solarium PHP Solr client library
-
+# Solarium PHP Solr client library for Fusion
 
 ## What is Solarium?
 
-Solarium is a PHP Solr client library that accurately model Solr concepts. Where many other Solr libraries only handle
-the communication with Solr, Solarium also relieves you of handling all the complex Solr query parameters using a
-well documented API.
+Solarium is a PHP Solr client library that accurately model Solr concepts. Where many other Solr libraries only handle the communication with Solr, Solarium also relieves you of handling all the complex Solr query parameters using a well documented API.
 
 Please see the [docs](http://solarium.readthedocs.io/en/stable/) for a more detailed description.
 
-**Note:** This project is a fork of Solarium that adds support for authenticating all API requests to Solr using the OAuth2 protocol, used by Lucidworks Managed Service.
+**Note:** This project is a fork of Solarium that adds support for authenticating all API requests to Fusion using JWT, used by Lucidworks Fusion.
 
 Expected Configs:
 
@@ -20,8 +17,8 @@ Expected Configs:
 | port   | string | The Jetty example server is at port 8983, while Tomcat uses 8080 by default.              | yes   |
 | path   | string | The path that identifies the Solr instance to use on the node. | yes |
 | core   | string | This is the collection if you're using it in the Solrcloud mode. | yes |
-| oauth2_client_id | string | This is the Client ID for a SolrCloud cluster that supports OAuth2 | no |
-| oauth2_client_secret | string | This is the Client Secret for a SolrCloud cluster that supports OAuth2 | no |
+| jwt_token | string | This is the JWT token used to authenticate with the Fusion instance. | yes |
+| query_profile | string | This is the query profile id for Fusion. | yes |
 
 See [config.php](config.php) file for an example config.
 
@@ -40,14 +37,13 @@ The preferred way to install Solarium is by using Composer. Solarium is availabl
 
 Example:
 ```
-composer require solarium/solarium
+composer require lucidworks/fusion-search-solarium
 ```
 
 ### Pitfall when upgrading from earlier versions to 5.x
 
 In the past, the V1 API endpoint **_solr_** was not added automatically, so most users set it as path on the endpoint.
-This bug was discovered with the addition of V2 API support. In almost every setup, the path has to be set to `/`
-instead of `/solr` with this release!
+This bug was discovered with the addition of V2 API support. In almost every setup, the path has to be set to `/` instead of `/solr` with this release!
 
 For the same reason it is a must to explicit configure the _core_ or _collection_.
 

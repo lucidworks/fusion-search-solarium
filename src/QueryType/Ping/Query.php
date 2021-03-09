@@ -23,7 +23,7 @@ class Query extends BaseQuery
      */
     protected $options = [
         'resultclass' => Result::class,
-        'handler' => 'admin/ping',
+        'handler' => '',
         'omitheader' => true,
     ];
 

@@ -389,7 +389,7 @@ class Endpoint extends Configurable
             // V1 API
             $jwt_token = $this->getOption('jwt_token');
             if (isset($jwt_token)) {
-              $uri .= ''.$core.'/';
+              $uri .= 'apps/'.$core.'/';
             } else {
               $uri .= 'solr/'.$core.'/';
             }

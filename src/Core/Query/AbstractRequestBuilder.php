@@ -34,7 +34,7 @@ abstract class AbstractRequestBuilder implements RequestBuilderInterface
         $request->addParam('NOW', $query->getNow());
         $request->addParam('TZ', $query->getTimeZone());
         $request->addParams($query->getParams());
-
+        
         $request->addParam('wt', $query->getResponseWriter());
         if ($query::WT_JSON === $query->getResponseWriter()) {
             // Only flat JSON format is supported. Other JSON formats are easier to handle but might loose information.

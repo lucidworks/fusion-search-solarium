@@ -1,5 +1,4 @@
 <?php
-    echo "here in worker";
     $file_pointer = $_SERVER['DOCUMENT_ROOT'] .'/.access_token';
     // sleep for the initial expiry response time
     $initial_delta = max(60, (int)$argv[4] - 60);

@@ -53,7 +53,6 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
 
         $this->check($data, $headers, $handle);
         curl_close($handle);
-
         return new Response($data, $headers);
     }
 
@@ -71,10 +70,13 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
     public function createHandle($request, $endpoint)
     {
         $uri = AdapterHelper::buildUri($request, $endpoint);
-        $uri = str_replace("/select", "", $uri);
+        $reqHandler = $request->getHandler();
+        $queryProfile = $endpoint->getQueryProfile();
+        if ($reqHandler === 'query' && isset($queryProfile)) {
+           $uri = str_replace("query", "query/".$queryProfile, $uri); 
+        }
         $method = $request->getMethod();
         $options = $this->createOptions($request, $endpoint);
-
         $handler = curl_init();
         curl_setopt($handler, CURLOPT_URL, $uri);
         curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
@@ -177,7 +179,6 @@ class Curl extends Configurable implements AdapterInterface, TimeoutAwareInterfa
     {
         $handle = $this->createHandle($request, $endpoint);
         $httpResponse = curl_exec($handle);
-
         return $this->getResponse($handle, $httpResponse);
     }
 

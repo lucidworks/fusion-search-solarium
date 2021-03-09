@@ -23,7 +23,6 @@ class RequestBuilder extends BaseRequestBuilder
     {
         $request = parent::build($query);
         $request->setMethod(Request::METHOD_GET);
-
         return $request;
     }
 }

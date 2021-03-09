@@ -96,7 +96,7 @@ class Query extends AbstractQuery implements ComponentAwareQueryInterface, Query
      * @var array
      */
     protected $options = [
-        'handler' => 'select',
+        'handler' => 'query',
         'resultclass' => Result::class,
         'documentclass' => Document::class,
         'query' => '*:*',
