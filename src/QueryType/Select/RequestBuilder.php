@@ -33,7 +33,8 @@ class RequestBuilder extends BaseRequestBuilder
         );
         $request->addParam('start', $query->getStart());
         $request->addParam('rows', $query->getRows());
-        $request->addParam('fl', implode(',', $query->getFields()));
+        //LUCIDWORKS CHANGED
+        //$request->addParam('fl', implode(',', $query->getFields()));
         $request->addParam('q.op', $query->getQueryDefaultOperator());
         $request->addParam('df', $query->getQueryDefaultField());
         $request->addParam('cursorMark', $query->getCursormark());

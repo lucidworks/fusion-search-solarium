@@ -25,8 +25,12 @@ class Endpoint extends Configurable
         'path' => '/',
         'collection' => null,
         'core' => null,
-        'timeout' => 5,
+        'timeout' => 1000,
         'leader' => false,
+        'oauth2_client_id' => '',
+        'oauth2_client_secret' => '',
+        'jwt_token' => '',
+        'query_profile' => '',
     ];
 
     /**
@@ -234,6 +238,103 @@ class Endpoint extends Configurable
         return $this->getOption('scheme');
     }
 
+
+    /**
+     * Set query_profile option.
+     *
+     * @param string $query_profile This is fusion query profile token
+     *
+     * @return self Provides fluent interface
+     */
+    public function setQueryProfile($query_profile): ?string
+    {
+        $this->setOption('query_profile', $query_profile);
+        return $this;
+    }
+
+
+    /**
+     * Get query_profile option.
+     *
+     * @return string|null
+     */
+    public function getQueryProfile(): ?string
+    {
+        return $this->getOption('query_profile');
+    }
+
+
+    /**
+     * Set jwt_token option.
+     *
+     * @param string $jwt_token This is jwt token
+     *
+     * @return self Provides fluent interface
+     */
+    public function setJWTToken($jwt_token): ?string
+    {
+        $this->setOption('jwt_token', $jwt_token);
+        return $this;
+    }
+
+
+    /**
+     * Get jwt_token option.
+     *
+     * @return string|null
+     */
+    public function getJWTToken(): ?string
+    {
+        return $this->getOption('jwt_token');
+    }
+
+
+    /**
+     * Set oauth2_client_id option.
+     *
+     * @param string $oauth2_client_id This is oauth2 client id.
+     *
+     * @return self Provides fluent interface
+     */
+    public function setOAuth2ClientId(string $oauth2_client_id): self
+    {
+        $this->setOption('oauth2_client_id', $oauth2_client_id);
+        return $this;
+    }
+
+    /**
+     * Get oauth2_client_id option.
+     *
+     * @return string|null
+     */
+    public function getOAuth2ClientId(): ?string
+    {
+        return $this->getOption('oauth2_client_id');
+    }
+
+    /**
+     * Set oauth2_client_secret option.
+     *
+     * @param string $oauth2_client_secret This oauth client secret
+     *
+     * @return self Provides fluent interface
+     */
+    public function setOAuth2ClientSecret(string $oauth2_client_secret): self
+    {
+        $this->setOption('oauth2_client_secret', $oauth2_client_secret);
+        return $this;
+    }
+
+    /**
+     * Get oauth2_client_secret option.
+     *
+     * @return string|null
+     */
+    public function getOAuth2ClientSecret(): ?string
+    {
+        return $this->getOption('oauth2_client_secret');
+    }
+
     /**
      * Get the V1 base url for all SolrCloud requests.
      *
@@ -249,7 +350,12 @@ class Endpoint extends Configurable
         $collection = $this->getCollection();
 
         if ($collection) {
-            $uri .= 'solr/'.$collection.'/';
+            $jwt_token = $this->getOption('jwt_token');
+            if (isset($jwt_token)) {
+                $uri .= ''.$collection.'/';
+            } else {
+                $uri .= 'solr/'.$collection.'/';
+            }
         } else {
             throw new UnexpectedValueException('No collection set.');
         }
@@ -273,7 +379,13 @@ class Endpoint extends Configurable
 
         if ($core) {
             // V1 API
-            $uri .= 'solr/'.$core.'/';
+            $jwt_token = $this->getOption('jwt_token');
+            if (isset($jwt_token)) {
+              $uri .= 'apps/'.$core.'/';
+            } else {
+              $uri .= 'solr/'.$core.'/';
+            }
+
         } else {
             throw new UnexpectedValueException('No core set.');
         }
@@ -310,7 +422,7 @@ class Endpoint extends Configurable
      */
     public function getV1BaseUri(): string
     {
-        return $this->getServerUri().'solr/';
+        return $this->getServerUri().'';
     }
 
     /**
@@ -364,6 +476,51 @@ class Endpoint extends Configurable
             'username' => $this->getOption('username'),
             'password' => $this->getOption('password'),
         ];
+    }
+
+    /**
+     * Get OAuth2 token.
+     *
+     * @param string $oauth2_client_id
+     * @param string $oauth2_client_secret
+     * @param string $customer_id
+     * @param bool $new_token
+     *
+     * @return string
+     */
+    public function getOAuth2Token($oauth2_client_id, $oauth2_client_secret, $customer_id, $failed_token = false): string
+    {
+        $file_pointer = $_SERVER['DOCUMENT_ROOT'] .'/.access_token';
+        $process_file = $_SERVER['DOCUMENT_ROOT'] .'/.background_process_id';
+        $token = '';
+
+        if($failed_token || !is_file($file_pointer) || trim(file_get_contents($file_pointer)) === '') {
+            $lms_oauth2_endpoint = 'https://'.$this->getHost().'/oauth2/default/'.$customer_id.'/v1/token';
+            $curl_req = curl_init($lms_oauth2_endpoint);
+            $customHeaders = array(
+              'Accept-Encoding: gzip, deflate',
+              'accept: application/json',
+              'Authorization: Basic '.base64_encode($oauth2_client_id.':'.$oauth2_client_secret),
+              'Content-Type: application/x-www-form-urlencoded',
+              'cache-control: no-cache,no-cache',
+            );
+            curl_setopt($curl_req, CURLOPT_POST, true);
+            curl_setopt($curl_req, CURLOPT_POSTFIELDS, "grant_type=client_credentials&scope=com.lucidworks.cloud.search.solr.customer");
+            curl_setopt($curl_req, CURLOPT_HTTPHEADER, $customHeaders);
+
+            curl_setopt($curl_req, CURLOPT_RETURNTRANSFER, true);
+            $lms_oauth2_response = curl_exec($curl_req);
+            $res = json_decode($lms_oauth2_response, true);
+            $token = $res['token_type'].' '.$res['access_token'];
+            file_put_contents($file_pointer, $token);
+            if (!is_file($process_file) || trim(file_get_contents($process_file)) === '') {
+                $pid = exec("php ".__DIR__."/Worker.php ".$oauth2_client_id." ".$oauth2_client_secret." ".$customer_id." ".$res['expires_in']." > /dev/null 2>&1 & echo $!;");
+                file_put_contents($process_file, $pid);
+            }
+        } else {
+            $token = file_get_contents($file_pointer);
+        }
+        return $token;
     }
 
     /**

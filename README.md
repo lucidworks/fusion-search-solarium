@@ -1,13 +1,28 @@
-# Solarium PHP Solr client library
-
+# Solarium PHP Solr client library for Fusion
 
 ## What is Solarium?
 
-Solarium is a PHP Solr client library that accurately model Solr concepts. Where many other Solr libraries only handle
-the communication with Solr, Solarium also relieves you of handling all the complex Solr query parameters using a
-well documented API.
+Solarium is a PHP Solr client library that accurately model Solr concepts. Where many other Solr libraries only handle the communication with Solr, Solarium also relieves you of handling all the complex Solr query parameters using a well documented API.
 
-Please see the docs for a more detailed description.
+Please see the [docs](http://solarium.readthedocs.io/en/stable/) for a more detailed description.
+
+**Note:** This project is a fork of Solarium that adds support for authenticating all API requests to Fusion using JWT, used by Lucidworks Fusion.
+
+Expected Configs:
+
+| Config | Type   | Description  | Required |
+|--------|--------|--------------|----------|
+| scheme | string | The HTTP protocol to use for sending queries. | yes      |
+| host   | string | The host name or IP of a Solr node, e.g. localhost or pg01.us-west1.cloud.lucidworks.com. | yes   |
+| port   | string | The Jetty example server is at port 8983, while Tomcat uses 8080 by default.              | yes   |
+| path   | string | The path that identifies the Solr instance to use on the node. | yes |
+| core   | string | This is the collection if you're using it in the Solrcloud mode. | yes |
+| jwt_token | string | This is the JWT token used to authenticate with the Fusion instance. | yes |
+| query_profile | string | This is the query profile id for Fusion. | yes |
+
+See [config.php](config.php) file for an example config.
+
+Read more on how to authenticate with Solarium over [here](HOW.md).
 
 ## Requirements
 
@@ -23,8 +38,14 @@ The preferred way to install Solarium is by using Composer. Solarium is availabl
 
 Example:
 ```
- composer require solarium/solarium
+composer require lucidworks/fusion-search-solarium
 ```
+
+## Run the examples
+
+To run the examples read through the _Example code_ section of
+https://solarium.readthedocs.io/en/stable/getting-started/
+
 
 ## More information
 

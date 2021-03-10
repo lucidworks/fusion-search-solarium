@@ -71,6 +71,11 @@ class Curl extends Configurable implements AdapterInterface
     {
         $uri = AdapterHelper::buildUri($request, $endpoint);
 
+        $reqHandler = $request->getHandler();
+        $queryProfile = $endpoint->getQueryProfile();
+        if ($reqHandler === 'select' && isset($queryProfile)) {
+            $uri = str_replace("select", "query/".$queryProfile, $uri);
+        }
         $method = $request->getMethod();
         $options = $this->createOptions($request, $endpoint);
 
