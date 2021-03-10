@@ -1,5 +1,5 @@
 {
-    "name": "solarium/solarium",
+    "name": "lucidworks/fusion-search-solarium",
     "type": "library",
     "description": "PHP Solr client",
     "keywords": ["solr", "search", "php"],
